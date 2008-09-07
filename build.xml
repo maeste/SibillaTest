@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     25 Aug 2008 22:35:39                                                        
+
+     TestedBy    s
+     description
+                   
+     oracle                                                                
+     ====================================================================== -->
+<project name="TestedBy" default="jar">
+	<description>
+            TestedByAnnotations
+    </description>
+
+	<path id="prj.srcpath">
+		<pathelement location="src"/>
+		<pathelement location="test-src"/>
+		        
+	</path>
+
+	   <path id="prj.classpath">
+	        <fileset dir="lib">
+	        	<include name="*.jar"/>
+	        </fileset>
+	   </path>
+	
+	<target name="clean">
+		<deltree dir="build"/>
+
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="build" />
+		<mkdir dir="build/dist" />
+		<mkdir dir="build/classes" />
+        <mkdir dir="build/doc" />
+	</target>
+
+	<!-- ================================= 
+          target: default              
+         ================================= -->
+	<target name="jar" depends="compile" description="--> description">
+		<jar destfile="build/dist/TestedBy.jar" >
+			<zipfileset dir="build/classes" excludes="**/*Test.class">
+			</zipfileset>
+		</jar>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: depends                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="compile" depends="clean,prepare">
+		<javac classpathref="prj.classpath" debug="true" destdir="build/classes" >
+			<src path="src" />
+			<src path="test-src" />
+		
+		</javac>
+	</target>
+	<target name="javadoc">
+		   <javadoc sourcepathref="prj.srcpath" destdir="build/doc">
+		   
+		   </javadoc>
+	</target>
+
+</project>
