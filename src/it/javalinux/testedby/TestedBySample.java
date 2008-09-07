@@ -33,9 +33,12 @@ public class TestedBySample {
                     int j ) {
         return i + j;
     }
-    
-    public void pippo() {
-    	
+
+    @TestedByList( {@TestedBy( testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork" ),
+        @TestedBy( testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork2" )} )
+    public int add2( int i,
+                     int j ) {
+        return i + j;
     }
 
 }

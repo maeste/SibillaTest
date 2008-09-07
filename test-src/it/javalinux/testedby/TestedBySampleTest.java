@@ -30,4 +30,12 @@ public class TestedBySampleTest {
         assertThat(sample.add(i, j), is(3));
     }
 
+    @Test
+    public void addShouldWork2() {
+        int i = 2;
+        int j = 2;
+        TestedBySample sample = new TestedBySample();
+        assertThat(sample.add(i, j), is(4));
+    }
+
 }

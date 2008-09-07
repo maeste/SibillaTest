@@ -1,27 +1,20 @@
-/*
- * JBoss, Home of Professional Open Source.
- * Copyright 2008, Red Hat Middleware LLC, and individual contributors
- * as indicated by the @author tags. See the copyright.txt file in the
- * distribution for a full listing of individual contributors. 
+/**
+ *  WISE Invokes Services Easily - Stefano Maestri / Alessio Soldano
+ *  
+ *  http://www.javalinuxlabs.org - http://www.javalinux.it 
  *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
+ *  Wise is free software; you can redistribute it and/or modify it under the 
+ *  terms of the GNU Lesser General Public License as published by the Free Software Foundation; 
+ *  either version 2.1 of the License, or (at your option) any later version.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *  Wise is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without 
+ *  even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ *  See the GNU Lesser General Public License for more details at gnu.org.
  */
 package it.javalinux.testedby.junit;
 
 import it.javalinux.testedby.TestedBy;
+import it.javalinux.testedby.TestedByList;
 import java.lang.reflect.Method;
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
@@ -32,7 +25,7 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.RunListener;
 
 /**
- * @author oracle
+ * @author stefano.maestri@javalinux.it
  */
 public class TestedByRunner {
 
@@ -44,17 +37,38 @@ public class TestedByRunner {
         for (Method method : classUnderTest.getMethods()) {
             TestedBy testedBy = method.getAnnotation(TestedBy.class);
             if (testedBy != null) {
-                listener.testRunStarted(Description.createTestDescription(classUnderTest,
-                                                                          "Going to test method of classUnderTest named:"
-                                                                          + testedBy.testMethod()));
-                Class<?> testClass = Thread.currentThread().getContextClassLoader().loadClass(testedBy.testClass());
-                Request request = Request.method(testClass, testedBy.testMethod());
-                Result result = core.run(request);
-                System.out.println(result.wasSuccessful());
+                runTestedByElement(classUnderTest, core, listener, testedBy);
+            }
+            TestedByList list = method.getAnnotation(TestedByList.class);
+            if (list != null) {
+                for (TestedBy testedByElement : list.value()) {
+                    runTestedByElement(classUnderTest, core, listener, testedByElement);
+                }
+
             }
 
         }
 
+    }
+
+    /**
+     * @param classUnderTest
+     * @param core
+     * @param listener
+     * @param testedBy
+     * @throws Exception
+     * @throws ClassNotFoundException
+     */
+    private void runTestedByElement( Class<?> classUnderTest,
+                                     JUnitCore core,
+                                     RunListener listener,
+                                     TestedBy testedBy ) throws Exception, ClassNotFoundException {
+        listener.testRunStarted(Description.createTestDescription(classUnderTest, "Going to test method of classUnderTest named:"
+                                                                                  + testedBy.testMethod()));
+        Class<?> testClass = Thread.currentThread().getContextClassLoader().loadClass(testedBy.testClass());
+        Request request = Request.method(testClass, testedBy.testMethod());
+        Result result = core.run(request);
+        System.out.println(result.wasSuccessful());
     }
 
     public static void main( String[] args ) throws Exception {
