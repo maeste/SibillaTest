@@ -23,8 +23,13 @@ package it.javalinux.testedby.junit;
 
 import it.javalinux.testedby.TestedBy;
 import java.lang.reflect.Method;
+import org.junit.internal.RealSystem;
+import org.junit.internal.TextListener;
+import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Request;
+import org.junit.runner.Result;
+import org.junit.runner.notification.RunListener;
 
 /**
  * @author oracle
@@ -33,13 +38,21 @@ public class TestedByRunner {
 
     public void run( Class<?> classUnderTest ) throws Exception {
         JUnitCore core = new JUnitCore();
+        RunListener listener = new TextListener(new RealSystem());
+        core.addListener(listener);
+
         for (Method method : classUnderTest.getMethods()) {
             TestedBy testedBy = method.getAnnotation(TestedBy.class);
             if (testedBy != null) {
+                listener.testRunStarted(Description.createTestDescription(classUnderTest,
+                                                                          "Going to test method of classUnderTest named:"
+                                                                          + testedBy.testMethod()));
                 Class<?> testClass = Thread.currentThread().getContextClassLoader().loadClass(testedBy.testClass());
                 Request request = Request.method(testClass, testedBy.testMethod());
-                core.run(request);
+                Result result = core.run(request);
+                System.out.println(result.wasSuccessful());
             }
+
         }
 
     }

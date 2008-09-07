@@ -26,9 +26,8 @@ public class TestedBySampleTest {
     public void addShouldWork() {
         int i = 1;
         int j = 2;
-        System.out.print("aa");
         TestedBySample sample = new TestedBySample();
-        assertThat(sample.add(i, j), is(4));
+        assertThat(sample.add(i, j), is(3));
     }
 
 }
