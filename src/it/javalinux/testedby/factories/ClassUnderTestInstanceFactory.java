@@ -26,7 +26,7 @@ package it.javalinux.testedby.factories;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public interface InstanceFactory {
+public interface ClassUnderTestInstanceFactory {
 
     public abstract <T> T createInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException;
 

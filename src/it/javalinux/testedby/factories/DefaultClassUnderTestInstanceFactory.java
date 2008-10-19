@@ -25,12 +25,12 @@ package it.javalinux.testedby.factories;
 /**
  * @author stefano.maestri@javalinux.it
  */
-public class DefaultInstanceFactory implements InstanceFactory {
+public class DefaultClassUnderTestInstanceFactory implements ClassUnderTestInstanceFactory {
 
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.factories.InstanceFactory#createInstance(java.lang.Class)
+     * @see it.javalinux.testedby.factories.ClassUnderTestInstanceFactory#createInstance(java.lang.Class)
      */
     public <T> T createInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException {
 	return clazz.newInstance();

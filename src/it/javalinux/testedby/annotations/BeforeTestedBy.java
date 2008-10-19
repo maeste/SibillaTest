@@ -22,13 +22,10 @@
 
 package it.javalinux.testedby.annotations;
 
-import it.javalinux.testedby.factories.DefaultInstanceFactory;
 
 /**
  * @author stefano.maestri@javalinux.it
  */
 public @interface BeforeTestedBy {
-
-    public Class<?> instanceFactory() default DefaultInstanceFactory.class;
 
 }
