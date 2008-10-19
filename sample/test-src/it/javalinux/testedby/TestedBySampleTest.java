@@ -1,5 +1,5 @@
 /*
- * Stefano Maestri, JavalinuxLabs.org Copyright 2008, and
+ * Stefano Maestri, javalinuxlabs.org Copyright 2008, and
  * individual contributors as indicated by the @authors tag. See the
  * copyright.txt in the distribution for a full listing of individual
  * contributors.
@@ -33,18 +33,18 @@ public class TestedBySampleTest {
 
     @Test
     public void addShouldWork() {
-        int i = 1;
-        int j = 2;
-        TestedBySample sample = new TestedBySample();
-        assertThat(sample.add(i, j), is(3));
+	int i = 1;
+	int j = 2;
+	TestedBySample sample = new TestedBySample();
+	assertThat(sample.add(i, j), is(3));
     }
 
     @Test
     public void addShouldWork2() {
-        int i = 2;
-        int j = 2;
-        TestedBySample sample = new TestedBySample();
-        assertThat(sample.add(i, j), is(4));
+	int i = 2;
+	int j = 2;
+	TestedBySample sample = new TestedBySample();
+	assertThat(sample.add(i, j), is(4));
     }
 
 }

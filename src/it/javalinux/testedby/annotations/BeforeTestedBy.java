@@ -1,5 +1,5 @@
 /*
- * Stefano Maestri, JavalinuxLabs.org Copyright 2008, and
+ * Stefano Maestri, javalinuxlabs.org Copyright 2008, and
  * individual contributors as indicated by the @authors tag. See the
  * copyright.txt in the distribution for a full listing of individual
  * contributors.

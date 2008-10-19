@@ -1,5 +1,5 @@
 /*
- * JBoss, Home of Professional Open Source Copyright 2006, JBoss Inc., and
+ * Stefano Maestri, javalinuxlabs.org Copyright 2008, and
  * individual contributors as indicated by the @authors tag. See the
  * copyright.txt in the distribution for a full listing of individual
  * contributors.
@@ -19,14 +19,15 @@
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA, or see the FSF
  * site: http://www.fsf.org.
  */
+
 package it.javalinux.testedby.factories;
 
 /**
  * @author stefano.maestri@javalinux.it
- *
+ * 
  */
 public interface InstanceFactory {
 
-    public abstract <T> T createInstance( Class<T> clazz ) throws InstantiationException, IllegalAccessException;
+    public abstract <T> T createInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException;
 
 }

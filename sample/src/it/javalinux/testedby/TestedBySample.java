@@ -1,5 +1,5 @@
 /*
- * Stefano Maestri, JavalinuxLabs.org Copyright 2008, and
+ * Stefano Maestri, javalinuxlabs.org Copyright 2008, and
  * individual contributors as indicated by the @authors tag. See the
  * copyright.txt in the distribution for a full listing of individual
  * contributors.
@@ -28,29 +28,27 @@ import it.javalinux.testedby.annotations.TestedByList;
 /**
  * @author stefano.maestri@javalinux.it
  */
-@TestedBy( testClass = "it.javalinux.testedby.TestedBySampleTest" )
+@TestedBy(testClass = "it.javalinux.testedby.TestedBySampleTest")
 public class TestedBySample {
 
     /**
      * @param args
      */
-    public static void main( String[] args ) {
-        TestedBySample sample = new TestedBySample();
-        System.out.print(sample.add(1, 2));
+    public static void main(String[] args) {
+	TestedBySample sample = new TestedBySample();
+	System.out.print(sample.add(1, 2));
 
     }
 
-    @TestedBy( testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork" )
-    public int add( int i,
-                    int j ) {
-        return i + j;
+    @TestedBy(testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork")
+    public int add(int i, int j) {
+	return i + j;
     }
 
-    @TestedByList( {@TestedBy( testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork" ),
-        @TestedBy( testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork2" )} )
-    public int add2( int i,
-                     int j ) {
-        return i + j;
+    @TestedByList( { @TestedBy(testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork"),
+		    @TestedBy(testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork2") })
+    public int add2(int i, int j) {
+	return i + j;
     }
 
 }
