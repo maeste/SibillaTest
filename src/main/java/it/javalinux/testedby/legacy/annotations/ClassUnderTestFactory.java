@@ -18,9 +18,9 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.annotations;
+package it.javalinux.testedby.legacy.annotations;
 
-import it.javalinux.testedby.factories.DefaultClassUnderTestInstanceFactory;
+import it.javalinux.testedby.legacy.factories.DefaultClassUnderTestInstanceFactory;
 
 /**
  * @author oracle

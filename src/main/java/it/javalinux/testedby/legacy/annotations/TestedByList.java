@@ -20,12 +20,21 @@
  * site: http://www.fsf.org.
  */
 
-package it.javalinux.testedby.annotations;
+package it.javalinux.testedby.legacy.annotations;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author stefano.maestri@javalinux.it
  */
-public @interface BeforeTestedBy {
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE, ElementType.METHOD })
+@Documented
+public @interface TestedByList {
 
+    public TestedBy[] value();
 }

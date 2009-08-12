@@ -20,35 +20,23 @@
  * site: http://www.fsf.org.
  */
 
-package it.javalinux.testedby;
+package it.javalinux.testedby.legacy.annotations;
 
-import it.javalinux.testedby.annotations.TestedBy;
-import it.javalinux.testedby.annotations.TestedByList;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author stefano.maestri@javalinux.it
  */
-@TestedBy(testClass = "it.javalinux.testedby.TestedBySampleTest")
-public class TestedBySample {
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE, ElementType.METHOD })
+@Documented
+public abstract @interface TestedBy {
+    public String testClass();
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-	TestedBySample sample = new TestedBySample();
-	System.out.print(sample.add(1, 2));
-
-    }
-
-    @TestedBy(testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork")
-    public int add(int i, int j) {
-	return i + j;
-    }
-
-    @TestedByList( { @TestedBy(testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork"),
-		    @TestedBy(testClass = "it.javalinux.testedby.TestedBySampleTest", testMethod = "addShouldWork2") })
-    public int add2(int i, int j) {
-	return i + j;
-    }
+    public String testMethod() default "";
 
 }
