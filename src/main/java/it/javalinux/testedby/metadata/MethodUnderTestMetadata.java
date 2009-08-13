@@ -24,26 +24,66 @@ import java.lang.reflect.Method;
 
 import it.javalinux.testedby.metadata.builder.MetadataBuilder;
 
-
 /**
- * It represent metadatas for method under test.
- * It contains its own metadata (accessed by {@link #getTestClasses()} and {@link #getTestMethods()} )
+ * It represent metadatas for method under test. It contains its own metadata
+ * (accessed by {@link #getTestClasses()} and {@link #getTestMethods()} )
  * 
- * It aims to collect metadata to make possible navigation of relation between method under test and test classes/methods
- * using method under test as starting point.
+ * It aims to collect metadata to make possible navigation of relation between
+ * method under test and test classes/methods using method under test as
+ * starting point.
  * 
- * Metadata will be created by a {@link MetadataBuilder} with a specific strategy
+ * Metadata will be created by a {@link MetadataBuilder} with a specific
+ * strategy
  * 
  * @author stefano.maestri@javalinux.it
- *
+ * 
  */
 public interface MethodUnderTestMetadata extends CodeUnderTestMetadata {
-	
+
 	/**
 	 * 
 	 * @return the {@link Method} under test
 	 */
 	public Method getMethodUnderTest();
-	
+
+	/**
+	 * 
+	 * @return a {@link MethodLineNumber} representing starting and ending
+	 *         linenumber for method under test. It is useful to test runner to
+	 *         identify which are method changed in a class under test and so
+	 *         which are test method to run
+	 */
+	public MethodLineNumber getLineNumbers();
+
+	public class MethodLineNumber {
+		private final int startLine;
+
+		/**
+		 * @param startLine
+		 * @param endLine
+		 */
+		public MethodLineNumber(int startLine, int endLine) {
+			super();
+			this.startLine = startLine;
+			this.endLine = endLine;
+		}
+
+		/**
+		 * @return startLine
+		 */
+		public int getStartLine() {
+			return startLine;
+		}
+
+		/**
+		 * @return endLine
+		 */
+		public int getEndLine() {
+			return endLine;
+		}
+
+		private final int endLine;
+
+	}
 
 }
