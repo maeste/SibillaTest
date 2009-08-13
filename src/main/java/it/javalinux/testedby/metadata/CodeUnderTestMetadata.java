@@ -35,13 +35,13 @@ public interface CodeUnderTestMetadata {
 
 	/**
 	 * 
-	 * @return a Colection of {@link Class} that are the test class stressing the represented class under test
+	 * @return a Colection of {@link Class} that are the test class stressing the the metadata's unit of code
 	 */
 	public Collection<Class<?>> getTestClasses();
 
 	/**
 	 * 
-	 * @return a Colection of {@link Method} that are the method of test class stressing the represented class under test
+	 * @return a Colection of {@link Method} that are the method of test class stressing the metadata's unit of code
 	 */
 	public Collection<Method> getTestMethods();
 }

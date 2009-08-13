@@ -20,14 +20,35 @@
  */
 package it.javalinux.testedby.metadata;
 
+import it.javalinux.testedby.metadata.builder.MetadataBuilder;
+
 import java.util.Collection;
 
 /**
+ * It represent metadatas for a Test class.
+ * It contains both its own metadata (accessed by {@link #getClassesUnderTest()} and {@link #getMethodsUnderTest()} )
+ * and a Colection of {@link TestMethodMetadata} (accessed by {@link #getMethodsSpecificMetaDatas()})
+ * 
+ * It aims to collect metadata to make possible navigation of relation between class under test and test classes/methods
+ * using class test class  as starting point.
+ * 
+ * Metadata will be created by a {@link MetadataBuilder} with a specific strategy
+ * 
  * @author stefano.maestri@javalinux.it
  *
  */
 public interface TestClassMetadata extends TestCodeMetadata {
 	
+	/**
+	 * 
+	 * @return the test {@link Class} 
+	 */
+	public Class<?> getClassUnderTest();
+	
+	/**
+	 * 
+	 * @return a Colection of {@link TestMethodMetadata} representing metadata specific of methods of test class
+	 */
 	public Collection<TestMethodMetadata> getMethodsSpecificMetaDatas(); 
 
 }

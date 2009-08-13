@@ -26,7 +26,7 @@ import it.javalinux.testedby.metadata.builder.MetadataBuilder;
 
 
 /**
- * It represent metadatas for ClassUnderTest.
+ * It represent metadatas for method under test.
  * It contains its own metadata (accessed by {@link #getTestClasses()} and {@link #getTestMethods()} )
  * 
  * It aims to collect metadata to make possible navigation of relation between method under test and test classes/methods

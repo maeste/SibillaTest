@@ -24,12 +24,24 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 
 /**
- * @author oracle
+ * It represent metadatas for a unit of test code (i.e test class or test method)
+ * It contains generic metadata for any level (accessed by {@link #getClassesUnderTest()} and {@link #getMethodsUnderTest()} )
+ *
  * 
+ * @author stefano.maestri@javalinux.it
+ *
  */
 public interface TestCodeMetadata {
 
+	/**
+	 * 
+	 * @return a Colection of {@link Class} that are the class under test stressed by the metadata's unit of code
+	 */
 	public Collection<Class<?>> getClassesUnderTest();
 
+	/**
+	 * 
+	 * @return a Colection of {@link Method} that are the method of class under test stressed by the metadata's unit of code
+	 */
 	public Collection<Method> getMethodsUnderTest();
 }
