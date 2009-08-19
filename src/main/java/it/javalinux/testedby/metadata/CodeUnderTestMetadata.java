@@ -25,7 +25,7 @@ import java.util.Collection;
 
 /**
  * It represent metadatas for a unit of code under test (i.e class under test and method under test)
- * It contains generic metadata for any level (accessed by {@link #getTestClasses()} and {@link #getTestMethods()} )
+ * It contains  {@link TestClassMetadata} representing test classes and their methods stressing current unit of code.
  *
  * 
  * @author stefano.maestri@javalinux.it
@@ -35,14 +35,9 @@ public interface CodeUnderTestMetadata {
 
 	/**
 	 * 
-	 * @return a Colection of {@link Class} that are the test class stressing the the metadata's unit of code
+	 * @return a Colection of {@link TestClassMetadata} of test classses stressing the unit of code represented
 	 */
-	public Collection<Class<?>> getTestClasses();
+	public Collection<TestClassMetadata> getTestClassesMetadatas();
 
-	/**
-	 * 
-	 * @return a Colection of {@link Method} that are the method of test class stressing the metadata's unit of code
-	 */
-	public Collection<Method> getTestMethods();
 	
 }

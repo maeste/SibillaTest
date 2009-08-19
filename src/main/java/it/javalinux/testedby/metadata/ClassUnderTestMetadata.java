@@ -22,12 +22,11 @@ package it.javalinux.testedby.metadata;
 
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
  * It represent metadatas for ClassUnderTest.
- * It contains both its own metadata (accessed by {@link #getTestClasses()} and {@link #getTestMethods()} )
+ * It contains both its own metadata (accessed by {@link #getTestClassesMetadatas()}  )
  * and a Colection of {@link MethodUnderTestMetadata} (accessed by {@link #getMethodsSpecificMetaDatas()})
  * 
  * It aims to collect metadata to make possible navigation of relation between class under test and test classes/methods
@@ -43,9 +42,9 @@ public interface ClassUnderTestMetadata extends CodeUnderTestMetadata {
 	
 	/**
 	 * 
-	 * @return the {@link Class} under test
+	 * @return the full qualified name of class under test
 	 */
-	public Class<?> getClassUnderTest();
+	public String getClassUnderTestName();
 	
 	/**
 	 * 

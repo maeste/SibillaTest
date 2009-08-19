@@ -18,29 +18,53 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata;
+package it.javalinux.testedby.metadata.impl.immutable;
 
+import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Map;
 
+import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
+import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
+import it.javalinux.testedby.metadata.TestClassMetadata;
+
 /**
- * 
+ * Immutable implementation of 
  * @author Stefano Maestri stefano.maestri@javalinux.it
  *
  */
+public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
 
-public interface ApplicationTestMetadata {
-    /**
-     * 
-     * @return a {@link Map} where keys are classes under test names and values their {@link ClassUnderTestMetadata} 
-     */
-    public Map<String,ClassUnderTestMetadata> getClassUnderTestMetadatas();
     
     /**
-     * 
-     * @return a {@link Map} where keys are test classes names and values their {@link TestClassMetadata}
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getClassUnderTestName()
      */
-    public Map<String, TestClassMetadata> getTestClassMetadatas();
-    
-    
+    public String getClassUnderTestName() {
+	return null;
+    }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getMethodsSpecificMetaDatas()
+     */
+    public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas() {
+	return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata.CodeUnderTestMetadata#getTestClassesMetadatas()
+     */
+    public Collection<TestClassMetadata> getTestClassesMetadatas() {
+	return null;
+    }
+
+    
+    
+    
+    
 }

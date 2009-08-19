@@ -20,13 +20,11 @@
  */
 package it.javalinux.testedby.metadata;
 
-import java.lang.reflect.Method;
-
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 /**
  * It represent metadatas for method under test. It contains its own metadata
- * (accessed by {@link #getTestClasses()} and {@link #getTestMethods()} )
+ * (accessed by {@link #getTestClassesMetadatas()}  )
  * 
  * It aims to collect metadata to make possible navigation of relation between
  * method under test and test classes/methods using method under test as
@@ -42,9 +40,9 @@ public interface MethodUnderTestMetadata extends CodeUnderTestMetadata {
 
 	/**
 	 * 
-	 * @return the {@link Method} under test
+	 * @return the full qualified name of method under test
 	 */
-	public Method getMethodUnderTest();
+	public String getMethodUnderTestName();
 
 	/**
 	 * 

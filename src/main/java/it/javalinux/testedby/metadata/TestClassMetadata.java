@@ -26,24 +26,57 @@ import java.util.Collection;
 
 /**
  * It represent metadatas for a Test class.
- * It contains both its own metadata (accessed by {@link #getClassesUnderTest()} and {@link #getMethodsUnderTest()} )
+ * It contains both its own metadata (accessed by {@link #getTestClassName()}  )
  * and a Colection of {@link TestMethodMetadata} (accessed by {@link #getMethodsSpecificMetaDatas()})
  * 
- * It aims to collect metadata to make possible navigation of relation between class under test and test classes/methods
- * using class test class  as starting point.
+ * Note that this metadata doesn't represent necessarily the test class completely, but only methods that insist on a class under test.
+ * In fact this metadata are created during class (and methods) under test metadata collection.
+ * In other word we can have multiple {@link TestClassMetadata} for a single real test class, containing different method metadatas 
+ * for method stressing different class under test.
  * 
- * Metadata will be created by a {@link MetaDataBuilder} with a specific strategy
+ *  i.e
+ *  
+ *  Class firstClass {
+ *  	@TestedBy(class="testClass" method="testMethodOne")
+ *  	public doSMomething() {
+ *  		[...]
+ *  	}
+ *  }
+ *  
+ *  Class secondClass {
+ *  	@TestedBy(class="testClass" method="testMethodTwo")
+ *  	public doSMomething() {
+ *  		[...]
+ *  	}
+ *  }
+ *  
+ *  Class testClass {
+ *  	public testMethodOne() {
+ *  		[...]
+ *  	}
+ *  	public testMethodTwo() {
+ *  		[...]
+ *  	}
+ *  }
+ *  
+ * In this case we will have 2 {@link TestClassMetadata}: one containing only testMethodOne {@link TestMethodMetadata} pointed by 
+ * {@link ClassUnderTestMetadata} representing firstClass; and  one containing only testMethodTwo {@link TestMethodMetadata} pointed by 
+ * {@link ClassUnderTestMetadata} representing secondClass
+ * 
+ * 
+ * Metadata will be created during {@link ClassUnderTestMetadata} or {@link MethodUnderTestMetadata} creation 
+ * by a {@link MetaDataBuilder} with a specific strategy
  * 
  * @author stefano.maestri@javalinux.it
  *
  */
-public interface TestClassMetadata extends TestCodeMetadata {
+public interface TestClassMetadata  {
 	
-	/**
+	/**t
 	 * 
-	 * @return the test {@link Class} 
+	 * @return the test full qualified name 
 	 */
-	public Class<?> getClassUnderTest();
+	public String getTestClassName();
 	
 	/**
 	 * 

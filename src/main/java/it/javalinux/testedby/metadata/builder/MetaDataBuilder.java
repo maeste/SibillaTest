@@ -20,13 +20,9 @@
  */
 package it.javalinux.testedby.metadata.builder;
 
-import it.javalinux.testedby.metadata.ApplicationTestMetadata;
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
-import it.javalinux.testedby.metadata.TestClassMetadata;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,9 +37,10 @@ public interface  MetaDataBuilder {
     /**
      * Build application metadatas fo 
      * @param classesUnderTest 
+     * @param testClasses 
      * @return application metadata
      * @throws IllegalStateException
      */
-    public ApplicationTestMetadata build(Collection<Class<?>> classesUnderTest);
+    public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses);
 
 }
