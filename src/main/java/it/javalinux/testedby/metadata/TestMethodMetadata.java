@@ -20,8 +20,6 @@
  */
 package it.javalinux.testedby.metadata;
 
-import java.lang.reflect.Method;
-
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 /**

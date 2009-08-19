@@ -20,13 +20,12 @@
  */
 package it.javalinux.testedby.metadata.impl.immutable;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Map;
-
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.TestClassMetadata;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Immutable implementation of 
