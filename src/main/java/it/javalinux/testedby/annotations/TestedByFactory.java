@@ -18,31 +18,15 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata;
+package it.javalinux.testedby.annotations;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
+import it.javalinux.testedby.factories.DefaultClassUnderTestInstanceFactory;
 
 /**
- * It represent metadatas for a unit of code under test (i.e class under test and method under test)
- * It contains generic metadata for any level (accessed by {@link #getTestClasses()} and {@link #getTestMethods()} )
- *
- * 
- * @author stefano.maestri@javalinux.it
+ * @author oracle
  *
  */
-public interface CodeUnderTestMetadata {
+public @interface TestedByFactory {
+    public Class<?> value() default DefaultClassUnderTestInstanceFactory.class;
 
-	/**
-	 * 
-	 * @return a Colection of {@link Class} that are the test class stressing the the metadata's unit of code
-	 */
-	public Collection<Class<?>> getTestClasses();
-
-	/**
-	 * 
-	 * @return a Colection of {@link Method} that are the method of test class stressing the metadata's unit of code
-	 */
-	public Collection<Method> getTestMethods();
-	
 }

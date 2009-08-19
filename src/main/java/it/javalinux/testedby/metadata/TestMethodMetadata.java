@@ -22,7 +22,7 @@ package it.javalinux.testedby.metadata;
 
 import java.lang.reflect.Method;
 
-import it.javalinux.testedby.metadata.builder.MetadataBuilder;
+import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 
 /**
@@ -33,7 +33,7 @@ import it.javalinux.testedby.metadata.builder.MetadataBuilder;
  * It aims to collect metadata to make possible navigation of relation between class under test and test classes/methods
  * using class test method  as starting point.
  * 
- * Metadata will be created by a {@link MetadataBuilder} with a specific strategy
+ * Metadata will be created by a {@link MetaDataBuilder} with a specific strategy
  * 
  * @author stefano.maestri@javalinux.it
  *

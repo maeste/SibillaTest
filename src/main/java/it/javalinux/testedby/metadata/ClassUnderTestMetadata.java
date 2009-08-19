@@ -20,9 +20,10 @@
  */
 package it.javalinux.testedby.metadata;
 
-import it.javalinux.testedby.metadata.builder.MetadataBuilder;
+import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * It represent metadatas for ClassUnderTest.
@@ -32,7 +33,7 @@ import java.util.Collection;
  * It aims to collect metadata to make possible navigation of relation between class under test and test classes/methods
  * using class under test as starting point.
  * 
- * Metadata will be created by a {@link MetadataBuilder} with a specific strategy
+ * Metadata will be created by a {@link MetaDataBuilder} with a specific strategy
  * 
  * @author stefano.maestri@javalinux.it
  *
@@ -48,8 +49,9 @@ public interface ClassUnderTestMetadata extends CodeUnderTestMetadata {
 	
 	/**
 	 * 
-	 * @return a Colection of {@link MethodUnderTestMetadata} representing metadata specific of methods of the class under test
+	 * @return a {@link Map} of {@link MethodUnderTestMetadata} representing metadata specific of methods of the class under test.
+	 *  The key of thios map is the method name
 	 */
-	public Collection<MethodUnderTestMetadata> getMethodsSpecificMetaDatas(); 
+	public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas(); 
 
 }

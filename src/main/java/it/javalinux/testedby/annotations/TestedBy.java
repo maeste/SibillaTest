@@ -20,19 +20,23 @@
  * site: http://www.fsf.org.
  */
 
-package it.javalinux.testedby.legacy.factories;
+package it.javalinux.testedby.annotations;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author stefano.maestri@javalinux.it
  */
-public class DefaultClassUnderTestInstanceFactory implements ClassUnderTestInstanceFactory {
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE, ElementType.METHOD })
+@Documented
+public abstract @interface TestedBy {
+    public String testClass();
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see it.javalinux.testedby.legacy.factories.ClassUnderTestInstanceFactory#createInstance(java.lang.Class)
-     */
-    public <T> T createInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException {
-	return clazz.newInstance();
-    }
+    public String testMethod() default "";
+
 }

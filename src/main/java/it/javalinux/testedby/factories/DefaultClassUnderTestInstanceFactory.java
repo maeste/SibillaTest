@@ -20,14 +20,19 @@
  * site: http://www.fsf.org.
  */
 
-package it.javalinux.testedby.legacy.factories;
+package it.javalinux.testedby.factories;
 
 /**
  * @author stefano.maestri@javalinux.it
- * 
  */
-public interface ClassUnderTestInstanceFactory {
+public class DefaultClassUnderTestInstanceFactory implements ClassUnderTestInstanceFactory {
 
-    public abstract <T> T createInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException;
-
+    /**
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.factories.ClassUnderTestInstanceFactory#createInstance(java.lang.Class)
+     */
+    public <T> T createInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException {
+	return clazz.newInstance();
+    }
 }

@@ -18,12 +18,31 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata.builder;
+package it.javalinux.testedby.metadata.builder.annotations;
+
+import java.util.Collection;
+
+import it.javalinux.testedby.metadata.ApplicationTestMetadata;
+import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
+import it.javalinux.testedby.metadata.TestClassMetadata;
+import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 /**
- * @author oracle
+ * @author Stefano Maestri
  *
  */
-public interface MetadataBuilder {
-	
+public class AnnotationBasedMetadataBuilder  implements MetaDataBuilder {
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata.builder.MetaDataBuilder#build(java.util.Collection)
+     */
+    public ApplicationTestMetadata build(Collection<Class<?>> classesUnderTest) {
+	return null;
+    }
+
+
+    
+    
 }

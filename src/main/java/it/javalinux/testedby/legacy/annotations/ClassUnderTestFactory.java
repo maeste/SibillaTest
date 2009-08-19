@@ -20,7 +20,7 @@
  */
 package it.javalinux.testedby.legacy.annotations;
 
-import it.javalinux.testedby.legacy.factories.DefaultClassUnderTestInstanceFactory;
+import it.javalinux.testedby.factories.DefaultClassUnderTestInstanceFactory;
 
 /**
  * @author oracle
