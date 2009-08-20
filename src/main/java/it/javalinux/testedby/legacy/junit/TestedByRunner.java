@@ -39,55 +39,48 @@ import org.junit.runner.notification.RunListener;
  */
 public class TestedByRunner {
 
-	public void run(Class<?> classUnderTest) throws Exception {
-		JUnitCore core = new JUnitCore();
-		RunListener listener = new TextListener(new RealSystem());
-		core.addListener(listener);
+    public void run(Class<?> classUnderTest) throws Exception {
+	JUnitCore core = new JUnitCore();
+	RunListener listener = new TextListener(new RealSystem());
+	core.addListener(listener);
 
-		for (Method method : classUnderTest.getMethods()) {
-			TestedBy testedBy = method.getAnnotation(TestedBy.class);
-			if (testedBy != null) {
-				runTestedByElement(classUnderTest, core, listener, testedBy);
-			}
-			TestedByList list = method.getAnnotation(TestedByList.class);
-			if (list != null) {
-				for (TestedBy testedByElement : list.value()) {
-					runTestedByElement(classUnderTest, core, listener,
-							testedByElement);
-				}
-
-			}
-
+	for (Method method : classUnderTest.getMethods()) {
+	    TestedBy testedBy = method.getAnnotation(TestedBy.class);
+	    if (testedBy != null) {
+		runTestedByElement(classUnderTest, core, listener, testedBy);
+	    }
+	    TestedByList list = method.getAnnotation(TestedByList.class);
+	    if (list != null) {
+		for (TestedBy testedByElement : list.value()) {
+		    runTestedByElement(classUnderTest, core, listener, testedByElement);
 		}
 
+	    }
+
 	}
 
-	/**
-	 * @param classUnderTest
-	 * @param core
-	 * @param listener
-	 * @param testedBy
-	 * @throws Exception
-	 * @throws ClassNotFoundException
-	 */
-	private void runTestedByElement(Class<?> classUnderTest, JUnitCore core,
-			RunListener listener, TestedBy testedBy) throws Exception,
-			ClassNotFoundException {
-		listener.testRunStarted(Description.createTestDescription(
-				classUnderTest, "Going to test method of classUnderTest named:"
-						+ testedBy.testMethod()));
-		Class<?> testClass = Thread.currentThread().getContextClassLoader()
-				.loadClass(testedBy.testClass());
-		Request request = Request.method(testClass, testedBy.testMethod());
-		Result result = core.run(request);
-		System.out.println(result.wasSuccessful());
-	}
+    }
 
-	public static void main(String[] args) throws Exception {
-		Class<?> clazz = Thread.currentThread().getContextClassLoader()
-				.loadClass(args[0]);
-		TestedByRunner runner = new TestedByRunner();
-		runner.run(clazz);
-	}
+    /**
+     * @param classUnderTest
+     * @param core
+     * @param listener
+     * @param testedBy
+     * @throws Exception
+     * @throws ClassNotFoundException
+     */
+    private void runTestedByElement(Class<?> classUnderTest, JUnitCore core, RunListener listener, TestedBy testedBy) throws Exception, ClassNotFoundException {
+	listener.testRunStarted(Description.createTestDescription(classUnderTest, "Going to test method of classUnderTest named:" + testedBy.testMethod()));
+	Class<?> testClass = Thread.currentThread().getContextClassLoader().loadClass(testedBy.testClass());
+	Request request = Request.method(testClass, testedBy.testMethod());
+	Result result = core.run(request);
+	System.out.println(result.wasSuccessful());
+    }
+
+    public static void main(String[] args) throws Exception {
+	Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(args[0]);
+	TestedByRunner runner = new TestedByRunner();
+	runner.run(clazz);
+    }
 
 }
