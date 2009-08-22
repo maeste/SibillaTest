@@ -54,6 +54,16 @@ public class ImmutableTestClassMetadata extends TestClassMetadata {
 	this.methodSpecificMetadatas.add(testMethodMetadata);
     }
 
+    public ImmutableTestClassMetadata(String testClassName, String... methodNames) {
+	super();
+	this.testClassName = testClassName;
+	for (String methodName : methodNames) {
+	    TestMethodMetadata testMethodMetadata = new ImmutableTestMethodMetadata(methodName, this);
+	    this.methodSpecificMetadatas.add(testMethodMetadata);
+	}
+
+    }
+
     /**
      * {@inheritDoc}
      * 

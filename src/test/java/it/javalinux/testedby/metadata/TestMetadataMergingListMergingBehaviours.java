@@ -122,6 +122,22 @@ public class TestMetadataMergingListMergingBehaviours {
     }
 
     @Test
+    public void shouldMergeSameTestClassesMetadataWithMergingAndNonMergingMethod() throws Exception {
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name", "methodName", "methodName2");
+
+	list.add(c1);
+	list.add(c2);
+
+	assertThat(list.size(), is(1));
+	assertThat(list.iterator().next().getTestClassName(), is("name"));
+	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetaDatas().iterator();
+	assertThat(iter.next().getMethodName(), is("methodName"));
+	assertThat(iter.next().getMethodName(), is("methodName2"));
+
+    }
+
+    @Test
     public void shouldAddNonExistingTestClasses() throws Exception {
 	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
 	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name2", "methodName2");
