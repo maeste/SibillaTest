@@ -21,9 +21,15 @@
 package it.javalinux.testedby.metadata;
 
 /**
+ * MArker interface for metadata. It requires each implementor to redefine
+ * equals and hasCode Method
+ * 
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
 public interface Metadata {
 
+    public boolean equals(Object o);
+
+    public int hashCode();
 }

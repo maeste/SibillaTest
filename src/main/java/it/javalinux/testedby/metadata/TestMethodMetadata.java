@@ -37,13 +37,42 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public interface TestMethodMetadata extends Metadata {
+public abstract class TestMethodMetadata implements Metadata {
     /**
      * 
      * @return the test method name
      */
-    public String getMethodName();
+    public abstract String getMethodName();
 
-    public TestClassMetadata getTestClassMetadata();
+    public abstract TestClassMetadata getTestClassMetadata();
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (!(obj instanceof TestMethodMetadata)) {
+	    return false;
+	}
+	if (this.getMethodName() == null || this.getTestClassMetadata() == null) {
+	    return super.equals(obj);
+	}
+	return (this.getMethodName().equals(((TestMethodMetadata) obj).getMethodName()) && this.getTestClassMetadata().equals(((TestMethodMetadata) obj).getTestClassMetadata()));
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	if (this.getMethodName() == null || this.getTestClassMetadata() == null) {
+	    return super.hashCode();
+	}
+	return 31 * (this.getMethodName().hashCode() + this.getTestClassMetadata().hashCode());
+    }
 
 }

@@ -20,6 +20,7 @@
  */
 package it.javalinux.testedby.metadata.impl.immutable;
 
+import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.TestClassMetadata;
 
@@ -30,7 +31,7 @@ import java.util.LinkedList;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public class ImmutableMethodUnderTestMetadata implements MethodUnderTestMetadata {
+public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
 
     private final String methodUnderTestName;
 
@@ -38,24 +39,30 @@ public class ImmutableMethodUnderTestMetadata implements MethodUnderTestMetadata
 
     private final MethodLineNumber methodLineNumber;
 
+    private final ClassUnderTestMetadata classUnderTestMetadata;
+
     /**
      * @param methodUnderTestName
+     * @param classUnderTestMetadata
      * @param testClassesMetadatas
      * @param startLine
      * @param endLine
      */
-    public ImmutableMethodUnderTestMetadata(String methodUnderTestName, Collection<? extends TestClassMetadata> testClassesMetadatas, int startLine, int endLine) {
+    public ImmutableMethodUnderTestMetadata(String methodUnderTestName, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas, int startLine, int endLine) {
 	this.methodUnderTestName = methodUnderTestName;
+	this.classUnderTestMetadata = classUnderTestMetadata;
 	this.testClassesMetadatas.addAll(testClassesMetadatas);
 	this.methodLineNumber = new MethodLineNumber(startLine, endLine);
     }
 
     /**
      * @param methodUnderTestName
+     * @param classUnderTestMetadata
      * @param testClassesMetadatas
      */
-    public ImmutableMethodUnderTestMetadata(String methodUnderTestName, Collection<? extends TestClassMetadata> testClassesMetadatas) {
+    public ImmutableMethodUnderTestMetadata(String methodUnderTestName, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas) {
 	this.methodUnderTestName = methodUnderTestName;
+	this.classUnderTestMetadata = classUnderTestMetadata;
 	this.testClassesMetadatas.addAll(testClassesMetadatas);
 	this.methodLineNumber = null;
     }
@@ -65,6 +72,7 @@ public class ImmutableMethodUnderTestMetadata implements MethodUnderTestMetadata
      * 
      * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getLineNumbers()
      */
+    @Override
     public MethodLineNumber getLineNumbers() {
 	return methodLineNumber;
     }
@@ -74,6 +82,7 @@ public class ImmutableMethodUnderTestMetadata implements MethodUnderTestMetadata
      * 
      * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getMethodUnderTestName()
      */
+    @Override
     public String getMethodUnderTestName() {
 	return methodUnderTestName;
     }
@@ -85,6 +94,16 @@ public class ImmutableMethodUnderTestMetadata implements MethodUnderTestMetadata
      */
     public Collection<TestClassMetadata> getTestClassesMetadatas() {
 	return testClassesMetadatas;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getClassUnderTestMetadata()
+     */
+    @Override
+    public ClassUnderTestMetadata getClassUnderTestMetadata() {
+	return classUnderTestMetadata;
     }
 
 }

@@ -80,20 +80,48 @@ import java.util.Collection;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public interface TestClassMetadata extends Metadata {
+public abstract class TestClassMetadata implements Metadata {
 
     /**
      * t
      * 
      * @return the test full qualified name
      */
-    public String getTestClassName();
+    public abstract String getTestClassName();
 
     /**
      * 
      * @return a Colection of {@link TestMethodMetadata} representing metadata
      *         specific of methods of test class
      */
-    public Collection<TestMethodMetadata> getMethodsSpecificMetaDatas();
+    public abstract Collection<TestMethodMetadata> getMethodsSpecificMetaDatas();
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (!(obj instanceof TestClassMetadata)) {
+	    return false;
+	}
+	if (this.getTestClassName() == null) {
+	    return super.equals(obj);
+	}
+	return this.getTestClassName().equals(((TestClassMetadata) obj).getTestClassName());
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	if (this.getTestClassName() == null) {
+	    return super.hashCode();
+	}
+	return this.getTestClassName().hashCode();
+    }
 }

@@ -36,13 +36,13 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public interface MethodUnderTestMetadata extends CodeUnderTestMetadata {
+public abstract class MethodUnderTestMetadata implements CodeUnderTestMetadata {
 
     /**
      * 
      * @return the full qualified name of method under test
      */
-    public String getMethodUnderTestName();
+    public abstract String getMethodUnderTestName();
 
     /**
      * 
@@ -53,7 +53,38 @@ public interface MethodUnderTestMetadata extends CodeUnderTestMetadata {
      *         available it returns null (i.e if metadatas have been collected
      *         by annotations)
      */
-    public MethodLineNumber getLineNumbers();
+    public abstract MethodLineNumber getLineNumbers();
+
+    public abstract ClassUnderTestMetadata getClassUnderTestMetadata();
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (!(obj instanceof MethodUnderTestMetadata)) {
+	    return false;
+	}
+	if (this.getMethodUnderTestName() == null || this.getClassUnderTestMetadata() == null) {
+	    return super.equals(obj);
+	}
+	return (this.getMethodUnderTestName().equals(((MethodUnderTestMetadata) obj).getMethodUnderTestName()) && this.getClassUnderTestMetadata().equals(((MethodUnderTestMetadata) obj).getClassUnderTestMetadata()));
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	if (this.getMethodUnderTestName() == null || this.getClassUnderTestMetadata() == null) {
+	    return super.hashCode();
+	}
+	return 31 * (this.getMethodUnderTestName().hashCode() + this.getClassUnderTestMetadata().hashCode());
+    }
 
     public class MethodLineNumber {
 	private final int startLine;

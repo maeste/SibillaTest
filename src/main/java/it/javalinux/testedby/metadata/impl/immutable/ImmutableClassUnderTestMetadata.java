@@ -35,7 +35,7 @@ import java.util.Map;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
+public class ImmutableClassUnderTestMetadata extends ClassUnderTestMetadata {
 
     private final String className;
 
@@ -60,6 +60,7 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
      * 
      * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getClassUnderTestName()
      */
+    @Override
     public String getClassUnderTestName() {
 	return className;
     }
@@ -69,6 +70,7 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
      * 
      * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getMethodsSpecificMetaDatas()
      */
+    @Override
     public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas() {
 	HashMap<String, MethodUnderTestMetadata> map = new HashMap<String, MethodUnderTestMetadata>();
 	map.putAll(methodsSpecificMetaDatas);

@@ -27,7 +27,7 @@ import it.javalinux.testedby.metadata.TestMethodMetadata;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public class ImmutableTestMethodMetadata implements TestMethodMetadata {
+public class ImmutableTestMethodMetadata extends TestMethodMetadata {
 
     private final String methodName;
 
@@ -48,13 +48,15 @@ public class ImmutableTestMethodMetadata implements TestMethodMetadata {
      * 
      * @see it.javalinux.testedby.metadata.TestMethodMetadata#getMethodName()
      */
+    @Override
     public String getMethodName() {
-	return null;
+	return methodName;
     }
 
     /**
      * @return testClassMetadata
      */
+    @Override
     public TestClassMetadata getTestClassMetadata() {
 	return testClassMetadata;
     }

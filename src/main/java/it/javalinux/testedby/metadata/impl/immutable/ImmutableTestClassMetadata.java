@@ -30,7 +30,7 @@ import java.util.LinkedList;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public class ImmutableTestClassMetadata implements TestClassMetadata {
+public class ImmutableTestClassMetadata extends TestClassMetadata {
 
     private final Collection<TestMethodMetadata> methodSpecificMetadatas = new LinkedList<TestMethodMetadata>();
 
@@ -59,6 +59,7 @@ public class ImmutableTestClassMetadata implements TestClassMetadata {
      * 
      * @see it.javalinux.testedby.metadata.TestClassMetadata#getMethodsSpecificMetaDatas()
      */
+    @Override
     public Collection<TestMethodMetadata> getMethodsSpecificMetaDatas() {
 	LinkedList<TestMethodMetadata> list = new LinkedList<TestMethodMetadata>();
 	list.addAll(methodSpecificMetadatas);
@@ -70,6 +71,7 @@ public class ImmutableTestClassMetadata implements TestClassMetadata {
      * 
      * @see it.javalinux.testedby.metadata.TestClassMetadata#getTestClassName()
      */
+    @Override
     public String getTestClassName() {
 	return testClassName;
     }

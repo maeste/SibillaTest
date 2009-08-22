@@ -40,13 +40,13 @@ import java.util.Map;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public interface ClassUnderTestMetadata extends CodeUnderTestMetadata {
+public abstract class ClassUnderTestMetadata implements CodeUnderTestMetadata {
 
     /**
      * 
      * @return the full qualified name of class under test
      */
-    public String getClassUnderTestName();
+    public abstract String getClassUnderTestName();
 
     /**
      * 
@@ -54,6 +54,35 @@ public interface ClassUnderTestMetadata extends CodeUnderTestMetadata {
      *         metadata specific of methods of the class under test. The key of
      *         thios map is the method name
      */
-    public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas();
+    public abstract Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas();
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (!(obj instanceof ClassUnderTestMetadata)) {
+	    return false;
+	}
+	if (this.getClassUnderTestName() == null) {
+	    return super.equals(obj);
+	}
+	return this.getClassUnderTestName().equals(((ClassUnderTestMetadata) obj).getClassUnderTestName());
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	if (this.getClassUnderTestName() == null) {
+	    return super.hashCode();
+	}
+	return this.getClassUnderTestName().hashCode();
+    }
 
 }
