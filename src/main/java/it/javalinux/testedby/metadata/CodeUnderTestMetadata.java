@@ -23,20 +23,27 @@ package it.javalinux.testedby.metadata;
 import java.util.Collection;
 
 /**
- * It represent metadatas for a unit of code under test (i.e class under test and method under test)
- * It contains  {@link TestClassMetadata} representing test classes and their methods stressing current unit of code.
- *
+ * It represent metadatas for a unit of code under test (i.e class under test
+ * and method under test) It contains {@link TestClassMetadata} representing
+ * test classes and their methods stressing current unit of code.
+ * 
  * 
  * @author stefano.maestri@javalinux.it
- *
+ * 
  */
 public interface CodeUnderTestMetadata {
 
-	/**
-	 * 
-	 * @return a Colection of {@link TestClassMetadata} of test classses stressing the unit of code represented
-	 */
-	public Collection<TestClassMetadata> getTestClassesMetadatas();
+    /**
+     * 
+     * @return a Colection of {@link TestClassMetadata} of test classes
+     *         stressing the unit of code represented. Note that the purpose of
+     *         this method is to return metadatas of test stressing specifically the
+     *         represented unit of code. IOW it have to return tests directly
+     *         linked to this unit of code AND NOT ones linking their components. I.E
+     *         if the unit of code is a class under test this method have to
+     *         return {@link TestClassMetadata} collected from the class itself
+     *         and not from its methods.
+     */
+    public Collection<TestClassMetadata> getTestClassesMetadatas();
 
-	
 }

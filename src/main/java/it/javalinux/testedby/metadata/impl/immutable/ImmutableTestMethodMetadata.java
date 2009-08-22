@@ -18,31 +18,35 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata;
+package it.javalinux.testedby.metadata.impl.immutable;
 
-import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
+import it.javalinux.testedby.metadata.TestMethodMetadata;
 
 /**
- * It represent metadatas for a Test method. It contains both its own metadata
- * (accessed by {@link #getMethodName()}
- * 
- * 
- * It is part of {@link TestClassMetadata}. See its javadoc for further
- * explanation
- * 
- * Metadata will be created during {@link ClassUnderTestMetadata} or 
- * {@link MethodUnderTestMetadata} creation by a {@link MetaDataBuilder} with a
- * specific strategy
- * 
- * @author stefano.maestri@javalinux.it
- * 
+ * @author Stefano Maestri stefano.maestri@javalinux.it
+ *
  */
-public interface TestMethodMetadata  {
-    /**
-     * 
-     * @return the test method name
-     */
-    public String getMethodName();
+public class ImmutableTestMethodMetadata implements TestMethodMetadata {
 
+    private final String methodName;
+    
+    
+    /**
+     * @param methodName
+     */
+    public ImmutableTestMethodMetadata(String methodName) {
+	super();
+	this.methodName = methodName;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata.TestMethodMetadata#getMethodName()
+     */
+    public String getMethodName() {
+	return null;
+    }
 
 }

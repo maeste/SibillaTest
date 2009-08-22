@@ -25,6 +25,8 @@ import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.TestClassMetadata;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -34,6 +36,25 @@ import java.util.Map;
  */
 public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
 
+    private final String className;
+
+    private final Collection<TestClassMetadata> testClassesMetadatas = new LinkedList<TestClassMetadata>();
+    
+    private final Map<String, MethodUnderTestMetadata> methodsSpecificMetaDatas = new HashMap<String, MethodUnderTestMetadata>();
+    
+    /**
+     * @param className
+     * @param testClassesMetadatas
+     * @param methodsSpecificMetaDatas
+     */
+    public ImmutableClassUnderTestMetadata(String className, Collection<TestClassMetadata> testClassesMetadatas, Map<String, MethodUnderTestMetadata> methodsSpecificMetaDatas) {
+	super();
+	this.className = className;
+	this.testClassesMetadatas.addAll(testClassesMetadatas);
+	this.methodsSpecificMetaDatas.putAll(methodsSpecificMetaDatas);
+    }
+    
+    
     
     /**
      * {@inheritDoc}
@@ -41,7 +62,7 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
      * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getClassUnderTestName()
      */
     public String getClassUnderTestName() {
-	return null;
+	return className;
     }
 
     /**
@@ -50,7 +71,9 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
      * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getMethodsSpecificMetaDatas()
      */
     public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas() {
-	return null;
+	HashMap<String, MethodUnderTestMetadata> map = new HashMap<String, MethodUnderTestMetadata>();
+	map.putAll(methodsSpecificMetaDatas);
+	return map;
     }
 
     /**
@@ -59,11 +82,11 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
      * @see it.javalinux.testedby.metadata.CodeUnderTestMetadata#getTestClassesMetadatas()
      */
     public Collection<TestClassMetadata> getTestClassesMetadatas() {
-	return null;
+	LinkedList<TestClassMetadata> list = new LinkedList<TestClassMetadata>();
+	list.addAll(testClassesMetadatas);
+	return list;
     }
 
-    
-    
-    
+     
     
 }

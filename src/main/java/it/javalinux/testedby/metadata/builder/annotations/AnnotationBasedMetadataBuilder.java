@@ -25,7 +25,9 @@ import it.javalinux.testedby.annotations.StressingList;
 import it.javalinux.testedby.annotations.TestedBy;
 import it.javalinux.testedby.annotations.TestedByList;
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
+import it.javalinux.testedby.metadata.TestClassMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
+import it.javalinux.testedby.metadata.impl.immutable.ImmutableClassUnderTestMetadata;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -62,7 +64,10 @@ public class AnnotationBasedMetadataBuilder  implements MetaDataBuilder {
 	    TestedByList tbList= clazz.getAnnotation(TestedByList.class);
 	    List<TestedBy> listOfTestedBy = Arrays.asList(tbList.value());
 	    listOfTestedBy.add(clazz.getAnnotation(TestedBy.class));
-	    //ClassUnderTestMetadata classUnderTestMetadata = 
+	    for (TestedBy testedBy : listOfTestedBy) {
+		
+	    }
+	    //ClassUnderTestMetadata classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazz.getCanonicalName(), testClassesMetadatas, methodsSpecificMetaDatas)
 	}
 	
 	return classUnderTestMetadatas;
@@ -83,6 +88,8 @@ public class AnnotationBasedMetadataBuilder  implements MetaDataBuilder {
     }
 
 
+    
+    
     
     
 }
