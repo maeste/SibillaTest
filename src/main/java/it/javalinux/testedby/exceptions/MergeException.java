@@ -22,7 +22,7 @@ package it.javalinux.testedby.exceptions;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
- *
+ * 
  */
 public class MergeException extends Exception {
 

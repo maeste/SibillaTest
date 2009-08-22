@@ -22,7 +22,6 @@
 
 package it.javalinux.testedby.legacy.annotations;
 
-
 /**
  * @author stefano.maestri@javalinux.it
  */

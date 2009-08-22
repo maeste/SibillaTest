@@ -22,7 +22,7 @@ package it.javalinux.testedby.metadata.serializer;
 
 /**
  * @author oracle
- *
+ * 
  */
 public interface MetadataSerializer {
 

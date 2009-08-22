@@ -30,18 +30,19 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * Immutable implementation of 
+ * Immutable implementation of
+ * 
  * @author Stefano Maestri stefano.maestri@javalinux.it
- *
+ * 
  */
 public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
 
     private final String className;
 
     private final Collection<TestClassMetadata> testClassesMetadatas = new LinkedList<TestClassMetadata>();
-    
+
     private final Map<String, MethodUnderTestMetadata> methodsSpecificMetaDatas = new HashMap<String, MethodUnderTestMetadata>();
-    
+
     /**
      * @param className
      * @param testClassesMetadatas
@@ -53,12 +54,10 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
 	this.testClassesMetadatas.addAll(testClassesMetadatas);
 	this.methodsSpecificMetaDatas.putAll(methodsSpecificMetaDatas);
     }
-    
-    
-    
+
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getClassUnderTestName()
      */
     public String getClassUnderTestName() {
@@ -67,7 +66,7 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getMethodsSpecificMetaDatas()
      */
     public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas() {
@@ -78,7 +77,7 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see it.javalinux.testedby.metadata.CodeUnderTestMetadata#getTestClassesMetadatas()
      */
     public Collection<TestClassMetadata> getTestClassesMetadatas() {
@@ -87,6 +86,4 @@ public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
 	return list;
     }
 
-     
-    
 }

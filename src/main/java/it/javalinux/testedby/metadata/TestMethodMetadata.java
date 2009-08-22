@@ -30,7 +30,7 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
  * It is part of {@link TestClassMetadata}. See its javadoc for further
  * explanation
  * 
- * Metadata will be created during {@link ClassUnderTestMetadata} or 
+ * Metadata will be created during {@link ClassUnderTestMetadata} or
  * {@link MethodUnderTestMetadata} creation by a {@link MetaDataBuilder} with a
  * specific strategy
  * 
@@ -43,9 +43,7 @@ public interface TestMethodMetadata extends Metadata {
      * @return the test method name
      */
     public String getMethodName();
-    
-    public TestClassMetadata getTestClassMetadata();
-    
 
+    public TestClassMetadata getTestClassMetadata();
 
 }

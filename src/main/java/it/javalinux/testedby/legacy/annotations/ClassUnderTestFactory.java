@@ -24,7 +24,7 @@ import it.javalinux.testedby.factories.DefaultClassUnderTestInstanceFactory;
 
 /**
  * @author oracle
- *
+ * 
  */
 public @interface ClassUnderTestFactory {
     public Class<?> value() default DefaultClassUnderTestInstanceFactory.class;

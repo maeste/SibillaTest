@@ -86,18 +86,18 @@ public class FirstMavenMojoImpl extends AbstractMojo {
      * @since 2.2
      */
     private File testSourceDirectory;
-    
+
     /**
-     * Set this to "true" to cause a failure if there are no tests to run. Defaults false.
-     *
+     * Set this to "true" to cause a failure if there are no tests to run.
+     * Defaults false.
+     * 
      * @parameter expression="${failIfNoTests}"
      * @since 2.4
      */
     private Boolean failIfNoTests;
 
-
     private boolean verifyParameters() throws MojoFailureException {
-	if ( skipTests) {
+	if (skipTests) {
 	    getLog().info("Tests are skipped.");
 	    return false;
 	}
@@ -119,9 +119,9 @@ public class FirstMavenMojoImpl extends AbstractMojo {
      * @see org.apache.maven.plugin.Mojo#execute()
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-	System.out.println("skip test value " + isSkipTests() );
-	System.out.println("classesDirectory"+ getClassesDirectory());
-	System.out.println("basedir "+ basedir);
+	System.out.println("skip test value " + isSkipTests());
+	System.out.println("classesDirectory" + getClassesDirectory());
+	System.out.println("basedir " + basedir);
 	if (verifyParameters()) {
 	    getLog().info("start test execution with TestedBy  ");
 	} else {
@@ -134,98 +134,105 @@ public class FirstMavenMojoImpl extends AbstractMojo {
      * @return classesDirectory
      */
     public File getClassesDirectory() {
-        return classesDirectory;
+	return classesDirectory;
     }
 
     /**
-     * @param classesDirectory Sets classesDirectory to the specified value.
+     * @param classesDirectory
+     *            Sets classesDirectory to the specified value.
      */
     public void setClassesDirectory(File classesDirectory) {
-        this.classesDirectory = classesDirectory;
+	this.classesDirectory = classesDirectory;
     }
 
     /**
      * @return skipTests
      */
     public boolean isSkipTests() {
-        return skipTests;
+	return skipTests;
     }
 
     /**
-     * @param skipTests Sets skipTests to the specified value.
+     * @param skipTests
+     *            Sets skipTests to the specified value.
      */
     public void setSkipTests(boolean skipTests) {
-        this.skipTests = skipTests;
+	this.skipTests = skipTests;
     }
 
     /**
      * @return basedir
      */
     public File getBasedir() {
-        return basedir;
+	return basedir;
     }
 
     /**
-     * @param basedir Sets basedir to the specified value.
+     * @param basedir
+     *            Sets basedir to the specified value.
      */
     public void setBasedir(File basedir) {
-        this.basedir = basedir;
+	this.basedir = basedir;
     }
 
     /**
      * @return testClassesDirectory
      */
     public File getTestClassesDirectory() {
-        return testClassesDirectory;
+	return testClassesDirectory;
     }
 
     /**
-     * @param testClassesDirectory Sets testClassesDirectory to the specified value.
+     * @param testClassesDirectory
+     *            Sets testClassesDirectory to the specified value.
      */
     public void setTestClassesDirectory(File testClassesDirectory) {
-        this.testClassesDirectory = testClassesDirectory;
+	this.testClassesDirectory = testClassesDirectory;
     }
 
     /**
      * @return reportsDirectory
      */
     public File getReportsDirectory() {
-        return reportsDirectory;
+	return reportsDirectory;
     }
 
     /**
-     * @param reportsDirectory Sets reportsDirectory to the specified value.
+     * @param reportsDirectory
+     *            Sets reportsDirectory to the specified value.
      */
     public void setReportsDirectory(File reportsDirectory) {
-        this.reportsDirectory = reportsDirectory;
+	this.reportsDirectory = reportsDirectory;
     }
 
     /**
      * @return testSourceDirectory
      */
     public File getTestSourceDirectory() {
-        return testSourceDirectory;
+	return testSourceDirectory;
     }
 
     /**
-     * @param testSourceDirectory Sets testSourceDirectory to the specified value.
+     * @param testSourceDirectory
+     *            Sets testSourceDirectory to the specified value.
      */
     public void setTestSourceDirectory(File testSourceDirectory) {
-        this.testSourceDirectory = testSourceDirectory;
+	this.testSourceDirectory = testSourceDirectory;
     }
 
     /**
      * @return failIfNoTests
      */
     public Boolean getFailIfNoTests() {
-        return failIfNoTests;
+	return failIfNoTests;
     }
 
     /**
-     * @param failIfNoTests Sets failIfNoTests to the specified value.
+     * @param failIfNoTests
+     *            Sets failIfNoTests to the specified value.
      */
     public void setFailIfNoTests(Boolean failIfNoTests) {
-        this.failIfNoTests = failIfNoTests;
+	this.failIfNoTests = failIfNoTests;
     }
 
 }

@@ -26,6 +26,7 @@ import it.javalinux.testedby.legacy.annotations.TestedBy;
 import it.javalinux.testedby.legacy.annotations.TestedByList;
 
 import java.lang.reflect.Method;
+
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
 import org.junit.runner.Description;

@@ -37,12 +37,12 @@ public interface CodeUnderTestMetadata extends Metadata {
      * 
      * @return a Colection of {@link TestClassMetadata} of test classes
      *         stressing the unit of code represented. Note that the purpose of
-     *         this method is to return metadatas of test stressing specifically the
-     *         represented unit of code. IOW it have to return tests directly
-     *         linked to this unit of code AND NOT ones linking their components. I.E
-     *         if the unit of code is a class under test this method have to
-     *         return {@link TestClassMetadata} collected from the class itself
-     *         and not from its methods.
+     *         this method is to return metadatas of test stressing specifically
+     *         the represented unit of code. IOW it have to return tests
+     *         directly linked to this unit of code AND NOT ones linking their
+     *         components. I.E if the unit of code is a class under test this
+     *         method have to return {@link TestClassMetadata} collected from
+     *         the class itself and not from its methods.
      */
     public Collection<TestClassMetadata> getTestClassesMetadatas();
 

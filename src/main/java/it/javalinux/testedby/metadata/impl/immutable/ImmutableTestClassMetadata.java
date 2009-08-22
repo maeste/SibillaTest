@@ -20,11 +20,11 @@
  */
 package it.javalinux.testedby.metadata.impl.immutable;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 import it.javalinux.testedby.metadata.TestClassMetadata;
 import it.javalinux.testedby.metadata.TestMethodMetadata;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
@@ -46,7 +46,7 @@ public class ImmutableTestClassMetadata implements TestClassMetadata {
 	this.testClassName = testClassName;
 	this.methodSpecificMetadatas.addAll(methodSpecificMetadatas);
     }
-    
+
     public ImmutableTestClassMetadata(String testClassName, String methodName) {
 	super();
 	this.testClassName = testClassName;

@@ -22,7 +22,7 @@ package it.javalinux.testedby.metadata;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
- *
+ * 
  */
 public interface Metadata {
 

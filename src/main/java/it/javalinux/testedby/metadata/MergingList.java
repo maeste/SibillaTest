@@ -28,16 +28,16 @@ import java.util.LinkedList;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
- * @param <E> 
- *
+ * @param <E>
+ * 
  */
 public class MergingList<E extends TestClassMetadata> extends AbstractCollection<E> {
 
     private LinkedList<E> underlyingList = new LinkedList<E>();
-    
+
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see java.util.AbstractCollection#iterator()
      */
     @Override
@@ -47,7 +47,7 @@ public class MergingList<E extends TestClassMetadata> extends AbstractCollection
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see java.util.AbstractCollection#size()
      */
     @Override
@@ -57,16 +57,16 @@ public class MergingList<E extends TestClassMetadata> extends AbstractCollection
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see java.util.AbstractCollection#add(java.lang.Object)
      */
     @Override
     public boolean add(E e) {
 	int i;
-	if (( i = underlyingList.indexOf(e)) != -1) {
+	if ((i = underlyingList.indexOf(e)) != -1) {
 	    E element = underlyingList.get(i);
-	    if (Merger.canBeMerged((TestClassMetadata) element ,(TestClassMetadata) e )) {
-		E newElement = Merger.merge(element , e );
+	    if (Merger.canBeMerged((TestClassMetadata) element, (TestClassMetadata) e)) {
+		E newElement = Merger.merge(element, e);
 		underlyingList.remove(e);
 		return underlyingList.add(newElement);
 	    } else {
@@ -77,6 +77,4 @@ public class MergingList<E extends TestClassMetadata> extends AbstractCollection
 	}
     }
 
-   
-    
 }

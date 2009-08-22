@@ -26,18 +26,19 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * This is a Builder interface. Implementors provide their own metadata collection algorithm
+ * This is a Builder interface. Implementors provide their own metadata
+ * collection algorithm
  * 
  * @author Stefano Maestri
- *
+ * 
  */
-public interface  MetaDataBuilder {
-        
-    
+public interface MetaDataBuilder {
+
     /**
-     * Build application metadatas fo 
-     * @param classesUnderTest 
-     * @param testClasses 
+     * Build application metadatas fo
+     * 
+     * @param classesUnderTest
+     * @param testClasses
      * @return application metadata
      * @throws IllegalStateException
      */

@@ -25,32 +25,35 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import java.util.Map;
 
 /**
- * It represent metadatas for ClassUnderTest.
- * It contains both its own metadata (accessed by {@link #getTestClassesMetadatas()}  )
- * and a Colection of {@link MethodUnderTestMetadata} (accessed by {@link #getMethodsSpecificMetaDatas()})
+ * It represent metadatas for ClassUnderTest. It contains both its own metadata
+ * (accessed by {@link #getTestClassesMetadatas()} ) and a Colection of
+ * {@link MethodUnderTestMetadata} (accessed by
+ * {@link #getMethodsSpecificMetaDatas()})
  * 
- * It aims to collect metadata to make possible navigation of relation between class under test and test classes/methods
- * using class under test as starting point.
+ * It aims to collect metadata to make possible navigation of relation between
+ * class under test and test classes/methods using class under test as starting
+ * point.
  * 
- * Metadata will be created by a {@link MetaDataBuilder} with a specific strategy
+ * Metadata will be created by a {@link MetaDataBuilder} with a specific
+ * strategy
  * 
  * @author stefano.maestri@javalinux.it
- *
+ * 
  */
 public interface ClassUnderTestMetadata extends CodeUnderTestMetadata {
-	
-	
-	/**
-	 * 
-	 * @return the full qualified name of class under test
-	 */
-	public String getClassUnderTestName();
-	
-	/**
-	 * 
-	 * @return a {@link Map} of {@link MethodUnderTestMetadata} representing metadata specific of methods of the class under test.
-	 *  The key of thios map is the method name
-	 */
-	public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas(); 
+
+    /**
+     * 
+     * @return the full qualified name of class under test
+     */
+    public String getClassUnderTestName();
+
+    /**
+     * 
+     * @return a {@link Map} of {@link MethodUnderTestMetadata} representing
+     *         metadata specific of methods of the class under test. The key of
+     *         thios map is the method name
+     */
+    public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas();
 
 }

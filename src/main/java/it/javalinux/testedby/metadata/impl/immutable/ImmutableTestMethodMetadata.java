@@ -33,10 +33,9 @@ public class ImmutableTestMethodMetadata implements TestMethodMetadata {
 
     private final TestClassMetadata testClassMetadata;
 
-    
     /**
      * @param methodName
-     * @param testClassMetadata 
+     * @param testClassMetadata
      */
     public ImmutableTestMethodMetadata(String methodName, TestClassMetadata testClassMetadata) {
 	super();
@@ -57,7 +56,7 @@ public class ImmutableTestMethodMetadata implements TestMethodMetadata {
      * @return testClassMetadata
      */
     public TestClassMetadata getTestClassMetadata() {
-        return testClassMetadata;
+	return testClassMetadata;
     }
 
 }

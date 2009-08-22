@@ -20,14 +20,11 @@
  */
 package it.javalinux.testedby.metadata.builder.annotations;
 
-import it.javalinux.testedby.annotations.Stressing;
-import it.javalinux.testedby.annotations.StressingList;
 import it.javalinux.testedby.annotations.TestedBy;
 import it.javalinux.testedby.annotations.TestedByList;
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
 import it.javalinux.testedby.metadata.MergingList;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
-import it.javalinux.testedby.metadata.TestClassMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableClassUnderTestMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodUnderTestMetadata;
@@ -42,36 +39,38 @@ import java.util.Map;
 
 /**
  * @author Stefano Maestri
- *
+ * 
  */
-public class AnnotationBasedMetadataBuilder  implements MetaDataBuilder {
+public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 
     /**
      * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata.builder.MetaDataBuilder#build(Collection, Collection)
+     * 
+     * @see it.javalinux.testedby.metadata.builder.MetaDataBuilder#build(Collection,
+     *      Collection)
      */
     public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses) {
-	
+
 	buildFromClassUnderTest(classesUnderTest);
 	return null;
     }
 
     /**
      * internal method. Keeping it package protected for test purpose
+     * 
      * @param classesUnderTest
      * @return application metadata collected only from class under test
      */
-    /*package*/ Map<String, ClassUnderTestMetadata> buildFromClassUnderTest(Collection<Class<?>> classesUnderTest) {
-	final Map<String, ClassUnderTestMetadata> classUnderTestMetadatas= new HashMap<String, ClassUnderTestMetadata>();
+    /* package */Map<String, ClassUnderTestMetadata> buildFromClassUnderTest(Collection<Class<?>> classesUnderTest) {
+	final Map<String, ClassUnderTestMetadata> classUnderTestMetadatas = new HashMap<String, ClassUnderTestMetadata>();
 	MergingList<ImmutableTestClassMetadata> testClassesMetadatas = new MergingList<ImmutableTestClassMetadata>();
 	MergingList<ImmutableTestClassMetadata> testClassesMetadatasForMethods = new MergingList<ImmutableTestClassMetadata>();
 	Map<String, MethodUnderTestMetadata> methodSpecicMetadatas = new HashMap<String, MethodUnderTestMetadata>();
-	    
+
 	for (Class<?> clazz : classesUnderTest) {
 	    testClassesMetadatas.clear();
 	    methodSpecicMetadatas.clear();
-	    TestedByList tbList= clazz.getAnnotation(TestedByList.class);
+	    TestedByList tbList = clazz.getAnnotation(TestedByList.class);
 	    List<TestedBy> listOfTestedBy = Arrays.asList(tbList.value());
 	    listOfTestedBy.add(clazz.getAnnotation(TestedBy.class));
 	    for (TestedBy testedBy : listOfTestedBy) {
@@ -85,23 +84,17 @@ public class AnnotationBasedMetadataBuilder  implements MetaDataBuilder {
 		for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
 		    testClassesMetadatasForMethods.add(new ImmutableTestClassMetadata(testedByOnMethod.testClass(), testedByOnMethod.testMethod()));
 		}
-		methodSpecicMetadatas.put(methodUnderTest.getName(),new ImmutableMethodUnderTestMetadata(methodUnderTest.getName(), testClassesMetadatasForMethods));
+		methodSpecicMetadatas.put(methodUnderTest.getName(), new ImmutableMethodUnderTestMetadata(methodUnderTest.getName(), testClassesMetadatasForMethods));
 	    }
 	    ClassUnderTestMetadata classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazz.getCanonicalName(), testClassesMetadatas, methodSpecicMetadatas);
 	}
-	
+
 	return classUnderTestMetadatas;
     }
-    
-    
-    /*package*/ Map<String, ClassUnderTestMetadata> buildFromTestClasses(Collection<Class<?>> testClasses) {
-	//not yet implemented
+
+    /* package */Map<String, ClassUnderTestMetadata> buildFromTestClasses(Collection<Class<?>> testClasses) {
+	// not yet implemented
 	return null;
     }
 
-
-    
-    
-    
-    
 }

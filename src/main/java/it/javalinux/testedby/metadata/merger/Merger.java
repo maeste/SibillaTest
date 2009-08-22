@@ -20,7 +20,6 @@
  */
 package it.javalinux.testedby.metadata.merger;
 
-import it.javalinux.testedby.exceptions.MergeException;
 import it.javalinux.testedby.metadata.TestClassMetadata;
 import it.javalinux.testedby.metadata.TestMethodMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
@@ -36,7 +35,7 @@ public final class Merger {
 
     public static <T extends TestClassMetadata> T merge(T left, T right) {
 	TestClassMetadata testClassMetaData = null;
-	if (! canBeMerged(left, right)) {
+	if (!canBeMerged(left, right)) {
 	    return left;
 	}
 	for (TestMethodMetadata rightM : right.getMethodsSpecificMetaDatas()) {
@@ -44,14 +43,14 @@ public final class Merger {
 	    if (canBeMerged(left, rightM)) {
 		testClassMetaData = Merger.merge(left, rightM);
 	    } else {
-		//keep left
+		// keep left
 	    }
 	}
 	return (T) testClassMetaData;
     }
 
-    public static < T extends TestClassMetadata> boolean canBeMerged(T left, T right) {
-	if(left == null || right == null) {
+    public static <T extends TestClassMetadata> boolean canBeMerged(T left, T right) {
+	if (left == null || right == null) {
 	    return false;
 	}
 	return left.getTestClassName() == right.getTestClassName();
@@ -59,7 +58,7 @@ public final class Merger {
 
     public static <T extends TestClassMetadata, R extends TestMethodMetadata> T merge(T left, R rightM) {
 	Collection<TestMethodMetadata> testMethodCol = new LinkedList<TestMethodMetadata>();
-	if (! canBeMerged(left, rightM)) {
+	if (!canBeMerged(left, rightM)) {
 	    return left;
 	}
 	boolean merged = false;
@@ -77,8 +76,8 @@ public final class Merger {
 	return (T) new ImmutableTestClassMetadata(left.getTestClassName(), testMethodCol);
     }
 
-    public static < T extends TestClassMetadata, R extends TestMethodMetadata> boolean canBeMerged(T left, R right) {
-	if(left == null || right == null) {
+    public static <T extends TestClassMetadata, R extends TestMethodMetadata> boolean canBeMerged(T left, R right) {
+	if (left == null || right == null) {
 	    return false;
 	}
 	if (right.getTestClassMetadata() == null) {
@@ -92,7 +91,7 @@ public final class Merger {
     }
 
     public static <R extends TestMethodMetadata> boolean canBeMerged(R left, R right) {
-	if(left == null || right == null) {
+	if (left == null || right == null) {
 	    return false;
 	}
 	return ((left.getMethodName() == right.getMethodName()) && canBeMerged(left.getTestClassMetadata(), right.getTestClassMetadata()));
