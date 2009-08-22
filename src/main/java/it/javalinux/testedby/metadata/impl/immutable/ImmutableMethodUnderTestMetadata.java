@@ -20,73 +20,71 @@
  */
 package it.javalinux.testedby.metadata.impl.immutable;
 
-import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.TestClassMetadata;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
- * Immutable implementation of 
  * @author Stefano Maestri stefano.maestri@javalinux.it
- *
+ * 
  */
-public class ImmutableClassUnderTestMetadata implements ClassUnderTestMetadata {
+public class ImmutableMethodUnderTestMetadata implements MethodUnderTestMetadata {
 
-    private final String className;
+    private final String methodUnderTestName;
 
     private final Collection<TestClassMetadata> testClassesMetadatas = new LinkedList<TestClassMetadata>();
-    
-    private final Map<String, MethodUnderTestMetadata> methodsSpecificMetaDatas = new HashMap<String, MethodUnderTestMetadata>();
-    
+
+    private final MethodLineNumber methodLineNumber;
+
     /**
-     * @param className
+     * @param methodUnderTestName
      * @param testClassesMetadatas
-     * @param methodsSpecificMetaDatas
+     * @param startLine
+     * @param endLine
      */
-    public ImmutableClassUnderTestMetadata(String className, Collection<? extends TestClassMetadata> testClassesMetadatas, Map<String, MethodUnderTestMetadata> methodsSpecificMetaDatas) {
-	super();
-	this.className = className;
+    public ImmutableMethodUnderTestMetadata(String methodUnderTestName, Collection<? extends TestClassMetadata> testClassesMetadatas, int startLine, int endLine) {
+	this.methodUnderTestName = methodUnderTestName;
 	this.testClassesMetadatas.addAll(testClassesMetadatas);
-	this.methodsSpecificMetaDatas.putAll(methodsSpecificMetaDatas);
+	this.methodLineNumber = new MethodLineNumber(startLine, endLine);
     }
-    
-    
-    
+
     /**
-     * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getClassUnderTestName()
+     * @param methodUnderTestName
+     * @param testClassesMetadatas
      */
-    public String getClassUnderTestName() {
-	return className;
+    public ImmutableMethodUnderTestMetadata(String methodUnderTestName, Collection<? extends TestClassMetadata> testClassesMetadatas) {
+	this.methodUnderTestName = methodUnderTestName;
+	this.testClassesMetadatas.addAll(testClassesMetadatas);
+	this.methodLineNumber = null;
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getMethodsSpecificMetaDatas()
+     * 
+     * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getLineNumbers()
      */
-    public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas() {
-	HashMap<String, MethodUnderTestMetadata> map = new HashMap<String, MethodUnderTestMetadata>();
-	map.putAll(methodsSpecificMetaDatas);
-	return map;
+    public MethodLineNumber getLineNumbers() {
+	return methodLineNumber;
     }
 
     /**
      * {@inheritDoc}
-     *
+     * 
+     * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getMethodUnderTestName()
+     */
+    public String getMethodUnderTestName() {
+	return methodUnderTestName;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
      * @see it.javalinux.testedby.metadata.CodeUnderTestMetadata#getTestClassesMetadatas()
      */
     public Collection<TestClassMetadata> getTestClassesMetadatas() {
-	LinkedList<TestClassMetadata> list = new LinkedList<TestClassMetadata>();
-	list.addAll(testClassesMetadatas);
-	return list;
+	return testClassesMetadatas;
     }
 
-     
-    
 }

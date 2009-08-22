@@ -37,12 +37,15 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public interface TestMethodMetadata  {
+public interface TestMethodMetadata extends Metadata {
     /**
      * 
      * @return the test method name
      */
     public String getMethodName();
+    
+    public TestClassMetadata getTestClassMetadata();
+    
 
 
 }

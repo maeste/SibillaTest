@@ -38,14 +38,14 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-			<plugin>
+	<!-- 		<plugin>
 				<groupId>it.javalinux.TestedBy</groupId>
 				<artifactId>TestedBy</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 				<configuration>
-<!--<message>pippolo</message>-->
+
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 
 	</build>

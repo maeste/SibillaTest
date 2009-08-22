@@ -18,46 +18,12 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata.impl.immutable;
-
-import it.javalinux.testedby.metadata.TestClassMetadata;
-import it.javalinux.testedby.metadata.TestMethodMetadata;
+package it.javalinux.testedby.metadata;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
- * 
+ *
  */
-public class ImmutableTestMethodMetadata implements TestMethodMetadata {
-
-    private final String methodName;
-
-    private final TestClassMetadata testClassMetadata;
-
-    
-    /**
-     * @param methodName
-     * @param testClassMetadata 
-     */
-    public ImmutableTestMethodMetadata(String methodName, TestClassMetadata testClassMetadata) {
-	super();
-	this.methodName = methodName;
-	this.testClassMetadata = testClassMetadata;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see it.javalinux.testedby.metadata.TestMethodMetadata#getMethodName()
-     */
-    public String getMethodName() {
-	return null;
-    }
-
-    /**
-     * @return testClassMetadata
-     */
-    public TestClassMetadata getTestClassMetadata() {
-        return testClassMetadata;
-    }
+public interface Metadata {
 
 }

@@ -25,26 +25,30 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import java.util.Collection;
 
 /**
- * It represent metadatas for a Test class.
- * It contains both its own metadata (accessed by {@link #getTestClassName()}  )
- * and a Colection of {@link TestMethodMetadata} (accessed by {@link #getMethodsSpecificMetaDatas()})
+ * It represent metadatas for a Test class. It contains both its own metadata
+ * (accessed by {@link #getTestClassName()} ) and a Colection of
+ * {@link TestMethodMetadata} (accessed by
+ * {@link #getMethodsSpecificMetaDatas()})
  * 
- * Note that this metadata doesn't represent necessarily the test class completely, but only methods that insist on a class under test.
- * In fact this metadata are created during class (and methods) under test metadata collection.
- * In other word we can have multiple {@link TestClassMetadata} for a single real test class, containing different method metadatas 
- * for method stressing different class under test.
+ * Note that this metadata doesn't represent necessarily the test class
+ * completely, but only methods that insist on a class under test. In fact this
+ * metadata are created during class (and methods) under test metadata
+ * collection. In other word we can have multiple {@link TestClassMetadata} for
+ * a single real test class, containing different method metadatas for method
+ * stressing different class under test.
  * 
- *  i.e
- *  
+ * i.e
+ * 
+ * <pre>
  *  Class firstClass {
- *  	@TestedBy(class="testClass" method="testMethodOne")
+ *  	&#064;TestedBy(class=&quot;testClass&quot; method=&quot;testMethodOne&quot;)
  *  	public doSMomething() {
  *  		[...]
  *  	}
  *  }
  *  
  *  Class secondClass {
- *  	@TestedBy(class="testClass" method="testMethodTwo")
+ *  	&#064;TestedBy(class=&quot;testClass&quot; method=&quot;testMethodTwo&quot;)
  *  	public doSMomething() {
  *  		[...]
  *  	}
@@ -58,30 +62,38 @@ import java.util.Collection;
  *  		[...]
  *  	}
  *  }
- *  
- * In this case we will have 2 {@link TestClassMetadata}: one containing only testMethodOne {@link TestMethodMetadata} pointed by 
- * {@link ClassUnderTestMetadata} representing firstClass; and  one containing only testMethodTwo {@link TestMethodMetadata} pointed by 
- * {@link ClassUnderTestMetadata} representing secondClass
+ * </pre>
+ * 
+ * In this case we will have 2 {@link TestClassMetadata}: one containing only
+ * testMethodOne {@link TestMethodMetadata} pointed by
+ * {@link ClassUnderTestMetadata} representing firstClass; and one containing
+ * only testMethodTwo {@link TestMethodMetadata} pointed by
+ * {@link ClassUnderTestMetadata} representing secondClass. Of course client
+ * could decide to merge them using its own policy. It's out of the scope of
+ * this interface to define merging policy.
  * 
  * 
- * Metadata will be created during {@link ClassUnderTestMetadata} or {@link MethodUnderTestMetadata} creation 
- * by a {@link MetaDataBuilder} with a specific strategy
+ * Metadata will be created during {@link ClassUnderTestMetadata} or
+ * {@link MethodUnderTestMetadata} creation by a {@link MetaDataBuilder} with a
+ * specific strategy
  * 
  * @author stefano.maestri@javalinux.it
- *
+ * 
  */
-public interface TestClassMetadata  {
-	
-	/**t
-	 * 
-	 * @return the test full qualified name 
-	 */
-	public String getTestClassName();
-	
-	/**
-	 * 
-	 * @return a Colection of {@link TestMethodMetadata} representing metadata specific of methods of test class
-	 */
-	public Collection<TestMethodMetadata> getMethodsSpecificMetaDatas(); 
+public interface TestClassMetadata extends Metadata {
+
+    /**
+     * t
+     * 
+     * @return the test full qualified name
+     */
+    public String getTestClassName();
+
+    /**
+     * 
+     * @return a Colection of {@link TestMethodMetadata} representing metadata
+     *         specific of methods of test class
+     */
+    public Collection<TestMethodMetadata> getMethodsSpecificMetaDatas();
 
 }

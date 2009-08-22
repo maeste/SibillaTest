@@ -25,10 +25,15 @@ import it.javalinux.testedby.annotations.StressingList;
 import it.javalinux.testedby.annotations.TestedBy;
 import it.javalinux.testedby.annotations.TestedByList;
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
+import it.javalinux.testedby.metadata.MergingList;
+import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.TestClassMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableClassUnderTestMetadata;
+import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodUnderTestMetadata;
+import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -59,15 +64,30 @@ public class AnnotationBasedMetadataBuilder  implements MetaDataBuilder {
      */
     /*package*/ Map<String, ClassUnderTestMetadata> buildFromClassUnderTest(Collection<Class<?>> classesUnderTest) {
 	final Map<String, ClassUnderTestMetadata> classUnderTestMetadatas= new HashMap<String, ClassUnderTestMetadata>();
-	
+	MergingList<ImmutableTestClassMetadata> testClassesMetadatas = new MergingList<ImmutableTestClassMetadata>();
+	MergingList<ImmutableTestClassMetadata> testClassesMetadatasForMethods = new MergingList<ImmutableTestClassMetadata>();
+	Map<String, MethodUnderTestMetadata> methodSpecicMetadatas = new HashMap<String, MethodUnderTestMetadata>();
+	    
 	for (Class<?> clazz : classesUnderTest) {
+	    testClassesMetadatas.clear();
+	    methodSpecicMetadatas.clear();
 	    TestedByList tbList= clazz.getAnnotation(TestedByList.class);
 	    List<TestedBy> listOfTestedBy = Arrays.asList(tbList.value());
 	    listOfTestedBy.add(clazz.getAnnotation(TestedBy.class));
 	    for (TestedBy testedBy : listOfTestedBy) {
-		
+		testClassesMetadatas.add(new ImmutableTestClassMetadata(testedBy.testClass(), testedBy.testMethod()));
 	    }
-	    //ClassUnderTestMetadata classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazz.getCanonicalName(), testClassesMetadatas, methodsSpecificMetaDatas)
+	    for (Method methodUnderTest : classesUnderTest.getClass().getMethods()) {
+		testClassesMetadatasForMethods.clear();
+		TestedByList tbOnMethodList = methodUnderTest.getAnnotation(TestedByList.class);
+		List<TestedBy> listOfTestedByOnMethod = Arrays.asList(tbOnMethodList.value());
+		listOfTestedByOnMethod.add(methodUnderTest.getAnnotation(TestedBy.class));
+		for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
+		    testClassesMetadatasForMethods.add(new ImmutableTestClassMetadata(testedByOnMethod.testClass(), testedByOnMethod.testMethod()));
+		}
+		methodSpecicMetadatas.put(methodUnderTest.getName(),new ImmutableMethodUnderTestMetadata(methodUnderTest.getName(), testClassesMetadatasForMethods));
+	    }
+	    ClassUnderTestMetadata classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazz.getCanonicalName(), testClassesMetadatas, methodSpecicMetadatas);
 	}
 	
 	return classUnderTestMetadatas;
@@ -75,16 +95,8 @@ public class AnnotationBasedMetadataBuilder  implements MetaDataBuilder {
     
     
     /*package*/ Map<String, ClassUnderTestMetadata> buildFromTestClasses(Collection<Class<?>> testClasses) {
-	final Map<String, ClassUnderTestMetadata> classUnderTestMetadatas= new HashMap<String, ClassUnderTestMetadata>();
-	
-	for (Class<?> clazz : testClasses) {
-	    StressingList stList= clazz.getAnnotation(StressingList.class);
-	    List<Stressing> listOfStressing = Arrays.asList(stList.value());
-	    listOfStressing.add(clazz.getAnnotation(Stressing.class));
-	    //ClassUnderTestMetadata classUnderTestMetadata = 
-	}
-	
-	return classUnderTestMetadatas;
+	//not yet implemented
+	return null;
     }
 
 

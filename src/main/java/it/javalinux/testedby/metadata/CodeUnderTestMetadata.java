@@ -31,7 +31,7 @@ import java.util.Collection;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public interface CodeUnderTestMetadata {
+public interface CodeUnderTestMetadata extends Metadata {
 
     /**
      * 

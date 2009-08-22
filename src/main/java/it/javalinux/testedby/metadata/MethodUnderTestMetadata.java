@@ -24,7 +24,7 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 /**
  * It represent metadatas for method under test. It contains its own metadata
- * (accessed by {@link #getTestClassesMetadatas()}  )
+ * (accessed by {@link #getTestClassesMetadatas()} )
  * 
  * It aims to collect metadata to make possible navigation of relation between
  * method under test and test classes/methods using method under test as
@@ -38,50 +38,52 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
  */
 public interface MethodUnderTestMetadata extends CodeUnderTestMetadata {
 
-	/**
-	 * 
-	 * @return the full qualified name of method under test
-	 */
-	public String getMethodUnderTestName();
+    /**
+     * 
+     * @return the full qualified name of method under test
+     */
+    public String getMethodUnderTestName();
+
+    /**
+     * 
+     * @return a {@link MethodLineNumber} representing starting and ending
+     *         linenumber for method under test. It is useful to test runner to
+     *         identify which are method changed in a class under test and so
+     *         which are test method to run. In case line numbers aren't
+     *         available it returns null (i.e if metadatas have been collected
+     *         by annotations)
+     */
+    public MethodLineNumber getLineNumbers();
+
+    public class MethodLineNumber {
+	private final int startLine;
+
+	private final int endLine;
 
 	/**
-	 * 
-	 * @return a {@link MethodLineNumber} representing starting and ending
-	 *         linenumber for method under test. It is useful to test runner to
-	 *         identify which are method changed in a class under test and so
-	 *         which are test method to run
+	 * @param startLine
+	 * @param endLine
 	 */
-	public MethodLineNumber getLineNumbers();
-
-	public class MethodLineNumber {
-		private final int startLine;
-
-		/**
-		 * @param startLine
-		 * @param endLine
-		 */
-		public MethodLineNumber(int startLine, int endLine) {
-			super();
-			this.startLine = startLine;
-			this.endLine = endLine;
-		}
-
-		/**
-		 * @return startLine
-		 */
-		public int getStartLine() {
-			return startLine;
-		}
-
-		/**
-		 * @return endLine
-		 */
-		public int getEndLine() {
-			return endLine;
-		}
-
-		private final int endLine;
-
+	public MethodLineNumber(int startLine, int endLine) {
+	    super();
+	    this.startLine = startLine;
+	    this.endLine = endLine;
 	}
+
+	/**
+	 * @return startLine
+	 */
+	public int getStartLine() {
+	    return startLine;
+	}
+
+	/**
+	 * @return endLine
+	 */
+	public int getEndLine() {
+	    return endLine;
+	}
+
+    }
 
 }
