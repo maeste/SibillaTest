@@ -20,6 +20,11 @@
  */
 package it.javalinux.testedby.metadata;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import static org.junit.matchers.JUnitMatchers.hasItems;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +34,7 @@ import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestMethodMetadata;
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -38,6 +44,11 @@ import org.junit.Test;
 public class TestMetadataMergingListMergingBehaviours {
 
     private TestMetadataMergingList<ImmutableTestClassMetadata> list = new TestMetadataMergingList<ImmutableTestClassMetadata>();
+
+    @Before
+    public void before() {
+	list.clear();
+    }
 
     @Test
     public void shouldNotBeMergeableBothNullTestClassMetadata() {
@@ -94,6 +105,58 @@ public class TestMetadataMergingListMergingBehaviours {
     @Test
     public void shouldNotBeMergeableBothNullTestMethod() {
 	assertThat(list.canBeMerged((ImmutableTestMethodMetadata) null, (ImmutableTestMethodMetadata) null), is(false));
+    }
+
+    @Test
+    public void shouldMergeSameTestClassesMetadata() throws Exception {
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name", "methodName2");
+	list.add(c1);
+	list.add(c2);
+	assertThat(list.size(), is(1));
+	assertThat(list.iterator().next().getTestClassName(), is("name"));
+	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetaDatas().iterator();
+	assertThat(iter.next().getMethodName(), is("methodName"));
+	assertThat(iter.next().getMethodName(), is("methodName2"));
+
+    }
+
+    @Test
+    public void shouldAddNonExistingTestClasses() throws Exception {
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name2", "methodName2");
+	list.add(c1);
+	list.add(c2);
+	assertThat(list.size(), is(2));
+
+    }
+
+    @Test
+    public void shouldMergeSameTestClassesMetadataUsingAddAll() throws Exception {
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name", "methodName2");
+	LinkedList<ImmutableTestClassMetadata> clientList = new LinkedList<ImmutableTestClassMetadata>();
+	clientList.add(c1);
+	clientList.add(c2);
+	list.addAll(clientList);
+	assertThat(list.size(), is(1));
+	assertThat(list.iterator().next().getTestClassName(), is("name"));
+	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetaDatas().iterator();
+	assertThat(iter.next().getMethodName(), is("methodName"));
+	assertThat(iter.next().getMethodName(), is("methodName2"));
+
+    }
+
+    @Test
+    public void shouldAddNonExistingTestClassesUsingAddAll() throws Exception {
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name2", "methodName2");
+	LinkedList<ImmutableTestClassMetadata> clientList = new LinkedList<ImmutableTestClassMetadata>();
+	clientList.add(c1);
+	clientList.add(c2);
+	list.addAll(clientList);
+	assertThat(list.size(), is(2));
+
     }
 
 }

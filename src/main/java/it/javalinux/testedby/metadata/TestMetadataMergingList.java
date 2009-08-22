@@ -44,6 +44,7 @@ public class TestMetadataMergingList<E extends TestClassMetadata> extends Abstra
     @Override
     public boolean add(E e) {
 	int i;
+
 	if ((i = underlyingList.indexOf(e)) != -1) {
 	    E element = underlyingList.get(i);
 	    if (canBeMerged(element, e)) {

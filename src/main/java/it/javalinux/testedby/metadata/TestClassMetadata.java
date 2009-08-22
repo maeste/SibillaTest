@@ -103,7 +103,7 @@ public abstract class TestClassMetadata implements Metadata {
      */
     @Override
     public boolean equals(Object obj) {
-	if (!(obj instanceof TestClassMetadata)) {
+	if (!(TestClassMetadata.class.isAssignableFrom(obj.getClass()))) {
 	    return false;
 	}
 	if (this.getTestClassName() == null) {
