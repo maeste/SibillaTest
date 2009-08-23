@@ -20,6 +20,8 @@
  */
 package it.javalinux.testedby.metadata;
 
+import java.lang.reflect.Method;
+
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 /**
@@ -42,7 +44,7 @@ public abstract class MethodUnderTestMetadata implements CodeUnderTestMetadata {
      * 
      * @return the full qualified name of method under test
      */
-    public abstract String getMethodUnderTestName();
+    public abstract Method getMethodUnderTestName();
 
     /**
      * 

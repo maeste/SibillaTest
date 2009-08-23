@@ -86,7 +86,7 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 		for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
 		    testClassesMetadatasForMethods.add(new ImmutableTestClassMetadata(testedByOnMethod.testClass(), testedByOnMethod.testMethod()));
 		}
-		methodSpecicMetadatas.put(methodUnderTest.getName(), new ImmutableMethodUnderTestMetadata(methodUnderTest.getName(), classUnderTestMetadata, testClassesMetadatasForMethods));
+		methodSpecicMetadatas.put(methodUnderTest.getName(), new ImmutableMethodUnderTestMetadata(methodUnderTest, classUnderTestMetadata, testClassesMetadatasForMethods));
 	    }
 	    classUnderTestMetadatas.put(classUnderTestMetadata.getClassUnderTestName(), classUnderTestMetadata);
 	}

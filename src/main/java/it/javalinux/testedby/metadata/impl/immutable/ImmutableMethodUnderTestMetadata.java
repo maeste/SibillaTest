@@ -24,6 +24,7 @@ import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.TestClassMetadata;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -33,7 +34,7 @@ import java.util.LinkedList;
  */
 public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
 
-    private final String methodUnderTestName;
+    private final Method methodUnderTest;
 
     private final Collection<TestClassMetadata> testClassesMetadatas = new LinkedList<TestClassMetadata>();
 
@@ -42,26 +43,26 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
     private final ClassUnderTestMetadata classUnderTestMetadata;
 
     /**
-     * @param methodUnderTestName
+     * @param methodUnderTest
      * @param classUnderTestMetadata
      * @param testClassesMetadatas
      * @param startLine
      * @param endLine
      */
-    public ImmutableMethodUnderTestMetadata(String methodUnderTestName, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas, int startLine, int endLine) {
-	this.methodUnderTestName = methodUnderTestName;
+    public ImmutableMethodUnderTestMetadata(Method methodUnderTest, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas, int startLine, int endLine) {
+	this.methodUnderTest = methodUnderTest;
 	this.classUnderTestMetadata = classUnderTestMetadata;
 	this.testClassesMetadatas.addAll(testClassesMetadatas);
 	this.methodLineNumber = new MethodLineNumber(startLine, endLine);
     }
 
     /**
-     * @param methodUnderTestName
+     * @param methodUnderTest
      * @param classUnderTestMetadata
      * @param testClassesMetadatas
      */
-    public ImmutableMethodUnderTestMetadata(String methodUnderTestName, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas) {
-	this.methodUnderTestName = methodUnderTestName;
+    public ImmutableMethodUnderTestMetadata(Method methodUnderTest, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas) {
+	this.methodUnderTest = methodUnderTest;
 	this.classUnderTestMetadata = classUnderTestMetadata;
 	this.testClassesMetadatas.addAll(testClassesMetadatas);
 	this.methodLineNumber = null;
@@ -83,8 +84,8 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
      * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getMethodUnderTestName()
      */
     @Override
-    public String getMethodUnderTestName() {
-	return methodUnderTestName;
+    public Method getMethodUnderTestName() {
+	return methodUnderTest;
     }
 
     /**
