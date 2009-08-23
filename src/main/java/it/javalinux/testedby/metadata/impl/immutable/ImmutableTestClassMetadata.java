@@ -38,32 +38,37 @@ public class ImmutableTestClassMetadata extends TestClassMetadata {
 
     private final String testClassName;
 
+    private final boolean valid;
+
     /**
      * 
+     * @param valid
      * @param testClassName
      * @param methodSpecificMetadatas
      */
-    public ImmutableTestClassMetadata(String testClassName, Collection<TestMethodMetadata> methodSpecificMetadatas) {
+    public ImmutableTestClassMetadata(boolean valid, String testClassName, Collection<TestMethodMetadata> methodSpecificMetadatas) {
 	super();
 	this.testClassName = testClassName;
 	this.methodSpecificMetadatas.addAll(methodSpecificMetadatas);
+	this.valid = valid;
     }
 
-    public ImmutableTestClassMetadata(String testClassName, String methodName) {
+    public ImmutableTestClassMetadata(boolean valid, String testClassName, String methodName) {
 	super();
 	this.testClassName = testClassName;
 	TestMethodMetadata testMethodMetadata = new ImmutableTestMethodMetadata(methodName, this);
 	this.methodSpecificMetadatas.add(testMethodMetadata);
+	this.valid = valid;
     }
 
-    public ImmutableTestClassMetadata(String testClassName, String... methodNames) {
+    public ImmutableTestClassMetadata(boolean valid, String testClassName, String... methodNames) {
 	super();
 	this.testClassName = testClassName;
 	for (String methodName : methodNames) {
 	    TestMethodMetadata testMethodMetadata = new ImmutableTestMethodMetadata(methodName, this);
 	    this.methodSpecificMetadatas.add(testMethodMetadata);
 	}
-
+	this.valid = valid;
     }
 
     /**
@@ -86,6 +91,14 @@ public class ImmutableTestClassMetadata extends TestClassMetadata {
     @Override
     public String getTestClassName() {
 	return testClassName;
+    }
+
+    /**
+     * @return valid
+     */
+    @Override
+    public boolean isValid() {
+	return valid;
     }
 
 }

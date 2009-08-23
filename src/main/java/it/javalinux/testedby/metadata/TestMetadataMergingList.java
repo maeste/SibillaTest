@@ -126,7 +126,7 @@ public class TestMetadataMergingList<E extends TestClassMetadata> extends Abstra
 	if (!merged) {
 	    testMethodCol.add(rightM);
 	}
-	return (E) new ImmutableTestClassMetadata(left.getTestClassName(), testMethodCol);
+	return (E) new ImmutableTestClassMetadata(left.isValid(), left.getTestClassName(), testMethodCol);
     }
 
     /* package */<R extends TestMethodMetadata> R merge(R left, R right) {

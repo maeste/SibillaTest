@@ -126,4 +126,9 @@ public abstract class TestClassMetadata implements Metadata {
 	}
 	return this.getTestClassName().hashCode();
     }
+
+    /**
+     * @return valid
+     */
+    public abstract boolean isValid();
 }
