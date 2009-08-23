@@ -20,6 +20,8 @@
  */
 package it.javalinux.testedby.metadata;
 
+import java.io.Serializable;
+
 /**
  * MArker interface for metadata. It requires each implementor to redefine
  * equals and hasCode Method
@@ -27,7 +29,7 @@ package it.javalinux.testedby.metadata;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public interface Metadata {
+public interface Metadata extends Serializable {
 
     public boolean equals(Object o);
 
