@@ -83,7 +83,7 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getMethodUnderTestName()
+     * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getMethodUnderTest()
      */
     @Override
     public MethodMetadata getMethodUnderTest() {
