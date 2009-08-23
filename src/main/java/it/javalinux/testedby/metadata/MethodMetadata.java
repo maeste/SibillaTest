@@ -20,8 +20,26 @@
  */
 package it.javalinux.testedby.metadata;
 
+/**
+ * A metadata including minimal info required to identify a class' method.
+ * 
+ * @author alessio.soldano@javalinux.it
+ * @since 23-Aug-2009
+ *
+ */
 public interface MethodMetadata extends Metadata {
     
+    /**
+     * Returns the method name
+     * 
+     * @return The method name
+     */
     public String getName();
+    
+    /**
+     * Returns an array containing the ordered class names of the method parameters
+     * 
+     * @return An array containing the ordered class names of the method parameters
+     */
     public String[] getParameterTypes();
 }

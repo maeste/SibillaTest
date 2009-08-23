@@ -27,6 +27,14 @@ import java.util.List;
 
 import it.javalinux.testedby.metadata.MethodMetadata;
 
+/**
+ * An immutable method metadata that can be built from both
+ * plain strings and a java.lang.reflect.Method instance. 
+ * 
+ * @author alessio.soldano@javalinux.it
+ * @since 23-Aug-2009
+ *
+ */
 public class ImmutableMethodMetadata implements MethodMetadata {
 
     private static final long serialVersionUID = 1L;
