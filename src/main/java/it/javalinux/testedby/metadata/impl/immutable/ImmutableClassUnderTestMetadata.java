@@ -37,6 +37,8 @@ import java.util.Map;
  */
 public class ImmutableClassUnderTestMetadata extends ClassUnderTestMetadata {
 
+    private static final long serialVersionUID = 1L;
+
     private final String className;
 
     private final Collection<TestClassMetadata> testClassesMetadatas = new LinkedList<TestClassMetadata>();

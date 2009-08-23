@@ -27,6 +27,7 @@ import it.javalinux.testedby.metadata.TestMetadataMergingList;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableClassUnderTestMetadata;
+import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
 
@@ -86,7 +87,7 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 		for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
 		    testClassesMetadatasForMethods.add(new ImmutableTestClassMetadata(testedByOnMethod.testClass(), testedByOnMethod.testMethod()));
 		}
-		methodSpecicMetadatas.put(methodUnderTest.getName(), new ImmutableMethodUnderTestMetadata(methodUnderTest, classUnderTestMetadata, testClassesMetadatasForMethods));
+		methodSpecicMetadatas.put(methodUnderTest.getName(), new ImmutableMethodUnderTestMetadata(new ImmutableMethodMetadata(methodUnderTest), classUnderTestMetadata, testClassesMetadatasForMethods));
 	    }
 	    classUnderTestMetadatas.put(classUnderTestMetadata.getClassUnderTestName(), classUnderTestMetadata);
 	}

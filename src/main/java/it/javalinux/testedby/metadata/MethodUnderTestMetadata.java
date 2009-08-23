@@ -20,8 +20,6 @@
  */
 package it.javalinux.testedby.metadata;
 
-import java.lang.reflect.Method;
-
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 /**
@@ -40,11 +38,13 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
  */
 public abstract class MethodUnderTestMetadata implements CodeUnderTestMetadata {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * 
      * @return the full qualified name of method under test
      */
-    public abstract Method getMethodUnderTestName();
+    public abstract MethodMetadata getMethodUnderTest();
 
     /**
      * 
@@ -69,10 +69,10 @@ public abstract class MethodUnderTestMetadata implements CodeUnderTestMetadata {
 	if (!(obj instanceof MethodUnderTestMetadata)) {
 	    return false;
 	}
-	if (this.getMethodUnderTestName() == null || this.getClassUnderTestMetadata() == null) {
+	if (this.getMethodUnderTest() == null || this.getClassUnderTestMetadata() == null) {
 	    return super.equals(obj);
 	}
-	return (this.getMethodUnderTestName().equals(((MethodUnderTestMetadata) obj).getMethodUnderTestName()) && this.getClassUnderTestMetadata().equals(((MethodUnderTestMetadata) obj).getClassUnderTestMetadata()));
+	return (this.getMethodUnderTest().equals(((MethodUnderTestMetadata) obj).getMethodUnderTest()) && this.getClassUnderTestMetadata().equals(((MethodUnderTestMetadata) obj).getClassUnderTestMetadata()));
     }
 
     /**
@@ -82,10 +82,10 @@ public abstract class MethodUnderTestMetadata implements CodeUnderTestMetadata {
      */
     @Override
     public int hashCode() {
-	if (this.getMethodUnderTestName() == null || this.getClassUnderTestMetadata() == null) {
+	if (this.getMethodUnderTest() == null || this.getClassUnderTestMetadata() == null) {
 	    return super.hashCode();
 	}
-	return 31 * (this.getMethodUnderTestName().hashCode() + this.getClassUnderTestMetadata().hashCode());
+	return 31 * (this.getMethodUnderTest().hashCode() + this.getClassUnderTestMetadata().hashCode());
     }
 
     public class MethodLineNumber {

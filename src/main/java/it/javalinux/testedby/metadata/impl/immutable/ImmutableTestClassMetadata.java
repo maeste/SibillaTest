@@ -32,6 +32,8 @@ import java.util.LinkedList;
  */
 public class ImmutableTestClassMetadata extends TestClassMetadata {
 
+    private static final long serialVersionUID = 1L;
+
     private final Collection<TestMethodMetadata> methodSpecificMetadatas = new LinkedList<TestMethodMetadata>();
 
     private final String testClassName;

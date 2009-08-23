@@ -29,6 +29,8 @@ import it.javalinux.testedby.metadata.TestMethodMetadata;
  */
 public class ImmutableTestMethodMetadata extends TestMethodMetadata {
 
+    private static final long serialVersionUID = 1L;
+
     private final String methodName;
 
     private final TestClassMetadata testClassMetadata;

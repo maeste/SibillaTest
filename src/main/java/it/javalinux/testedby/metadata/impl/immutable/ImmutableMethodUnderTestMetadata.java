@@ -21,10 +21,10 @@
 package it.javalinux.testedby.metadata.impl.immutable;
 
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
+import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.TestClassMetadata;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -34,7 +34,9 @@ import java.util.LinkedList;
  */
 public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
 
-    private final Method methodUnderTest;
+    private static final long serialVersionUID = 1L;
+
+    private final MethodMetadata methodUnderTest;
 
     private final Collection<TestClassMetadata> testClassesMetadatas = new LinkedList<TestClassMetadata>();
 
@@ -49,7 +51,7 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
      * @param startLine
      * @param endLine
      */
-    public ImmutableMethodUnderTestMetadata(Method methodUnderTest, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas, int startLine, int endLine) {
+    public ImmutableMethodUnderTestMetadata(MethodMetadata methodUnderTest, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas, int startLine, int endLine) {
 	this.methodUnderTest = methodUnderTest;
 	this.classUnderTestMetadata = classUnderTestMetadata;
 	this.testClassesMetadatas.addAll(testClassesMetadatas);
@@ -61,7 +63,7 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
      * @param classUnderTestMetadata
      * @param testClassesMetadatas
      */
-    public ImmutableMethodUnderTestMetadata(Method methodUnderTest, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas) {
+    public ImmutableMethodUnderTestMetadata(MethodMetadata methodUnderTest, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadatas) {
 	this.methodUnderTest = methodUnderTest;
 	this.classUnderTestMetadata = classUnderTestMetadata;
 	this.testClassesMetadatas.addAll(testClassesMetadatas);
@@ -84,7 +86,7 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
      * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getMethodUnderTestName()
      */
     @Override
-    public Method getMethodUnderTestName() {
+    public MethodMetadata getMethodUnderTest() {
 	return methodUnderTest;
     }
 

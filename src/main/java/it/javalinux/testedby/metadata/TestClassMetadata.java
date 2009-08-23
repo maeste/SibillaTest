@@ -82,6 +82,8 @@ import java.util.Collection;
  */
 public abstract class TestClassMetadata implements Metadata {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * t
      * 

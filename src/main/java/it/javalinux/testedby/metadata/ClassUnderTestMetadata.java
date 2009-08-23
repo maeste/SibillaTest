@@ -42,6 +42,8 @@ import java.util.Map;
  */
 public abstract class ClassUnderTestMetadata implements CodeUnderTestMetadata {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * 
      * @return the full qualified name of class under test

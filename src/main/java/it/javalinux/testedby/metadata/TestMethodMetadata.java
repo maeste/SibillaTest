@@ -38,6 +38,9 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
  * 
  */
 public abstract class TestMethodMetadata implements Metadata {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 
      * @return the test method name
