@@ -78,4 +78,9 @@ public abstract class TestMethodMetadata implements Metadata {
 	return 31 * (this.getMethodName().hashCode() + this.getTestClassMetadata().hashCode());
     }
 
+    @Override
+    public String toString() {
+	String className = this.getTestClassMetadata() == null ? "null!" : this.getTestClassMetadata().getTestClassName();
+	return "<[ testclassNames=" + className + ", methodName=" + this.getMethodName() + "]>";
+    }
 }

@@ -127,6 +127,11 @@ public abstract class TestClassMetadata implements Metadata {
 	return this.getTestClassName().hashCode();
     }
 
+    @Override
+    public String toString() {
+	return "<[ testclassNames=" + this.getTestClassName() + ", MethodsSpecificMetaDatas=" + this.getMethodsSpecificMetaDatas() + "]>";
+    }
+
     /**
      * @return valid
      */

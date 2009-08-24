@@ -22,6 +22,7 @@ package it.javalinux.testedby.metadata;
 
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -57,6 +58,16 @@ public abstract class ClassUnderTestMetadata implements CodeUnderTestMetadata {
      *         thios map is the method name
      */
     public abstract Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas();
+
+    public Collection<TestClassMetadata> getAllTestMetadata() {
+	TestMetadataMergingList<TestClassMetadata> testMetadatas = new TestMetadataMergingList<TestClassMetadata>();
+	testMetadatas.addAll(this.getTestClassesMetadatas());
+	for (MethodUnderTestMetadata methodMetadata : this.getMethodsSpecificMetaDatas().values()) {
+	    testMetadatas.addAll(methodMetadata.getTestClassesMetadatas());
+	}
+	return testMetadatas;
+
+    }
 
     /**
      * {@inheritDoc}

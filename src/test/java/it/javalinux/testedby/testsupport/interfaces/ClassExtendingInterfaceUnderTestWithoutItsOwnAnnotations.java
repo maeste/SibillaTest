@@ -18,24 +18,12 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.testsupport.testclasses;
-
-import org.junit.Test;
+package it.javalinux.testedby.testsupport.interfaces;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
+public class ClassExtendingInterfaceUnderTestWithoutItsOwnAnnotations {
 
-public class TestClassTwo {
-
-    @Test
-    public void testMethodOne() {
-
-    }
-
-    @Test
-    public void testMethodTwo() {
-
-    }
 }

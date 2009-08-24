@@ -23,6 +23,7 @@ package it.javalinux.testedby.metadata.builder.annotations;
 import it.javalinux.testedby.annotations.TestedBy;
 import it.javalinux.testedby.annotations.TestedByList;
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
+import it.javalinux.testedby.metadata.TestClassMetadata;
 import it.javalinux.testedby.metadata.TestMetadataMergingList;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
@@ -31,12 +32,17 @@ import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Test;
 
 /**
  * @author Stefano Maestri
@@ -55,8 +61,8 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	for (Class<?> clazz : testClasses) {
 	    testClassesMap.put(clazz.getCanonicalName(), clazz);
 	}
-	buildFromClassUnderTest(classesUnderTest, testClassesMap);
-	return null;
+	return buildFromClassUnderTest(classesUnderTest, testClassesMap);
+
     }
 
     /**
@@ -75,23 +81,17 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	for (Class<?> clazz : classesUnderTest) {
 	    testClassesMetadatas.clear();
 	    methodSpecicMetadatas.clear();
-	    TestedByList tbList = clazz.getAnnotation(TestedByList.class);
-	    List<TestedBy> listOfTestedBy = Arrays.asList(tbList.value());
-	    listOfTestedBy.add(clazz.getAnnotation(TestedBy.class));
+	    List<TestedBy> listOfTestedBy = createListOfTestedBy(clazz);
 	    for (TestedBy testedBy : listOfTestedBy) {
-		boolean valid = validateTestedByAnnotation(testClasses, testedBy);
-		testClassesMetadatas.add(new ImmutableTestClassMetadata(valid, testedBy.testClass(), testedBy.testMethod()));
+		testClassesMetadatas.add(createImmutableTestClassMetadata(testClasses, clazz, testedBy));
 	    }
 	    ClassUnderTestMetadata classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazz.getCanonicalName(), testClassesMetadatas, methodSpecicMetadatas);
 
 	    for (Method methodUnderTest : classesUnderTest.getClass().getMethods()) {
 		testClassesMetadatasForMethods.clear();
-		TestedByList tbOnMethodList = methodUnderTest.getAnnotation(TestedByList.class);
-		List<TestedBy> listOfTestedByOnMethod = Arrays.asList(tbOnMethodList.value());
-		listOfTestedByOnMethod.add(methodUnderTest.getAnnotation(TestedBy.class));
+		List<TestedBy> listOfTestedByOnMethod = createListOfTestedBy(methodUnderTest);
 		for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
-		    boolean valid = validateTestedByAnnotation(testClasses, testedByOnMethod);
-		    testClassesMetadatasForMethods.add(new ImmutableTestClassMetadata(valid, testedByOnMethod.testClass(), testedByOnMethod.testMethod()));
+		    testClassesMetadatas.add(createImmutableTestClassMetadata(testClasses, clazz, testedByOnMethod));
 		}
 		methodSpecicMetadatas.put(methodUnderTest.getName(), new ImmutableMethodUnderTestMetadata(new ImmutableMethodMetadata(methodUnderTest), classUnderTestMetadata, testClassesMetadatasForMethods));
 	    }
@@ -103,19 +103,54 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 
     /**
      * @param testClasses
+     * @param clazz
      * @param testedBy
+     * @return generated testClassMetadata
+     */
+    private ImmutableTestClassMetadata createImmutableTestClassMetadata(Map<String, Class<?>> testClasses, Class<?> clazz, TestedBy testedBy) {
+	String testClassName = fixPackageTestClass(testedBy.testClass(), clazz.getPackage());
+	boolean valid = validateTestedByAnnotation(testClasses, testClassName, testedBy.testMethod());
+	String[] testMethodsNames = createTestMethodsNameList(testClasses, testClassName, testedBy.testMethod());
+	return new ImmutableTestClassMetadata(valid, testClassName, testMethodsNames);
+    }
+
+    /**
+     * @param annotatedElement
+     * @return the list of all testedby annotations put on this portion of code
+     */
+    private List<TestedBy> createListOfTestedBy(AnnotatedElement annotatedElement) {
+	TestedByList tbList = annotatedElement.getAnnotation(TestedByList.class);
+	List<TestedBy> listOfTestedBy = new LinkedList<TestedBy>();
+	if (annotatedElement.getAnnotation(TestedBy.class) != null) {
+	    listOfTestedBy.add(annotatedElement.getAnnotation(TestedBy.class));
+	}
+	if (tbList != null) {
+	    listOfTestedBy.addAll(Arrays.asList(tbList.value()));
+	}
+	return listOfTestedBy;
+    }
+
+    /**
+     * @param testClasses
+     * @param testedByTestClassName
+     * @param testedByMethodName
      * @return //TODO
      */
 
-    boolean validateTestedByAnnotation(Map<String, Class<?>> testClasses, TestedBy testedBy) {
+    private boolean validateTestedByAnnotation(Map<String, Class<?>> testClasses, String testedByTestClassName, String testedByMethodName) {
 	Class<?> testClazz;
-	if ((testClazz = testClasses.get(testedBy.testClass())) != null) {
-	    if (testedBy.testMethod() == null) {
+	if ((testClazz = testClasses.get(testedByTestClassName)) != null) {
+	    if (testedByMethodName == null && testedByMethodName.trim().length() != 0) {
 		return true;
 	    } else {
 		try {
-		    testClazz.getMethod(testedBy.testMethod());
-		    return true;
+		    Method testMethod = testClazz.getMethod(testedByMethodName);
+		    if (testMethod.getAnnotation(Test.class) != null) {
+			return true;
+		    } else {
+			return false;
+		    }
+
 		} catch (NoSuchMethodException e) {
 		    return false;
 		}
@@ -124,6 +159,31 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	} else {
 	    return false;
 	}
+    }
+
+    private String[] createTestMethodsNameList(Map<String, Class<?>> testClasses, String testedByTestClassName, String testedByMethodName) {
+	Class<?> testClazz;
+	List<String> returnValue = new LinkedList<String>();
+	if ((testClazz = testClasses.get(testedByTestClassName)) != null) {
+	    if (testedByMethodName != null && testedByMethodName.trim().length() != 0) {
+		returnValue.add(testedByMethodName);
+	    } else {
+		for (Method method : testClazz.getMethods()) {
+		    if (method.getAnnotation(Test.class) != null) {
+			returnValue.add(method.getName());
+		    }
+		}
+	    }
+
+	}
+	return returnValue.toArray(new String[returnValue.size()]);
+    }
+
+    private String fixPackageTestClass(String className, Package packageName) {
+	if (className == null || className.trim().length() == 0 || className.contains(".") || packageName == null) {
+	    return className;
+	}
+	return packageName.getName() + "." + className;
     }
 
     /* package */Map<String, ClassUnderTestMetadata> buildFromTestClasses(Collection<Class<?>> testClasses) {

@@ -18,7 +18,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.testsupport.classesUnderTest;
+package it.javalinux.testedby.testsupport;
 
 import it.javalinux.testedby.annotations.TestedBy;
 import it.javalinux.testedby.annotations.TestedByList;
@@ -27,18 +27,16 @@ import it.javalinux.testedby.annotations.TestedByList;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-@TestedBy(testClass = "it.javalinux.testedby.testsupport.testclasses.TestClassOne")
-@TestedByList( { @TestedBy(testClass = "it.javalinux.testedby.testsupport.testclasses.TestClassOne", testMethod = "testMethodTwo"),
-		@TestedBy(testClass = "it.javalinux.testedby.testsupport.testclasses.TestClassTwo") })
-public class ClassUnderTestWithAllAnnotations {
+public class ClassUnderTestOneAnnotationAndListOnMethods {
 
-    @TestedBy(testClass = "it.javalinux.testedby.testsupport.testclasses.TestClassOne", testMethod = "testMethodOne")
-    public void testMethodOne() {
+    @TestedBy(testClass = "it.javalinux.testedby.testsupport.TestClassOne")
+    public void methodOne() {
 
     }
 
-    @TestedBy(testClass = "it.javalinux.testedby.testsupport.testclasses.TestClassTwo", testMethod = "testMethodTwo")
-    public void testMethodTwo() {
+    @TestedByList( { @TestedBy(testClass = "it.javalinux.testedby.testsupport.TestClassOne", testMethod = "testMethodTwo"),
+		    @TestedBy(testClass = "it.javalinux.testedby.testsupport.TestClassTwo") })
+    public void methodTwo() {
 
     }
 }

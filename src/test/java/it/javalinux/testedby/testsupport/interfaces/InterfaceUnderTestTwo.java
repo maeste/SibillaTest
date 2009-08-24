@@ -18,24 +18,12 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.testsupport.classesUnderTest;
-
-import it.javalinux.testedby.annotations.TestedBy;
-import it.javalinux.testedby.annotations.TestedByList;
+package it.javalinux.testedby.testsupport.interfaces;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
- * 
+ *
  */
-@TestedByList( { @TestedBy(testClass = "it.javalinux.testedby.testsupport.testclasses.TestClassOne"),
-		@TestedBy(testClass = "it.javalinux.testedby.testsupport.testclasses.TestClassTwo") })
-public class ClassUnderTestAnnotationListOnClass {
+public interface InterfaceUnderTestTwo {
 
-    public void methodOne() {
-
-    }
-
-    public void methodTwo() {
-
-    }
 }

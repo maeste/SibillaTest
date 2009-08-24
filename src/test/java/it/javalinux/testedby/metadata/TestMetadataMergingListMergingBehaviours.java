@@ -109,8 +109,8 @@ public class TestMetadataMergingListMergingBehaviours {
 
     @Test
     public void shouldMergeSameTestClassesMetadata() throws Exception {
-	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
-	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name", "methodName2");
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata(true, "name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata(true, "name", "methodName2");
 	list.add(c1);
 	list.add(c2);
 	assertThat(list.size(), is(1));
@@ -123,8 +123,8 @@ public class TestMetadataMergingListMergingBehaviours {
 
     @Test
     public void shouldMergeSameTestClassesMetadataWithMergingAndNonMergingMethod() throws Exception {
-	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
-	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name", "methodName", "methodName2");
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata(true, "name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata(true, "name", "methodName", "methodName2");
 
 	list.add(c1);
 	list.add(c2);
@@ -139,8 +139,8 @@ public class TestMetadataMergingListMergingBehaviours {
 
     @Test
     public void shouldAddNonExistingTestClasses() throws Exception {
-	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
-	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name2", "methodName2");
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata(true, "name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata(true, "name2", "methodName2");
 	list.add(c1);
 	list.add(c2);
 	assertThat(list.size(), is(2));
@@ -149,8 +149,8 @@ public class TestMetadataMergingListMergingBehaviours {
 
     @Test
     public void shouldMergeSameTestClassesMetadataUsingAddAll() throws Exception {
-	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
-	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name", "methodName2");
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata(true, "name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata(true, "name", "methodName2");
 	LinkedList<ImmutableTestClassMetadata> clientList = new LinkedList<ImmutableTestClassMetadata>();
 	clientList.add(c1);
 	clientList.add(c2);
@@ -165,8 +165,8 @@ public class TestMetadataMergingListMergingBehaviours {
 
     @Test
     public void shouldAddNonExistingTestClassesUsingAddAll() throws Exception {
-	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata("name", "methodName");
-	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata("name2", "methodName2");
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata(true, "name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata(true, "name2", "methodName2");
 	LinkedList<ImmutableTestClassMetadata> clientList = new LinkedList<ImmutableTestClassMetadata>();
 	clientList.add(c1);
 	clientList.add(c2);
