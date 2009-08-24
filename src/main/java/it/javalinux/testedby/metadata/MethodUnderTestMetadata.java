@@ -75,6 +75,11 @@ public abstract class MethodUnderTestMetadata implements CodeUnderTestMetadata {
 	return (this.getMethodUnderTest().equals(((MethodUnderTestMetadata) obj).getMethodUnderTest()) && this.getClassUnderTestMetadata().equals(((MethodUnderTestMetadata) obj).getClassUnderTestMetadata()));
     }
 
+    @Override
+    public String toString() {
+	return "<[methodName=" + this.getMethodUnderTest().getName() + ", className=" + this.getClassUnderTestMetadata().getClassUnderTestName() + "]>";
+    }
+
     /**
      * {@inheritDoc}
      * 

@@ -29,7 +29,7 @@ import it.javalinux.testedby.annotations.TestedByList;
  */
 public class ClassUnderTestOneAnnotationAndListOnMethods {
 
-    @TestedBy(testClass = "it.javalinux.testedby.testsupport.TestClassOne")
+    @TestedBy(testClass = "it.javalinux.testedby.testsupport.TestClassOne", testMethod = "testMethodOne")
     public void methodOne() {
 
     }

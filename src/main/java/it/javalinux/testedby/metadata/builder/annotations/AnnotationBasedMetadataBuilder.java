@@ -78,23 +78,25 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatasForMethods = new TestMetadataMergingList<ImmutableTestClassMetadata>();
 	Map<String, MethodUnderTestMetadata> methodSpecicMetadatas = new HashMap<String, MethodUnderTestMetadata>();
 
-	for (Class<?> clazz : classesUnderTest) {
+	for (Class<?> clazzUnderTest : classesUnderTest) {
 	    testClassesMetadatas.clear();
 	    methodSpecicMetadatas.clear();
-	    List<TestedBy> listOfTestedBy = createListOfTestedBy(clazz);
+	    List<TestedBy> listOfTestedBy = createListOfTestedBy(clazzUnderTest);
 	    for (TestedBy testedBy : listOfTestedBy) {
-		testClassesMetadatas.add(createImmutableTestClassMetadata(testClasses, clazz, testedBy));
+		testClassesMetadatas.add(createImmutableTestClassMetadata(testClasses, clazzUnderTest, testedBy));
 	    }
-	    ClassUnderTestMetadata classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazz.getCanonicalName(), testClassesMetadatas, methodSpecicMetadatas);
+	    ClassUnderTestMetadata classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazzUnderTest.getCanonicalName(), testClassesMetadatas, methodSpecicMetadatas);
 
-	    for (Method methodUnderTest : classesUnderTest.getClass().getMethods()) {
+	    for (Method methodUnderTest : clazzUnderTest.getMethods()) {
 		testClassesMetadatasForMethods.clear();
 		List<TestedBy> listOfTestedByOnMethod = createListOfTestedBy(methodUnderTest);
 		for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
-		    testClassesMetadatas.add(createImmutableTestClassMetadata(testClasses, clazz, testedByOnMethod));
+		    testClassesMetadatasForMethods.add(createImmutableTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod));
 		}
 		methodSpecicMetadatas.put(methodUnderTest.getName(), new ImmutableMethodUnderTestMetadata(new ImmutableMethodMetadata(methodUnderTest), classUnderTestMetadata, testClassesMetadatasForMethods));
 	    }
+	    classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazzUnderTest.getCanonicalName(), testClassesMetadatas, methodSpecicMetadatas);
+
 	    classUnderTestMetadatas.put(classUnderTestMetadata.getClassUnderTestName(), classUnderTestMetadata);
 	}
 
