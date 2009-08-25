@@ -28,7 +28,7 @@ import it.javalinux.testedby.annotations.TestedBy;
  */
 public class ClassUnderTestOneAnnotationOnMethod {
 
-    @TestedBy(testClass = "it.javalinux.testedby.testsupport.TestClassOne")
+    @TestedBy(testClass = "TestClassOne")
     public void methodOne() {
 
     }

@@ -24,8 +24,10 @@ import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
 
 import java.util.AbstractCollection;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
@@ -34,7 +36,22 @@ import java.util.LinkedList;
  */
 public class TestMetadataMergingList<E extends TestClassMetadata> extends AbstractCollection<E> {
 
-    private LinkedList<E> underlyingList = new LinkedList<E>();
+    private final List<E> underlyingList = Collections.synchronizedList(new LinkedList<E>());
+
+    private final boolean onlyValid;
+
+    public TestMetadataMergingList() {
+	super();
+	this.onlyValid = false;
+    }
+
+    /**
+     * @param onlyValid
+     */
+    public TestMetadataMergingList(boolean onlyValid) {
+	super();
+	this.onlyValid = onlyValid;
+    }
 
     /**
      * {@inheritDoc}
@@ -42,9 +59,11 @@ public class TestMetadataMergingList<E extends TestClassMetadata> extends Abstra
      * @see java.util.AbstractCollection#add(java.lang.Object)
      */
     @Override
-    public boolean add(E e) {
+    public synchronized boolean add(E e) {
 	int i;
-
+	if (onlyValid && !e.isValid()) {
+	    return false;
+	}
 	if ((i = underlyingList.indexOf(e)) != -1) {
 	    E element = underlyingList.get(i);
 	    if (canBeMerged(element, e)) {
@@ -57,6 +76,18 @@ public class TestMetadataMergingList<E extends TestClassMetadata> extends Abstra
 	} else {
 	    return underlyingList.add(e);
 	}
+    }
+
+    public synchronized boolean removeInvalid() {
+	boolean returnValue = false;
+	for (E element : underlyingList) {
+	    if (!element.isValid()) {
+		underlyingList.remove(element);
+		returnValue = true;
+	    }
+	}
+	return returnValue;
+
     }
 
     /* package */boolean canBeMerged(E left, E right) {
@@ -89,7 +120,7 @@ public class TestMetadataMergingList<E extends TestClassMetadata> extends Abstra
      * @see java.util.AbstractCollection#iterator()
      */
     @Override
-    public Iterator<E> iterator() {
+    public synchronized Iterator<E> iterator() {
 	return underlyingList.iterator();
     }
 

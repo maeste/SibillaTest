@@ -44,4 +44,15 @@ public interface MetaDataBuilder {
      */
     public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses);
 
+    /**
+     * Build application metadatas fo
+     * 
+     * @param classesUnderTest
+     * @param testClasses
+     * @param onlyValid
+     * @return application metadata
+     * @throws IllegalStateException
+     */
+    public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid);
+
 }

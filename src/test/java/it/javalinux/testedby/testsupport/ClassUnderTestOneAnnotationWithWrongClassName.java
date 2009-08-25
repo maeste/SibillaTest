@@ -26,8 +26,8 @@ import it.javalinux.testedby.annotations.TestedBy;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-@TestedBy(testClass = "TestClassOne", testMethod = "testMethodOne")
-public class ClassUnderTestOneAnnotationOnClass {
+@TestedBy(testClass = "TestClassWrong")
+public class ClassUnderTestOneAnnotationWithWrongClassName {
 
     public void methodOne() {
 

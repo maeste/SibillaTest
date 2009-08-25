@@ -26,14 +26,13 @@ import it.javalinux.testedby.annotations.TestedBy;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public class ClassUnderTestOneAnnotationOnBothMethod {
+public class ClassUnderTestOneAnnotationOnWrongMethod {
 
-    @TestedBy(testClass = "it.javalinux.testedby.testsupport.TestClassOne")
+    @TestedBy(testClass = "TestClassOne", testMethod = "wrongMethod")
     public void methodOne() {
 
     }
 
-    @TestedBy(testClass = "it.javalinux.testedby.testsupport.TestClassTwo")
     public void methodTwo() {
 
     }

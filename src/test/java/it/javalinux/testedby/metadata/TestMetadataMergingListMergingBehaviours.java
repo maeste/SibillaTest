@@ -45,9 +45,12 @@ public class TestMetadataMergingListMergingBehaviours {
 
     private TestMetadataMergingList<ImmutableTestClassMetadata> list = new TestMetadataMergingList<ImmutableTestClassMetadata>();
 
+    private TestMetadataMergingList<ImmutableTestClassMetadata> listOnlyValid = new TestMetadataMergingList<ImmutableTestClassMetadata>(true);
+
     @Before
     public void before() {
 	list.clear();
+	listOnlyValid.clear();
     }
 
     @Test
@@ -172,6 +175,46 @@ public class TestMetadataMergingListMergingBehaviours {
 	clientList.add(c2);
 	list.addAll(clientList);
 	assertThat(list.size(), is(2));
+
+    }
+
+    @Test
+    public void shouldNotAddNonExistingTestClassesUsingAddAllIfInvalidAndOnlyValidIsSetToTrue() throws Exception {
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata(false, "name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata(true, "name2", "methodName2");
+	LinkedList<ImmutableTestClassMetadata> clientList = new LinkedList<ImmutableTestClassMetadata>();
+	clientList.add(c1);
+	clientList.add(c2);
+	listOnlyValid.addAll(clientList);
+	assertThat(listOnlyValid.size(), is(1));
+
+    }
+
+    @Test
+    public void shouldNotMergeSameTestClassesMetadataIfOneIsNotValidAndOnlyValidIsSetToTrue() throws Exception {
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata(true, "name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata(false, "name", "methodName2");
+	listOnlyValid.add(c1);
+	listOnlyValid.add(c2);
+	assertThat(listOnlyValid.size(), is(1));
+	assertThat(listOnlyValid.iterator().next().getTestClassName(), is("name"));
+	assertThat(listOnlyValid.iterator().next().getMethodsSpecificMetaDatas().size(), is(1));
+	Iterator<TestMethodMetadata> iter = listOnlyValid.iterator().next().getMethodsSpecificMetaDatas().iterator();
+	assertThat(iter.next().getMethodName(), is("methodName"));
+
+    }
+
+    @Test
+    public void shouldRemoveInvalid() throws Exception {
+	ImmutableTestClassMetadata c1 = new ImmutableTestClassMetadata(false, "name", "methodName");
+	ImmutableTestClassMetadata c2 = new ImmutableTestClassMetadata(true, "name2", "methodName2");
+	LinkedList<ImmutableTestClassMetadata> clientList = new LinkedList<ImmutableTestClassMetadata>();
+	clientList.add(c1);
+	clientList.add(c2);
+	list.addAll(clientList);
+	assertThat(list.size(), is(2));
+	list.removeInvalid();
+	assertThat(list.size(), is(1));
 
     }
 

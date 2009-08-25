@@ -57,11 +57,15 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      *      Collection)
      */
     public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses) {
+	return this.build(classesUnderTest, testClasses, false);
+    }
+
+    public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid) {
 	Map<String, Class<?>> testClassesMap = new HashMap<String, Class<?>>();
 	for (Class<?> clazz : testClasses) {
 	    testClassesMap.put(clazz.getCanonicalName(), clazz);
 	}
-	return buildFromClassUnderTest(classesUnderTest, testClassesMap);
+	return buildFromClassUnderTest(classesUnderTest, testClassesMap, onlyValid);
 
     }
 
@@ -70,12 +74,13 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * 
      * @param classesUnderTest
      * @param testClasses
+     * @param onlyValid
      * @return application metadata collected only from class under test
      */
-    /* package */Map<String, ClassUnderTestMetadata> buildFromClassUnderTest(Collection<Class<?>> classesUnderTest, Map<String, Class<?>> testClasses) {
+    /* package */Map<String, ClassUnderTestMetadata> buildFromClassUnderTest(Collection<Class<?>> classesUnderTest, Map<String, Class<?>> testClasses, boolean onlyValid) {
 	final Map<String, ClassUnderTestMetadata> classUnderTestMetadatas = new HashMap<String, ClassUnderTestMetadata>();
-	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatas = new TestMetadataMergingList<ImmutableTestClassMetadata>();
-	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatasForMethods = new TestMetadataMergingList<ImmutableTestClassMetadata>();
+	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatas = new TestMetadataMergingList<ImmutableTestClassMetadata>(onlyValid);
+	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatasForMethods = new TestMetadataMergingList<ImmutableTestClassMetadata>(onlyValid);
 	Map<String, MethodUnderTestMetadata> methodSpecicMetadatas = new HashMap<String, MethodUnderTestMetadata>();
 
 	for (Class<?> clazzUnderTest : classesUnderTest) {
