@@ -1,23 +1,19 @@
 package it.javalinux.testedby.metadata.builder.annotations;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
+import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.hasItem;
-
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
-import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.TestClassMetadata;
 import it.javalinux.testedby.metadata.TestMethodMetadata;
-import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodMetadata;
-import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestMethodMetadata;
+import it.javalinux.testedby.testsupport.ClassExtendingAbstractClass;
+import it.javalinux.testedby.testsupport.ClassImplementingInterfaceUnderTestWithItsOwnAnnotations;
 import it.javalinux.testedby.testsupport.ClassUnderTestAnnotationListOnClass;
 import it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationAndListOnClass;
 import it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationAndListOnMethods;
@@ -29,6 +25,8 @@ import it.javalinux.testedby.testsupport.ClassUnderTestWithAllAnnotations;
 import it.javalinux.testedby.testsupport.ClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods;
 import it.javalinux.testedby.testsupport.TestClassOne;
 import it.javalinux.testedby.testsupport.TestClassTwo;
+import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceOne;
+import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceTwo;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -43,16 +41,18 @@ public class AnnotationBasedMetadataBuilderTest {
 
     private static AnnotationBasedMetadataBuilder builder;
 
-    private static List<Class<?>> testClasses;
-
     private final static TestClassMetadata TEST_CLASS_ONE_METADATA = new ImmutableTestClassMetadata(true, "it.javalinux.testedby.testsupport.TestClassOne", "");
 
     private final static TestClassMetadata TEST_CLASS_TWO_METADATA = new ImmutableTestClassMetadata(true, "it.javalinux.testedby.testsupport.TestClassTwo", "");
 
+    private final static TestClassMetadata TEST_CLASS_ONE_ON_INTERFACE_METADATA = new ImmutableTestClassMetadata(true, "it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceOne", "");
+
+    private final static TestClassMetadata TEST_CLASS_TWO_ON_INTERFACE_METADATA = new ImmutableTestClassMetadata(true, "it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceTwo", "");
+
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
-	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class);
+
     }
 
     @Before
@@ -241,6 +241,40 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_TWO_METADATA)));
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
 	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(1));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+	}
+    }
+
+    @Test
+    public void buildShouldRunOnClassImplementingInterfaceUnderTestWithItsOwnAnnotations() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class, TestClassOnInterfaceOne.class, TestClassOnInterfaceTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class);
+	Map<String, ClassUnderTestMetadata> metadatas = builder.build(classesUnderTest, testClasses, false);
+	assertThat(metadatas.keySet(), hasItem("it.javalinux.testedby.testsupport.ClassImplementingInterfaceUnderTestWithItsOwnAnnotations"));
+	ClassUnderTestMetadata metadata = metadatas.get("it.javalinux.testedby.testsupport.ClassImplementingInterfaceUnderTestWithItsOwnAnnotations");
+	assertThat(metadata.getAllTestMetadata().size(), is(2));
+	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_TWO_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
+	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+	}
+    }
+
+    @Test
+    public void buildShouldRunOnClassExtendingAbstractClass() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class, TestClassOnInterfaceOne.class, TestClassOnInterfaceTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassExtendingAbstractClass.class);
+	Map<String, ClassUnderTestMetadata> metadatas = builder.build(classesUnderTest, testClasses, true);
+	assertThat(metadatas.keySet(), hasItem("it.javalinux.testedby.testsupport.ClassExtendingAbstractClass"));
+	ClassUnderTestMetadata metadata = metadatas.get("it.javalinux.testedby.testsupport.ClassExtendingAbstractClass");
+	assertThat(metadata.getAllTestMetadata().size(), is(2));
+	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_ONE_ON_INTERFACE_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
+	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
 	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 	}
     }

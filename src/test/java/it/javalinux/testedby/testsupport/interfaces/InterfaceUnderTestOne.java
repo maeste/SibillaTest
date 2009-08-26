@@ -20,10 +20,13 @@
  */
 package it.javalinux.testedby.testsupport.interfaces;
 
+import it.javalinux.testedby.annotations.TestedBy;
+
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
+@TestedBy(testClass = "TestClassOnInterfaceOne", testMethod = "testMethodOne")
 public interface InterfaceUnderTestOne {
 
     public void methodOne();

@@ -47,7 +47,7 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
     /**
      * @param methodUnderTest
      * @param classUnderTestMetadata
-     * @param testClassesMetadatas
+     * @param testClassesMetadata
      * @param startLine
      * @param endLine
      */
@@ -60,7 +60,7 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
     /**
      * @param methodUnderTest
      * @param classUnderTestMetadata
-     * @param testClassesMetadatas
+     * @param testClassesMetadata
      */
     public ImmutableMethodUnderTestMetadata(MethodMetadata methodUnderTest, ClassUnderTestMetadata classUnderTestMetadata, Collection<? extends TestClassMetadata> testClassesMetadata) {
 	this.methodUnderTest = methodUnderTest;

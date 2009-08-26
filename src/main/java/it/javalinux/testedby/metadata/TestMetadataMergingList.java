@@ -61,7 +61,7 @@ public class TestMetadataMergingList<E extends TestClassMetadata> extends Abstra
     @Override
     public synchronized boolean add(E e) {
 	int i;
-	if (onlyValid && !e.isValid()) {
+	if (e == null || (onlyValid && !e.isValid())) {
 	    return false;
 	}
 	if ((i = underlyingList.indexOf(e)) != -1) {

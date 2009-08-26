@@ -20,10 +20,29 @@
  */
 package it.javalinux.testedby.testsupport.interfaces;
 
+import it.javalinux.testedby.annotations.TestedBy;
+
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
- *
+ * 
  */
-public class AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations {
+public class AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations implements InterfaceUnderTestOne, InterfaceUnderTestTwo {
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.testsupport.interfaces.InterfaceUnderTestOne#methodOne()
+     */
+    @TestedBy(testClass = "TestClassOnInterfaceOne")
+    public void methodOne() {
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.testsupport.interfaces.InterfaceUnderTestOne#methodTwo()
+     */
+    public void methodTwo() {
+    }
 
 }

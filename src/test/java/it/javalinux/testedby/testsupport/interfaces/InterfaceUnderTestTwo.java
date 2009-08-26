@@ -20,10 +20,14 @@
  */
 package it.javalinux.testedby.testsupport.interfaces;
 
+import it.javalinux.testedby.annotations.TestedBy;
+import it.javalinux.testedby.annotations.TestedByList;
+
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
- *
+ * 
  */
+@TestedByList(@TestedBy(testClass = "TestClassOnInterfaceTwo"))
 public interface InterfaceUnderTestTwo {
 
 }

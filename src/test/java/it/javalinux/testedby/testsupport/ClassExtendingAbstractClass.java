@@ -18,12 +18,16 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.testsupport.interfaces;
+package it.javalinux.testedby.testsupport;
+
+import it.javalinux.testedby.annotations.TestedBy;
+import it.javalinux.testedby.testsupport.interfaces.AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
- *
+ * 
  */
-public class ClassClassExtendingAbstractClass {
+@TestedBy(testClass = "TestClassOne.java")
+public class ClassExtendingAbstractClass extends AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations {
 
 }
