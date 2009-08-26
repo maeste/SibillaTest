@@ -25,19 +25,19 @@ import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import java.util.Collection;
 
 /**
- * It represent metadatas for a Test class. It contains both its own metadata
- * (accessed by {@link #getTestClassName()} ) and a Colection of
+ * It represents metadata for a Test class. It contains both its own metadata
+ * (accessed by {@link #getTestClassName()} ) and a Collection of
  * {@link TestMethodMetadata} (accessed by
- * {@link #getMethodsSpecificMetaDatas()})
+ * {@link #getMethodsSpecificMetadata()})
  * 
- * Note that this metadata doesn't represent necessarily the test class
+ * Note that these metadata do not necessarily represent the test class
  * completely, but only methods that insist on a class under test. In fact this
  * metadata are created during class (and methods) under test metadata
  * collection. In other word we can have multiple {@link TestClassMetadata} for
  * a single real test class, containing different method metadatas for method
  * stressing different class under test.
  * 
- * i.e
+ * i.e.
  * 
  * <pre>
  *  Class firstClass {
@@ -75,7 +75,7 @@ import java.util.Collection;
  * 
  * Metadata will be created during {@link ClassUnderTestMetadata} or
  * {@link MethodUnderTestMetadata} creation by a {@link MetaDataBuilder} with a
- * specific strategy
+ * specific strategy.
  * 
  * @author stefano.maestri@javalinux.it
  * 
@@ -85,7 +85,6 @@ public abstract class TestClassMetadata implements Metadata {
     private static final long serialVersionUID = 1L;
 
     /**
-     * t
      * 
      * @return the test full qualified name
      */
@@ -93,10 +92,10 @@ public abstract class TestClassMetadata implements Metadata {
 
     /**
      * 
-     * @return a Colection of {@link TestMethodMetadata} representing metadata
+     * @return a Collection of {@link TestMethodMetadata} representing metadata
      *         specific of methods of test class
      */
-    public abstract Collection<TestMethodMetadata> getMethodsSpecificMetaDatas();
+    public abstract Collection<TestMethodMetadata> getMethodsSpecificMetadata();
 
     /**
      * {@inheritDoc}
@@ -129,7 +128,7 @@ public abstract class TestClassMetadata implements Metadata {
 
     @Override
     public String toString() {
-	return "<[ testclassNames=" + this.getTestClassName() + ", MethodsSpecificMetaDatas=" + this.getMethodsSpecificMetaDatas() + "]>";
+	return "<[ testclassNames=" + this.getTestClassName() + ", MethodsSpecificMetadata=" + this.getMethodsSpecificMetadata() + "]>";
     }
 
     /**

@@ -129,7 +129,7 @@ public class TestMetadataMergingList<E extends TestClassMetadata> extends Abstra
 	if (!canBeMerged(left, right)) {
 	    return left;
 	}
-	for (TestMethodMetadata rightM : right.getMethodsSpecificMetaDatas()) {
+	for (TestMethodMetadata rightM : right.getMethodsSpecificMetadata()) {
 	    testClassMetaData = left;
 	    if (canBeMerged(left, rightM)) {
 		testClassMetaData = merge(left, rightM);
@@ -146,7 +146,7 @@ public class TestMetadataMergingList<E extends TestClassMetadata> extends Abstra
 	    return left;
 	}
 	boolean merged = false;
-	for (TestMethodMetadata leftM : left.getMethodsSpecificMetaDatas()) {
+	for (TestMethodMetadata leftM : left.getMethodsSpecificMetadata()) {
 	    if (canBeMerged(leftM, rightM)) {
 		testMethodCol.add(merge(leftM, rightM));
 		merged = true;

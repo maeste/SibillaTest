@@ -118,7 +118,7 @@ public class TestMetadataMergingListMergingBehaviours {
 	list.add(c2);
 	assertThat(list.size(), is(1));
 	assertThat(list.iterator().next().getTestClassName(), is("name"));
-	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetaDatas().iterator();
+	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetadata().iterator();
 	assertThat(iter.next().getMethodName(), is("methodName"));
 	assertThat(iter.next().getMethodName(), is("methodName2"));
 
@@ -134,7 +134,7 @@ public class TestMetadataMergingListMergingBehaviours {
 
 	assertThat(list.size(), is(1));
 	assertThat(list.iterator().next().getTestClassName(), is("name"));
-	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetaDatas().iterator();
+	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetadata().iterator();
 	assertThat(iter.next().getMethodName(), is("methodName"));
 	assertThat(iter.next().getMethodName(), is("methodName2"));
 
@@ -160,7 +160,7 @@ public class TestMetadataMergingListMergingBehaviours {
 	list.addAll(clientList);
 	assertThat(list.size(), is(1));
 	assertThat(list.iterator().next().getTestClassName(), is("name"));
-	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetaDatas().iterator();
+	Iterator<TestMethodMetadata> iter = list.iterator().next().getMethodsSpecificMetadata().iterator();
 	assertThat(iter.next().getMethodName(), is("methodName"));
 	assertThat(iter.next().getMethodName(), is("methodName2"));
 
@@ -198,8 +198,8 @@ public class TestMetadataMergingListMergingBehaviours {
 	listOnlyValid.add(c2);
 	assertThat(listOnlyValid.size(), is(1));
 	assertThat(listOnlyValid.iterator().next().getTestClassName(), is("name"));
-	assertThat(listOnlyValid.iterator().next().getMethodsSpecificMetaDatas().size(), is(1));
-	Iterator<TestMethodMetadata> iter = listOnlyValid.iterator().next().getMethodsSpecificMetaDatas().iterator();
+	assertThat(listOnlyValid.iterator().next().getMethodsSpecificMetadata().size(), is(1));
+	Iterator<TestMethodMetadata> iter = listOnlyValid.iterator().next().getMethodsSpecificMetadata().iterator();
 	assertThat(iter.next().getMethodName(), is("methodName"));
 
     }

@@ -26,17 +26,17 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * It represent metadatas for ClassUnderTest. It contains both its own metadata
- * (accessed by {@link #getTestClassesMetadatas()} ) and a Colection of
+ * It represents metadata for ClassUnderTest. It contains both its own metadata
+ * (accessed by {@link #getTestClassesMetadata()} ) and a Colection of
  * {@link MethodUnderTestMetadata} (accessed by
- * {@link #getMethodsSpecificMetaDatas()})
+ * {@link #getMethodsSpecificMetadata()})
  * 
- * It aims to collect metadata to make possible navigation of relation between
+ * It aims at collecting metadata to allow navigation of relationships between
  * class under test and test classes/methods using class under test as starting
  * point.
  * 
- * Metadata will be created by a {@link MetaDataBuilder} with a specific
- * strategy
+ * Metadata have to be created by a {@link MetaDataBuilder} with a specific
+ * strategy.
  * 
  * @author stefano.maestri@javalinux.it
  * 
@@ -54,18 +54,18 @@ public abstract class ClassUnderTestMetadata implements CodeUnderTestMetadata {
     /**
      * 
      * @return a {@link Map} of {@link MethodUnderTestMetadata} representing
-     *         metadata specific of methods of the class under test. The key of
-     *         thios map is the method name
+     *         metadata specific for methods of the class under test. The key of
+     *         this map is the method name.
      */
-    public abstract Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas();
+    public abstract Map<String, MethodUnderTestMetadata> getMethodsSpecificMetadata();
 
     public Collection<TestClassMetadata> getAllTestMetadata() {
-	TestMetadataMergingList<TestClassMetadata> testMetadatas = new TestMetadataMergingList<TestClassMetadata>();
-	testMetadatas.addAll(this.getTestClassesMetadatas());
-	for (MethodUnderTestMetadata methodMetadata : this.getMethodsSpecificMetaDatas().values()) {
-	    testMetadatas.addAll(methodMetadata.getTestClassesMetadatas());
+	TestMetadataMergingList<TestClassMetadata> testsMetadata = new TestMetadataMergingList<TestClassMetadata>();
+	testsMetadata.addAll(this.getTestClassesMetadata());
+	for (MethodUnderTestMetadata methodMetadata : this.getMethodsSpecificMetadata().values()) {
+	    testsMetadata.addAll(methodMetadata.getTestClassesMetadata());
 	}
-	return testMetadatas;
+	return testsMetadata;
 
     }
 

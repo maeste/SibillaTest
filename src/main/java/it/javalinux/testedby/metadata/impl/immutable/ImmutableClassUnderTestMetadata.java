@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * Immutable implementation of
+ * Immutable implementation of {@link ClassUnderTestMetadata}.
  * 
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
@@ -41,20 +41,20 @@ public class ImmutableClassUnderTestMetadata extends ClassUnderTestMetadata {
 
     private final String className;
 
-    private final Collection<TestClassMetadata> testClassesMetadatas = new LinkedList<TestClassMetadata>();
+    private final Collection<TestClassMetadata> testClassesMetadata = new LinkedList<TestClassMetadata>();
 
-    private final Map<String, MethodUnderTestMetadata> methodsSpecificMetaDatas = new HashMap<String, MethodUnderTestMetadata>();
+    private final Map<String, MethodUnderTestMetadata> methodsSpecificMetadata = new HashMap<String, MethodUnderTestMetadata>();
 
     /**
      * @param className
-     * @param testClassesMetadatas
-     * @param methodsSpecificMetaDatas
+     * @param testClassesMetadata
+     * @param methodsSpecificMetadata
      */
-    public ImmutableClassUnderTestMetadata(String className, Collection<? extends TestClassMetadata> testClassesMetadatas, Map<String, MethodUnderTestMetadata> methodsSpecificMetaDatas) {
+    public ImmutableClassUnderTestMetadata(String className, Collection<? extends TestClassMetadata> testClassesMetadata, Map<String, MethodUnderTestMetadata> methodsSpecificMetadata) {
 	super();
 	this.className = className;
-	this.testClassesMetadatas.addAll(testClassesMetadatas);
-	this.methodsSpecificMetaDatas.putAll(methodsSpecificMetaDatas);
+	this.testClassesMetadata.addAll(testClassesMetadata);
+	this.methodsSpecificMetadata.putAll(methodsSpecificMetadata);
     }
 
     /**
@@ -70,23 +70,23 @@ public class ImmutableClassUnderTestMetadata extends ClassUnderTestMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getMethodsSpecificMetaDatas()
+     * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getMethodsSpecificMetadata()
      */
     @Override
-    public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetaDatas() {
+    public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetadata() {
 	HashMap<String, MethodUnderTestMetadata> map = new HashMap<String, MethodUnderTestMetadata>();
-	map.putAll(methodsSpecificMetaDatas);
+	map.putAll(methodsSpecificMetadata);
 	return map;
     }
 
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.CodeUnderTestMetadata#getTestClassesMetadatas()
+     * @see it.javalinux.testedby.metadata.CodeUnderTestMetadata#getTestClassesMetadata()
      */
-    public Collection<TestClassMetadata> getTestClassesMetadatas() {
+    public Collection<TestClassMetadata> getTestClassesMetadata() {
 	LinkedList<TestClassMetadata> list = new LinkedList<TestClassMetadata>();
-	list.addAll(testClassesMetadatas);
+	list.addAll(testClassesMetadata);
 	return list;
     }
 

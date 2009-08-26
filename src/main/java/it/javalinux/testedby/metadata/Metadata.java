@@ -23,8 +23,8 @@ package it.javalinux.testedby.metadata;
 import java.io.Serializable;
 
 /**
- * MArker interface for metadata. It requires each implementor to redefine
- * equals and hasCode Method
+ * Marker interface for metadata. It requires each implementor to redefine
+ * equals and hasCode methods.
  * 
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 

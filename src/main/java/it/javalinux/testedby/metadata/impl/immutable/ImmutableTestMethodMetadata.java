@@ -24,6 +24,8 @@ import it.javalinux.testedby.metadata.TestClassMetadata;
 import it.javalinux.testedby.metadata.TestMethodMetadata;
 
 /**
+ * An immutable implementation of {@link TestMethodMetadata}.
+ * 
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
@@ -56,7 +58,9 @@ public class ImmutableTestMethodMetadata extends TestMethodMetadata {
     }
 
     /**
-     * @return testClassMetadata
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.metadata.TestMethodMetadata#getTestClassMetadata()
      */
     @Override
     public TestClassMetadata getTestClassMetadata() {

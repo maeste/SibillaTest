@@ -71,8 +71,8 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadata.getAllTestMetadata().size(), is(2));
 	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(2));
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 	}
     }
 
@@ -88,8 +88,8 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadata.getAllTestMetadata().size(), is(2));
 	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(2));
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 	}
     }
 
@@ -102,24 +102,24 @@ public class AnnotationBasedMetadataBuilderTest {
 	Map<String, ClassUnderTestMetadata> metadatas = builder.build(classesUnderTest, testClasses);
 	assertThat(metadatas.keySet(), hasItem("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationAndListOnMethods"));
 	ClassUnderTestMetadata metadata = metadatas.get("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationAndListOnMethods");
-	assertThat(metadata.getTestClassesMetadatas().size(), is(0));
+	assertThat(metadata.getTestClassesMetadata().size(), is(0));
 
-	for (TestClassMetadata classMetadata : metadata.getMethodsSpecificMetaDatas().get("methodOne").getTestClassesMetadatas()) {
+	for (TestClassMetadata classMetadata : metadata.getMethodsSpecificMetadata().get("methodOne").getTestClassesMetadata()) {
 	    if (classMetadata.equals(TEST_CLASS_ONE_METADATA)) {
-		assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(1));
-		assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItem(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata))));
+		assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(1));
+		assertThat(classMetadata.getMethodsSpecificMetadata(), hasItem(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata))));
 	    } else {
 		fail("method One Should not have testClasseMetadata!=TEST_CLASS_ONE_METADATA");
 	    }
 	}
 
-	for (TestClassMetadata classMetadata : metadata.getMethodsSpecificMetaDatas().get("methodTwo").getTestClassesMetadatas()) {
+	for (TestClassMetadata classMetadata : metadata.getMethodsSpecificMetadata().get("methodTwo").getTestClassesMetadata()) {
 	    if (classMetadata.equals(TEST_CLASS_ONE_METADATA)) {
-		assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(1));
-		assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItem(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+		assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(1));
+		assertThat(classMetadata.getMethodsSpecificMetadata(), hasItem(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 	    } else {
-		assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(2));
-		assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+		assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
+		assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 
 	    }
 	}
@@ -128,8 +128,8 @@ public class AnnotationBasedMetadataBuilderTest {
 
 	// merging is fine
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(2));
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 	}
 
     }
@@ -146,8 +146,8 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadata.getAllTestMetadata().size(), is(1));
 	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_ONE_METADATA)));
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(1));
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItem(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata))));
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(1));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItem(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata))));
 	}
     }
 
@@ -161,13 +161,13 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadatas.keySet(), hasItem("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnMethod"));
 	ClassUnderTestMetadata metadata = metadatas.get("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnMethod");
 	// no metadata directly on class
-	assertThat(metadata.getTestClassesMetadatas().size(), is(0));
+	assertThat(metadata.getTestClassesMetadata().size(), is(0));
 	// metadatas from methods
 	assertThat(metadata.getAllTestMetadata().size(), is(1));
 	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_ONE_METADATA)));
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(2));
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 	}
     }
 
@@ -181,14 +181,14 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadatas.keySet(), hasItem("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnWrongMethod"));
 	ClassUnderTestMetadata metadata = metadatas.get("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnWrongMethod");
 	// no metadata directly on class
-	assertThat(metadata.getTestClassesMetadatas().size(), is(0));
+	assertThat(metadata.getTestClassesMetadata().size(), is(0));
 	// metadatas from methods
 	assertThat(metadata.getAllTestMetadata().size(), is(1));
 	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_ONE_METADATA)));
 	assertThat(metadata.getAllTestMetadata().iterator().next().isValid(), is(false));
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(1));
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItem(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("wrongMethod", classMetadata))));
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(1));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItem(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("wrongMethod", classMetadata))));
 	}
     }
 
@@ -202,7 +202,7 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadatas.keySet(), hasItem("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationWithWrongClassName"));
 	ClassUnderTestMetadata metadata = metadatas.get("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationWithWrongClassName");
 	// no metadata directly on class
-	assertThat(metadata.getTestClassesMetadatas().size(), is(1));
+	assertThat(metadata.getTestClassesMetadata().size(), is(1));
 	// metadatas from methods
 	assertThat(metadata.getAllTestMetadata().size(), is(1));
 	TestClassMetadata testClassWrong = new ImmutableTestClassMetadata(true, "it.javalinux.testedby.testsupport.TestClassWrong", "");
@@ -223,8 +223,8 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadata.getAllTestMetadata().size(), is(2));
 	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(2));
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodOne", classMetadata)), equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 	}
     }
 
@@ -240,8 +240,8 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadata.getAllTestMetadata().size(), is(1));
 	assertThat(metadata.getAllTestMetadata(), hasItems(equalTo(TEST_CLASS_TWO_METADATA)));
 	for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas().size(), is(1));
-	    assertThat(classMetadata.getMethodsSpecificMetaDatas(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
+	    assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(1));
+	    assertThat(classMetadata.getMethodsSpecificMetadata(), hasItems(equalTo((TestMethodMetadata) new ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
 	}
     }
 }

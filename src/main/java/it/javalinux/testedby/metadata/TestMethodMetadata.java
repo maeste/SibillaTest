@@ -23,16 +23,16 @@ package it.javalinux.testedby.metadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 /**
- * It represent metadatas for a Test method. It contains both its own metadata
+ * It represents the metadata for a Test method. It contains both its own metadata
  * (accessed by {@link #getMethodName()}
  * 
  * 
  * It is part of {@link TestClassMetadata}. See its javadoc for further
- * explanation
+ * explanations.
  * 
  * Metadata will be created during {@link ClassUnderTestMetadata} or
  * {@link MethodUnderTestMetadata} creation by a {@link MetaDataBuilder} with a
- * specific strategy
+ * specific strategy.
  * 
  * @author stefano.maestri@javalinux.it
  * 
@@ -47,6 +47,9 @@ public abstract class TestMethodMetadata implements Metadata {
      */
     public abstract String getMethodName();
 
+    /**
+     * @return testClassMetadata
+     */
     public abstract TestClassMetadata getTestClassMetadata();
 
     /**

@@ -23,15 +23,15 @@ package it.javalinux.testedby.metadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
 /**
- * It represent metadatas for method under test. It contains its own metadata
- * (accessed by {@link #getTestClassesMetadatas()} )
+ * It represents metadata for a method under test. It contains its own metadata
+ * (accessed by {@link #getTestClassesMetadata()} )
  * 
- * It aims to collect metadata to make possible navigation of relation between
+ * It aims at collecting metadata to allow navigation of relationships between
  * method under test and test classes/methods using method under test as
  * starting point.
  * 
- * Metadata will be created by a {@link MetaDataBuilder} with a specific
- * strategy
+ * Metadata have to be created by a {@link MetaDataBuilder} with a specific
+ * strategy.
  * 
  * @author stefano.maestri@javalinux.it
  * 

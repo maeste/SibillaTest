@@ -27,6 +27,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
+ * An immutable implementation of {@link TestClassMetadata}.
+ * 
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
@@ -34,7 +36,7 @@ public class ImmutableTestClassMetadata extends TestClassMetadata {
 
     private static final long serialVersionUID = 1L;
 
-    private final Collection<TestMethodMetadata> methodSpecificMetadatas = new LinkedList<TestMethodMetadata>();
+    private final Collection<TestMethodMetadata> methodsSpecificMetadata = new LinkedList<TestMethodMetadata>();
 
     private final String testClassName;
 
@@ -44,12 +46,12 @@ public class ImmutableTestClassMetadata extends TestClassMetadata {
      * 
      * @param valid
      * @param testClassName
-     * @param methodSpecificMetadatas
+     * @param methodsSpecificMetadata
      */
-    public ImmutableTestClassMetadata(boolean valid, String testClassName, Collection<TestMethodMetadata> methodSpecificMetadatas) {
+    public ImmutableTestClassMetadata(boolean valid, String testClassName, Collection<TestMethodMetadata> methodsSpecificMetadata) {
 	super();
 	this.testClassName = testClassName;
-	this.methodSpecificMetadatas.addAll(methodSpecificMetadatas);
+	this.methodsSpecificMetadata.addAll(methodsSpecificMetadata);
 	this.valid = valid;
     }
 
@@ -57,7 +59,7 @@ public class ImmutableTestClassMetadata extends TestClassMetadata {
 	super();
 	this.testClassName = testClassName;
 	TestMethodMetadata testMethodMetadata = new ImmutableTestMethodMetadata(methodName, this);
-	this.methodSpecificMetadatas.add(testMethodMetadata);
+	this.methodsSpecificMetadata.add(testMethodMetadata);
 	this.valid = valid;
     }
 
@@ -66,7 +68,7 @@ public class ImmutableTestClassMetadata extends TestClassMetadata {
 	this.testClassName = testClassName;
 	for (String methodName : methodNames) {
 	    TestMethodMetadata testMethodMetadata = new ImmutableTestMethodMetadata(methodName, this);
-	    this.methodSpecificMetadatas.add(testMethodMetadata);
+	    this.methodsSpecificMetadata.add(testMethodMetadata);
 	}
 	this.valid = valid;
     }
@@ -74,12 +76,12 @@ public class ImmutableTestClassMetadata extends TestClassMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.TestClassMetadata#getMethodsSpecificMetaDatas()
+     * @see it.javalinux.testedby.metadata.TestClassMetadata#getMethodsSpecificMetadata()
      */
     @Override
-    public Collection<TestMethodMetadata> getMethodsSpecificMetaDatas() {
+    public Collection<TestMethodMetadata> getMethodsSpecificMetadata() {
 	LinkedList<TestMethodMetadata> list = new LinkedList<TestMethodMetadata>();
-	list.addAll(methodSpecificMetadatas);
+	list.addAll(methodsSpecificMetadata);
 	return list;
     }
 
