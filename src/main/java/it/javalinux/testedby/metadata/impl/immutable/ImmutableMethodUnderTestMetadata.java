@@ -42,8 +42,6 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
 
     private final Collection<TestClassMetadata> testClassesMetadata = new LinkedList<TestClassMetadata>();
 
-    private final MethodLineNumber methodLineNumber;
-
     private final ClassUnderTestMetadata classUnderTestMetadata;
 
     /**
@@ -57,7 +55,6 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
 	this.methodUnderTest = methodUnderTest;
 	this.classUnderTestMetadata = classUnderTestMetadata;
 	this.testClassesMetadata.addAll(testClassesMetadata);
-	this.methodLineNumber = new MethodLineNumber(startLine, endLine);
     }
 
     /**
@@ -69,17 +66,6 @@ public class ImmutableMethodUnderTestMetadata extends MethodUnderTestMetadata {
 	this.methodUnderTest = methodUnderTest;
 	this.classUnderTestMetadata = classUnderTestMetadata;
 	this.testClassesMetadata.addAll(testClassesMetadata);
-	this.methodLineNumber = null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see it.javalinux.testedby.metadata.MethodUnderTestMetadata#getLineNumbers()
-     */
-    @Override
-    public MethodLineNumber getLineNumbers() {
-	return methodLineNumber;
     }
 
     /**

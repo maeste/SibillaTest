@@ -46,17 +46,6 @@ public abstract class MethodUnderTestMetadata implements CodeUnderTestMetadata {
      */
     public abstract MethodMetadata getMethodUnderTest();
 
-    /**
-     * 
-     * @return a {@link MethodLineNumber} representing starting and ending
-     *         linenumber for method under test. It is useful to test runner to
-     *         identify which are method changed in a class under test and so
-     *         which are test method to run. In case line numbers aren't
-     *         available it returns null (i.e if metadatas have been collected
-     *         by annotations)
-     */
-    public abstract MethodLineNumber getLineNumbers();
-
     public abstract ClassUnderTestMetadata getClassUnderTestMetadata();
 
     /**
