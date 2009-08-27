@@ -21,8 +21,7 @@
 package it.javalinux.testedby.metadata_v2;
 
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
 /**
  * This metadata interface defines what can be known about the tests and the code under test
@@ -40,7 +39,7 @@ public interface TestsMetadata extends Metadata {
      * @param method
      * @return a set with the full qualified name of classes
      */
-    public Set<String> getClassesTestedBy(Class<?> clazz, Method method);
+    public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, Method method);
     
     /**
      * Returns the classes tested (classes under test) by the provided class
@@ -48,7 +47,7 @@ public interface TestsMetadata extends Metadata {
      * @param clazz
      * @return a set with the full qualified name of classes
      */
-    public Set<String> getClassesTestedBy(Class<?> clazz);
+    public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz);
     
     /**
      * Returns the methods (methods under test) tested by the provided class and method
@@ -58,7 +57,7 @@ public interface TestsMetadata extends Metadata {
      * @return a map whose keys are the class names and whose values are sets of methods of
      * 	       the corresponding class.
      */
-    public Map<String, Set<MethodMetadata>> getMethodsTestedBy(Class<?> clazz, Method method);
+    public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, Method method);
 
     /**
      * Returns the methods (methods under test) tested by the provided class 
@@ -67,7 +66,7 @@ public interface TestsMetadata extends Metadata {
      * @return a map whose keys are the class names and whose values are sets of methods of
      * 	       the corresponding class.
      */
-    public Map<String, Set<MethodMetadata>> getMethodsTestedBy(Class<?> clazz);
+    public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz);
     
     /**
      * Returns the test classes that test the provided class and method
@@ -76,7 +75,7 @@ public interface TestsMetadata extends Metadata {
      * @param method
      * @return a set with the full qualified name of classes
      */
-    public Set<String> getTestClassesFor(Class<?> clazz, Method method);
+    public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, Method method);
     
     /**
      * Returns the test classes that test the provided class
@@ -84,7 +83,7 @@ public interface TestsMetadata extends Metadata {
      * @param clazz
      * @return a set with the full qualified name of classes
      */
-    public Set<String> getTestClassesFor(Class<?> clazz);
+    public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz);
     
     /**
      * Returns the test methods that test the provided class and method
@@ -94,7 +93,7 @@ public interface TestsMetadata extends Metadata {
      * @return a map whose keys are the class names and whose values are sets of methods of
      * 	       the corresponding class.
      */
-    public Map<String, Set<MethodMetadata>> getTestMethodsFor(Class<?> clazz, Method method);
+    public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, Method method);
     
     /**
      * Returns the test methods that test the provided class
@@ -103,5 +102,5 @@ public interface TestsMetadata extends Metadata {
      * @return a map whose keys are the class names and whose values are sets of methods of
      * 	       the corresponding class.
      */
-    public Map<String, Set<MethodMetadata>> getTestMethodsFor(Class<?> clazz);
+    public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz);
 }
