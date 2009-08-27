@@ -73,7 +73,7 @@ public class ImmutableMethodMetadata implements MethodMetadata {
     }
     
     public boolean equals(Object o) {
-	if (!(o instanceof MethodMetadata)) {
+	if (o == null || !(o instanceof MethodMetadata)) {
 	    return false;
 	}
 	MethodMetadata obj = (MethodMetadata)o;
