@@ -35,22 +35,23 @@ import java.util.Set;
  */
 public class InvocationTracker {
 
-    private static ThreadLocal<InvocationTracker> metadataCollector;
-    
+    private static ThreadLocal<InvocationTracker> metadataCollector = new InheritableThreadLocal<InvocationTracker>() {
+	@Override
+	protected InvocationTracker initialValue() {
+	    return new InvocationTracker();
+	}
+    };
+
     private String testClass;
     private String testMethod;
+    // a map className->methodNames of the invoked classes-methods
     private Map<String, Set<String>> invoked = new HashMap<String, Set<String>>();
     
-    public static InvocationTracker getInstance() {
-	InvocationTracker mdc = metadataCollector.get();
-	if (mdc == null) {
-	    mdc = new InvocationTracker();
-	    metadataCollector.set(mdc);
-	}
-	return mdc;
+    public synchronized static InvocationTracker getInstance() {
+	return metadataCollector.get();
     }
     
-    public static void cleanUp() {
+    public synchronized static void cleanUp() {
 	metadataCollector.remove();
     }
 
@@ -70,7 +71,7 @@ public class InvocationTracker {
         this.testMethod = testMethod;
     }
     
-    public void addInvokedMethod(String clazz, String method) {
+    public synchronized void addInvokedMethod(String clazz, String method) {
 	if (invoked.keySet().contains(clazz)) {
 	    Set<String> methods = invoked.get(clazz);
 	    methods.add(method);
@@ -79,5 +80,17 @@ public class InvocationTracker {
 	    s.add(method);
 	    invoked.put(clazz, s);
 	}
+    }
+    
+    public synchronized Map<String, Set<String>> getInvokedMethodMap() {
+	Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+	for (String s : invoked.keySet()) {
+	    Set<String> set = new HashSet<String>();
+	    for (String v : invoked.get(s)) {
+		set.add(v);
+	    }
+	    map.put(s, set);
+	}
+	return map;
     }
 }
