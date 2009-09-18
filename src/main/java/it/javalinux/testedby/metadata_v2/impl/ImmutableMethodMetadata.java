@@ -28,18 +28,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * An immutable method metadata that can be built from both
- * plain strings and a java.lang.reflect.Method instance. 
+ * An immutable method metadata that can be built from both plain strings and a
+ * java.lang.reflect.Method instance.
  * 
  * @author alessio.soldano@javalinux.it
  * @since 23-Aug-2009
- *
+ * 
  */
 public class ImmutableMethodMetadata implements MethodMetadata {
 
     private static final long serialVersionUID = 1L;
-    
+
     private final String name;
+
     private final String[] parameterTypes;
 
     public ImmutableMethodMetadata(String name, String[] parameterTypes) {
@@ -71,14 +72,14 @@ public class ImmutableMethodMetadata implements MethodMetadata {
     public String[] getParameterTypes() {
 	return parameterTypes;
     }
-    
+
     @Override
     public boolean equals(Object o) {
 	if (o == null || !(o instanceof MethodMetadata)) {
 	    return false;
 	}
-	MethodMetadata obj = (MethodMetadata)o;
-	//name check
+	MethodMetadata obj = (MethodMetadata) o;
+	// name check
 	boolean nameCheck;
 	if (name == null) {
 	    if (obj.getName() != null) {
@@ -94,6 +95,9 @@ public class ImmutableMethodMetadata implements MethodMetadata {
 
     @Override
     public int hashCode() {
+	if (name == null) {
+	    return 0;
+	}
 	return 31 * (name.hashCode() + Arrays.deepHashCode(parameterTypes));
     }
 }

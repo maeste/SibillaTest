@@ -22,6 +22,7 @@ package it.javalinux.testedby.metadata;
 
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
@@ -55,9 +56,10 @@ public abstract class ClassUnderTestMetadata implements CodeUnderTestMetadata {
      * 
      * @return a {@link Map} of {@link MethodUnderTestMetadata} representing
      *         metadata specific for methods of the class under test. The key of
-     *         this map is the method name.
+     *         this map is the method hashcode computed according to
+     *         {@link Method} algorithm.
      */
-    public abstract Map<String, MethodUnderTestMetadata> getMethodsSpecificMetadata();
+    public abstract Map<Integer, MethodUnderTestMetadata> getMethodsSpecificMetadata();
 
     public Collection<TestClassMetadata> getAllTestMetadata() {
 	TestMetadataMergingList<TestClassMetadata> testsMetadata = new TestMetadataMergingList<TestClassMetadata>();

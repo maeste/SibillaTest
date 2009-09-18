@@ -22,62 +22,84 @@ package it.javalinux.testedby.metadata_v2;
 
 /**
  * @author alessio.soldano@javalinux.it
- *
+ * 
  */
 public class StatusMetadata {
-    
+
     private boolean valid;
+
     private boolean justCreated;
+
     private boolean fromAnnotation;
+
     private boolean fromInstrumentation;
-    
+
     /**
      * @return valid
      */
     public boolean isValid() {
-        return valid;
+	return valid;
     }
+
     /**
-     * @param valid Sets valid to the specified value.
+     * @param valid
+     *            Sets valid to the specified value.
+     * @return the instance itself
      */
-    public void setValid(boolean valid) {
-        this.valid = valid;
+    public StatusMetadata setValid(boolean valid) {
+	this.valid = valid;
+	return this;
     }
+
     /**
      * @return justCreated
      */
     public boolean isJustCreated() {
-        return justCreated;
+	return justCreated;
     }
+
     /**
-     * @param justCreated Sets justCreated to the specified value.
+     * @param justCreated
+     *            Sets justCreated to the specified value.
+     * @return the instance itself
      */
-    public void setJustCreated(boolean justCreated) {
-        this.justCreated = justCreated;
+    public StatusMetadata setJustCreated(boolean justCreated) {
+	this.justCreated = justCreated;
+	return this;
     }
+
     /**
      * @return fromAnnotation
      */
     public boolean isFromAnnotation() {
-        return fromAnnotation;
+	return fromAnnotation;
     }
+
     /**
-     * @param fromAnnotation Sets fromAnnotation to the specified value.
+     * @param fromAnnotation
+     *            Sets fromAnnotation to the specified value.
+     * @return the instance itself
      */
-    public void setFromAnnotation(boolean fromAnnotation) {
-        this.fromAnnotation = fromAnnotation;
+    public StatusMetadata setFromAnnotation(boolean fromAnnotation) {
+	this.fromAnnotation = fromAnnotation;
+	return this;
     }
+
     /**
      * @return fromInstrumentation
      */
     public boolean isFromInstrumentation() {
-        return fromInstrumentation;
+	return fromInstrumentation;
     }
+
     /**
-     * @param fromInstrumentation Sets fromInstrumentation to the specified value.
+     * @param fromInstrumentation
+     *            Sets fromInstrumentation to the specified value.
+     * @return the instance itself
      */
-    public void setFromInstrumentation(boolean fromInstrumentation) {
-        this.fromInstrumentation = fromInstrumentation;
+    public StatusMetadata setFromInstrumentation(boolean fromInstrumentation) {
+	this.fromInstrumentation = fromInstrumentation;
+	return this;
     }
-    
+
 }

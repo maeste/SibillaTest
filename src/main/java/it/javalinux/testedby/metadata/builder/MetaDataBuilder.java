@@ -21,6 +21,7 @@
 package it.javalinux.testedby.metadata.builder;
 
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
+import it.javalinux.testedby.metadata_v2.TestsMetadata;
 
 import java.util.Collection;
 import java.util.Map;
@@ -42,7 +43,7 @@ public interface MetaDataBuilder {
      * @return application metadata
      * @throws IllegalStateException
      */
-    public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses);
+    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses);
 
     /**
      * Build application metadatas fo
@@ -53,6 +54,6 @@ public interface MetaDataBuilder {
      * @return application metadata
      * @throws IllegalStateException
      */
-    public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid);
+    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid);
 
 }

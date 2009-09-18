@@ -21,6 +21,7 @@
 package it.javalinux.testedby.metadata_v2.impl;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,36 +42,37 @@ import it.javalinux.testedby.metadata_v2.TestsMetadata;
  * 
  * @author alessio.soldano@javalinux.it
  * @since 27-Aug-2009
- *
+ * 
  */
 public class MetadataRepository implements TestsMetadata {
 
     private static final long serialVersionUID = 1L;
-    
-    //what a given class-method tests
-    private Map<MethodInfo, Set<LinkMetadata>> testsLinks = new HashMap<MethodInfo, Set<LinkMetadata>>(); 
-    //what a given class-method is tested by
-    private Map<MethodInfo, Set<LinkMetadata>> isTestedByLinks = new HashMap<MethodInfo, Set<LinkMetadata>>(); //map MethodInfo -> Set of link id
-    
 
-    public void addConnection(String testClass,
-	    		      String testMethod,
-	    		      String[] testMethodParameters,
-	    		      String testedClass,
-	    		      String testedMethod,
-	    		      String[] testedMethodParameters,
-	    		      StatusMetadata status) {
-	//TODO!! Clone status
+    // what a given class-method tests
+    private Map<MethodInfo, Set<LinkMetadata>> testsLinks = new HashMap<MethodInfo, Set<LinkMetadata>>();
+
+    // what a given class-method is tested by
+    private Map<MethodInfo, Set<LinkMetadata>> isTestedByLinks = new HashMap<MethodInfo, Set<LinkMetadata>>(); // map
+
+    // MethodInfo
+    // ->
+    // Set
+    // of
+    // link
+    // id
+
+    public void addConnection(String testClass, String testMethod, String[] testMethodParameters, String testedClass, String testedMethod, String[] testedMethodParameters, StatusMetadata status) {
+	// TODO!! Clone status
 	MethodMetadata invokedMethodMetadata = new ImmutableMethodMetadata(testedMethod, testedMethodParameters);
 	MethodInfo invoked = new MethodInfo(testedClass, invokedMethodMetadata);
 	MethodMetadata testMethodMetadata = new ImmutableMethodMetadata(testMethod, testMethodParameters);
 	MethodInfo test = new MethodInfo(testClass, testMethodMetadata);
-	
-	//create links
-	LinkMetadata invokedLink = (testedMethod == null) ? new ClassLinkMetadata(status, testedClass) : new MethodLinkMetadata(status, testedClass, invokedMethodMetadata);
-	LinkMetadata testLink = (testMethod == null) ? new ClassLinkMetadata(status, testClass) : new MethodLinkMetadata(status, testClass, testMethodMetadata);
-	
-	//add to testsLink
+
+	// create links
+	LinkMetadata invokedLink = (testedMethod == null || testedMethod.trim() == "") ? new ClassLinkMetadata(status, testedClass) : new MethodLinkMetadata(status, testedClass, invokedMethodMetadata);
+	LinkMetadata testLink = (testMethod == null || testMethod.trim() == "") ? new ClassLinkMetadata(status, testClass) : new MethodLinkMetadata(status, testClass, testMethodMetadata);
+
+	// add to testsLink
 	if (testsLinks.containsKey(test)) {
 	    testsLinks.get(test).add(invokedLink);
 	} else {
@@ -78,7 +80,7 @@ public class MetadataRepository implements TestsMetadata {
 	    set.add(invokedLink);
 	    testsLinks.put(test, set);
 	}
-	//add to the isTestedByLinks
+	// add to the isTestedByLinks
 	if (isTestedByLinks.containsKey(invoked)) {
 	    isTestedByLinks.get(invoked).add(testLink);
 	} else {
@@ -87,11 +89,12 @@ public class MetadataRepository implements TestsMetadata {
 	    isTestedByLinks.put(invoked, set);
 	}
     }
-    
+
     /**
      * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getClassesTestedBy(java.lang.Class, java.lang.reflect.Method)
+     * 
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getClassesTestedBy(java.lang.Class,
+     *      java.lang.reflect.Method)
      */
     public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, Method method) {
 	MethodInfo test = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(method));
@@ -100,7 +103,7 @@ public class MetadataRepository implements TestsMetadata {
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getClassesTestedBy(java.lang.Class)
      */
     public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz) {
@@ -110,8 +113,9 @@ public class MetadataRepository implements TestsMetadata {
 
     /**
      * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getMethodsTestedBy(java.lang.Class, java.lang.reflect.Method)
+     * 
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getMethodsTestedBy(java.lang.Class,
+     *      java.lang.reflect.Method)
      */
     public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, Method method) {
 	MethodInfo test = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(method));
@@ -120,7 +124,7 @@ public class MetadataRepository implements TestsMetadata {
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getMethodsTestedBy(java.lang.Class)
      */
     public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz) {
@@ -130,8 +134,9 @@ public class MetadataRepository implements TestsMetadata {
 
     /**
      * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestClassesFor(java.lang.Class, java.lang.reflect.Method)
+     * 
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestClassesFor(java.lang.Class,
+     *      java.lang.reflect.Method)
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, Method method) {
 	MethodInfo tested = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(method));
@@ -140,7 +145,7 @@ public class MetadataRepository implements TestsMetadata {
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestClassesFor(java.lang.Class)
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz) {
@@ -150,8 +155,9 @@ public class MetadataRepository implements TestsMetadata {
 
     /**
      * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestMethodsFor(java.lang.Class, java.lang.reflect.Method)
+     * 
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestMethodsFor(java.lang.Class,
+     *      java.lang.reflect.Method)
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, Method method) {
 	MethodInfo tested = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(method));
@@ -160,40 +166,48 @@ public class MetadataRepository implements TestsMetadata {
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestMethodsFor(java.lang.Class)
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz) {
 	MethodInfo tested = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
 	return getMethodLinks(isTestedByLinks.get(tested));
     }
-    
+
     private static List<ClassLinkMetadata> getClassLinks(Collection<LinkMetadata> links) {
-	List<ClassLinkMetadata> result = new LinkedList<ClassLinkMetadata>();
-	for (LinkMetadata l : links) {
-	    if (l instanceof ClassLinkMetadata) {
-		result.add((ClassLinkMetadata)l); //TODO!! Clone l
+	Set<ClassLinkMetadata> result = new HashSet<ClassLinkMetadata>();
+	if (links != null) {
+	    for (LinkMetadata l : links) {
+		if (l instanceof ClassLinkMetadata) {
+		    result.add((ClassLinkMetadata) l); // TODO!! Clone l
+		}
+		if (l instanceof MethodLinkMetadata) {
+		    result.add(new ClassLinkMetadata(l.getStatus(), ((MethodLinkMetadata) l).getClazz()));
+		}
 	    }
 	}
-	return result;
+	return Arrays.asList(result.toArray(new ClassLinkMetadata[result.size()]));
     }
-    
+
     private static List<MethodLinkMetadata> getMethodLinks(Collection<LinkMetadata> links) {
 	List<MethodLinkMetadata> result = new LinkedList<MethodLinkMetadata>();
-	for (LinkMetadata l : links) {
-	    if (l instanceof MethodLinkMetadata) {
-		result.add((MethodLinkMetadata)l); //TODO!! Clone l
+	if (links != null) {
+	    for (LinkMetadata l : links) {
+		if (l instanceof MethodLinkMetadata) {
+		    result.add((MethodLinkMetadata) l); // TODO!! Clone l
+		}
 	    }
 	}
 	return result;
     }
-    
+
     /**
      * An inner class for class-method couples
-     *
+     * 
      */
     private class MethodInfo {
 	private String classRef;
+
 	private MethodMetadata methodRef;
 
 	/**

@@ -22,16 +22,16 @@ package it.javalinux.testedby.metadata_v2;
 
 /**
  * @author alessio.soldano@javalinux.it
- *
+ * 
  */
 public class ClassLinkMetadata extends LinkMetadata {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private String clazz;
-    
+
     /**
-     * @param status 
+     * @param status
      * @param clazz
      */
     public ClassLinkMetadata(StatusMetadata status, String clazz) {
@@ -43,7 +43,42 @@ public class ClassLinkMetadata extends LinkMetadata {
      * @return clazz
      */
     public String getClazz() {
-        return clazz;
+	return clazz;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+	return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	ClassLinkMetadata other = (ClassLinkMetadata) obj;
+	if (clazz == null) {
+	    if (other.clazz != null)
+		return false;
+	} else if (!clazz.equals(other.clazz))
+	    return false;
+	return true;
+    }
+
 }

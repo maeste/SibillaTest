@@ -23,21 +23,22 @@ package it.javalinux.testedby.metadata.builder.annotations;
 import it.javalinux.testedby.annotations.TestedBy;
 import it.javalinux.testedby.annotations.TestedByList;
 import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
-import it.javalinux.testedby.metadata.TestClassMetadata;
-import it.javalinux.testedby.metadata.TestMetadataMergingList;
 import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
+import it.javalinux.testedby.metadata.TestMetadataMergingList;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableClassUnderTestMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodUnderTestMetadata;
 import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
+import it.javalinux.testedby.metadata_v2.StatusMetadata;
+import it.javalinux.testedby.metadata_v2.TestsMetadata;
+import it.javalinux.testedby.metadata_v2.impl.MetadataRepository;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,22 +52,25 @@ import org.junit.Test;
  */
 public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 
+    private boolean onlyValidLink;
+
     /**
      * {@inheritDoc}
      * 
      * @see it.javalinux.testedby.metadata.builder.MetaDataBuilder#build(Collection,
      *      Collection)
      */
-    public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses) {
+    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses) {
 	return this.build(classesUnderTest, testClasses, false);
     }
 
-    public Map<String, ClassUnderTestMetadata> build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid) {
+    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid) {
+	this.considerOnlyValidLink(onlyValidLink);
 	Map<String, Class<?>> testClassesMap = new HashMap<String, Class<?>>();
 	for (Class<?> clazz : testClasses) {
 	    testClassesMap.put(clazz.getCanonicalName(), clazz);
 	}
-	return buildFromClassUnderTest(classesUnderTest, testClassesMap, onlyValid);
+	return buildFromClassUnderTest(classesUnderTest, testClassesMap);
 
     }
 
@@ -75,51 +79,39 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * 
      * @param classesUnderTest
      * @param testClasses
-     * @param onlyValid
      * @return application metadata collected only from class under test
      */
-    private Map<String, ClassUnderTestMetadata> buildFromClassUnderTest(Collection<Class<?>> classesUnderTest, Map<String, Class<?>> testClasses, boolean onlyValid) {
-	final Map<String, ClassUnderTestMetadata> classUnderTestMetadatas = new HashMap<String, ClassUnderTestMetadata>();
-	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatas = new TestMetadataMergingList<ImmutableTestClassMetadata>(onlyValid);
-	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatasForMethods = new TestMetadataMergingList<ImmutableTestClassMetadata>(onlyValid);
-	Map<String, MethodUnderTestMetadata> methodSpecicMetadatas = new HashMap<String, MethodUnderTestMetadata>();
+    private TestsMetadata buildFromClassUnderTest(Collection<Class<?>> classesUnderTest, Map<String, Class<?>> testClasses) {
+	MetadataRepository repository = new MetadataRepository();
 
 	for (Class<?> clazzUnderTest : classesUnderTest) {
-	    testClassesMetadatas.clear();
-	    methodSpecicMetadatas.clear();
-	    testClassesMetadatas.addAll(createTestClassMetadatas(testClasses, clazzUnderTest));
-	    ClassUnderTestMetadata classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazzUnderTest.getCanonicalName(), testClassesMetadatas, methodSpecicMetadatas);
+	    repository = createTestClassMetadatas(testClasses, clazzUnderTest, repository);
 
 	    for (Method methodUnderTest : clazzUnderTest.getMethods()) {
-		testClassesMetadatasForMethods.clear();
-		testClassesMetadatasForMethods.addAll(createTestClassMetadatasForMethod(testClasses, clazzUnderTest, methodUnderTest));
-		methodSpecicMetadatas.put(methodUnderTest.getName(), new ImmutableMethodUnderTestMetadata(new ImmutableMethodMetadata(methodUnderTest), classUnderTestMetadata, testClassesMetadatasForMethods));
+		repository = createTestClassMetadatasForMethod(testClasses, clazzUnderTest, methodUnderTest, repository);
 	    }
-	    classUnderTestMetadata = new ImmutableClassUnderTestMetadata(clazzUnderTest.getCanonicalName(), testClassesMetadatas, methodSpecicMetadatas);
-
-	    classUnderTestMetadatas.put(classUnderTestMetadata.getClassUnderTestName(), classUnderTestMetadata);
 	}
 
-	return classUnderTestMetadatas;
+	return repository;
     }
 
     /**
      * @param testClasses
      * @param clazzUnderTest
      * @param methodUnderTest
+     * @param repository
      * @return {@link TestMetadataMergingList} for this method defined in this
      *         class or in its super classes and interfaces
      */
-    private TestMetadataMergingList<ImmutableTestClassMetadata> createTestClassMetadatasForMethod(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, Method methodUnderTest) {
-	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatasForMethods = new TestMetadataMergingList<ImmutableTestClassMetadata>();
+    private MetadataRepository createTestClassMetadatasForMethod(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, Method methodUnderTest, MetadataRepository repository) {
 	List<TestedBy> listOfTestedByOnMethod = createListOfTestedBy(methodUnderTest);
 	for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
-	    testClassesMetadatasForMethods.add(createImmutableTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod));
+	    repository = createTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod, methodUnderTest, repository);
 	}
 	for (Class<?> interfaceUnderTest : clazzUnderTest.getInterfaces()) {
 	    try {
 		Method methodOnInterfcace = interfaceUnderTest.getMethod(methodUnderTest.getName(), methodUnderTest.getParameterTypes());
-		testClassesMetadatasForMethods.addAll(createTestClassMetadatasForMethod(testClasses, interfaceUnderTest, methodOnInterfcace));
+		repository = createTestClassMetadatasForMethod(testClasses, interfaceUnderTest, methodOnInterfcace, repository);
 	    } catch (NoSuchMethodException e) {
 
 	    }
@@ -127,48 +119,78 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	if (clazzUnderTest.getSuperclass() != null && clazzUnderTest.getSuperclass().getPackage() != null && !clazzUnderTest.getSuperclass().getPackage().toString().startsWith("java")) {
 	    try {
 		Method methodOnSuperClass = clazzUnderTest.getSuperclass().getMethod(methodUnderTest.getName(), methodUnderTest.getParameterTypes());
-		testClassesMetadatasForMethods.addAll(createTestClassMetadatasForMethod(testClasses, clazzUnderTest.getSuperclass(), methodOnSuperClass));
+		repository = createTestClassMetadatasForMethod(testClasses, clazzUnderTest.getSuperclass(), methodOnSuperClass, repository);
 	    } catch (NoSuchMethodException e) {
 
 	    }
 	}
 
-	return testClassesMetadatasForMethods;
+	return repository;
     }
 
     /**
      * @param testClasses
      * @param clazzUnderTest
+     * @param repository
      * @return {@link TestMetadataMergingList} for this class and its super
      *         classes and interfaces
      */
-    private TestMetadataMergingList<ImmutableTestClassMetadata> createTestClassMetadatas(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest) {
+    private MetadataRepository createTestClassMetadatas(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, MetadataRepository repository) {
 	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatas = new TestMetadataMergingList<ImmutableTestClassMetadata>();
 	List<TestedBy> listOfTestedBy = createListOfTestedBy(clazzUnderTest);
 	for (TestedBy testedBy : listOfTestedBy) {
-	    testClassesMetadatas.add(createImmutableTestClassMetadata(testClasses, clazzUnderTest, testedBy));
+	    repository = createTestClassMetadata(testClasses, clazzUnderTest, testedBy, null, repository);
 	}
 	for (Class<?> interfaceUnderTest : clazzUnderTest.getInterfaces()) {
-	    testClassesMetadatas.addAll(createTestClassMetadatas(testClasses, interfaceUnderTest));
+	    repository = createTestClassMetadatas(testClasses, interfaceUnderTest, repository);
 	}
 	if (clazzUnderTest.getSuperclass() != null && clazzUnderTest.getSuperclass().getPackage() != null && !clazzUnderTest.getSuperclass().getPackage().toString().startsWith("java")) {
-	    testClassesMetadatas.addAll(createTestClassMetadatas(testClasses, clazzUnderTest.getSuperclass()));
+	    repository = createTestClassMetadatas(testClasses, clazzUnderTest.getSuperclass(), repository);
 	}
 
-	return testClassesMetadatas;
+	return repository;
     }
 
     /**
      * @param testClasses
      * @param clazz
      * @param testedBy
+     * @param methodUnderTest
+     * @param repository
      * @return generated testClassMetadata
      */
-    private ImmutableTestClassMetadata createImmutableTestClassMetadata(Map<String, Class<?>> testClasses, Class<?> clazz, TestedBy testedBy) {
+    private MetadataRepository createTestClassMetadata(Map<String, Class<?>> testClasses, Class<?> clazz, TestedBy testedBy, Method methodUnderTest, MetadataRepository repository) {
+	String methodUTName;
+	String[] methodUTParameters;
+
+	if (methodUnderTest == null) {
+	    methodUTName = null;
+	    methodUTParameters = new String[0];
+	} else {
+	    methodUTName = methodUnderTest.getName();
+	    List<String> l = new LinkedList<String>();
+	    for (Class<?> c : methodUnderTest.getParameterTypes()) {
+		l.add(c.getName());
+	    }
+	    if (l.isEmpty()) {
+		methodUTParameters = new String[0];
+	    } else {
+		methodUTParameters = l.toArray(new String[l.size()]);
+	    }
+	}
 	String testClassName = fixPackageTestClass(testedBy.testClass(), clazz.getPackage());
-	boolean valid = validateTestedByAnnotation(testClasses, testClassName, testedBy.testMethod());
+	StatusMetadata status = new StatusMetadata();
+	status.setValid(validateTestedByAnnotation(testClasses, testClassName, testedBy.testMethod()));
+	status.setFromAnnotation(true);
 	String[] testMethodsNames = createTestMethodsNameList(testClasses, testClassName, testedBy.testMethod());
-	return new ImmutableTestClassMetadata(valid, testClassName, testMethodsNames);
+	for (String testMethodName : testMethodsNames) {
+	    if (isOnlyValidLinkConsidered() && !status.isValid()) {
+		// skip
+	    } else {
+		repository.addConnection(testClassName, testMethodName, null, clazz.getCanonicalName(), methodUTName, methodUTParameters, status);
+	    }
+	}
+	return repository;
     }
 
     /**
@@ -252,6 +274,21 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
     /* package */Map<String, ClassUnderTestMetadata> buildFromTestClasses(Collection<Class<?>> testClasses) {
 	// not yet implemented
 	return null;
+    }
+
+    /**
+     * @return onlyValidLink
+     */
+    private synchronized boolean isOnlyValidLinkConsidered() {
+	return onlyValidLink;
+    }
+
+    /**
+     * @param onlyValidLink
+     *            Sets onlyValidLink to the specified value.
+     */
+    private synchronized void considerOnlyValidLink(boolean onlyValidLink) {
+	this.onlyValidLink = onlyValidLink;
     }
 
 }

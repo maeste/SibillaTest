@@ -22,17 +22,18 @@ package it.javalinux.testedby.metadata_v2;
 
 /**
  * @author alessio.soldano@javalinux.it
- *
+ * 
  */
 public class MethodLinkMetadata extends LinkMetadata {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private String clazz;
+
     private MethodMetadata method;
-    
+
     /**
-     * @param status 
+     * @param status
      * @param clazz
      * @param method
      */
@@ -41,17 +42,60 @@ public class MethodLinkMetadata extends LinkMetadata {
 	this.clazz = clazz;
 	this.method = method;
     }
+
     /**
      * @return clazz
      */
     public String getClazz() {
-        return clazz;
+	return clazz;
     }
+
     /**
      * @return method
      */
     public MethodMetadata getMethod() {
-        return method;
+	return method;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+	result = prime * result + ((method == null) ? 0 : method.hashCode());
+	return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	MethodLinkMetadata other = (MethodLinkMetadata) obj;
+	if (clazz == null) {
+	    if (other.clazz != null)
+		return false;
+	} else if (!clazz.equals(other.clazz))
+	    return false;
+	if (method == null) {
+	    if (other.method != null)
+		return false;
+	} else if (!method.equals(other.method))
+	    return false;
+	return true;
+    }
+
 }

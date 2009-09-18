@@ -43,14 +43,14 @@ public class ImmutableClassUnderTestMetadata extends ClassUnderTestMetadata {
 
     private final Collection<TestClassMetadata> testClassesMetadata = new LinkedList<TestClassMetadata>();
 
-    private final Map<String, MethodUnderTestMetadata> methodsSpecificMetadata = new HashMap<String, MethodUnderTestMetadata>();
+    private final Map<Integer, MethodUnderTestMetadata> methodsSpecificMetadata = new HashMap<Integer, MethodUnderTestMetadata>();
 
     /**
      * @param className
      * @param testClassesMetadata
      * @param methodsSpecificMetadata
      */
-    public ImmutableClassUnderTestMetadata(String className, Collection<? extends TestClassMetadata> testClassesMetadata, Map<String, MethodUnderTestMetadata> methodsSpecificMetadata) {
+    public ImmutableClassUnderTestMetadata(String className, Collection<? extends TestClassMetadata> testClassesMetadata, Map<Integer, MethodUnderTestMetadata> methodsSpecificMetadata) {
 	super();
 	this.className = className;
 	this.testClassesMetadata.addAll(testClassesMetadata);
@@ -73,8 +73,8 @@ public class ImmutableClassUnderTestMetadata extends ClassUnderTestMetadata {
      * @see it.javalinux.testedby.metadata.ClassUnderTestMetadata#getMethodsSpecificMetadata()
      */
     @Override
-    public Map<String, MethodUnderTestMetadata> getMethodsSpecificMetadata() {
-	HashMap<String, MethodUnderTestMetadata> map = new HashMap<String, MethodUnderTestMetadata>();
+    public Map<Integer, MethodUnderTestMetadata> getMethodsSpecificMetadata() {
+	HashMap<Integer, MethodUnderTestMetadata> map = new HashMap<Integer, MethodUnderTestMetadata>();
 	map.putAll(methodsSpecificMetadata);
 	return map;
     }
