@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-	<parent>
-		<artifactId>TestedBy</artifactId>
-		<groupId>it.javalinux.TestedBy</groupId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>it.javalinux.TestedBy</groupId>
+	
+    <name>testedBy-maven-plugin</name>
+	<groupId>it.javalinux.testedby</groupId>
 	<artifactId>testedBy-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<name>testedBy-maven-plugin</name>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
+	
+    <parent>
+        <artifactId>TestedBy</artifactId>
+        <groupId>it.javalinux.testedby</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    
 	<build>
 		
 	</build>
+	
 	<dependencies>
 		<dependency>
 			<groupId>javassist</groupId>
