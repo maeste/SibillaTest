@@ -10,17 +10,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<repositories>
-		<repository>
-			<id>jboss.releases</id>
-			<name>JBoss releases</name>
-			<url>http://repository.jboss.org/maven2</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
+	
 	</repositories>
 
     <modules>
