@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<parent>
+		<artifactId>TestedBy</artifactId>
+		<groupId>it.javalinux.TestedBy</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>it.javalinux.TestedBy</groupId>
+	<artifactId>testedBy-maven-plugin</artifactId>
+	<packaging>maven-plugin</packaging>
+	<name>testedBy-maven-plugin</name>
+	<version>0.0.2-SNAPSHOT</version>
+	<build>
+		
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.10.0.GA</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>apache-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.0</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+</project>
