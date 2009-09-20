@@ -54,13 +54,17 @@ public class MetadataRepository implements TestsMetadata {
     // what a given class-method is tested by
     private Map<MethodInfo, Set<LinkMetadata>> isTestedByLinks = new HashMap<MethodInfo, Set<LinkMetadata>>(); // map
 
-    // MethodInfo
-    // ->
-    // Set
-    // of
-    // link
-    // id
-
+    /**
+     * Adds a connection from a test method/class to a tested method/class
+     *  
+     * @param testClass			The test class
+     * @param testMethod		The test method, if any
+     * @param testMethodParameters	A String array of the test method parameter types
+     * @param testedClass		The tested class
+     * @param testedMethod		The tested method, if any
+     * @param testedMethodParameters	A String array of the tested method parameter types
+     * @param status			The link status
+     */
     public void addConnection(String testClass, String testMethod, String[] testMethodParameters, String testedClass, String testedMethod, String[] testedMethodParameters, StatusMetadata status) {
 	// TODO!! Clone status
 	MethodMetadata invokedMethodMetadata = new ImmutableMethodMetadata(testedMethod, testedMethodParameters);
@@ -110,18 +114,7 @@ public class MetadataRepository implements TestsMetadata {
 	MethodInfo test = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
 	Set<LinkMetadata> set = testsLinks.get(test);
 	if (includeMethods) {
-	    if (set == null)
-	    {
-		set = new HashSet<LinkMetadata>();
-	    }
-	    for (Method m : clazz.getMethods()) {
-		MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
-		Set<LinkMetadata> s = testsLinks.get(mi);
-		if (s != null)
-		{
-		    set.addAll(s);
-		}
-	    }
+	    set = enrichUsingClassMethods(set, clazz, testsLinks);
 	}
 	return getClassLinks(set);
     }
@@ -146,18 +139,7 @@ public class MetadataRepository implements TestsMetadata {
 	MethodInfo test = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
 	Set<LinkMetadata> set = testsLinks.get(test);
 	if (includeMethods) {
-	    if (set == null)
-	    {
-		set = new HashSet<LinkMetadata>();
-	    }
-	    for (Method m : clazz.getMethods()) {
-		MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
-		Set<LinkMetadata> s = testsLinks.get(mi);
-		if (s != null)
-		{
-		    set.addAll(s);
-		}
-	    }
+	    set = enrichUsingClassMethods(set, clazz, testsLinks);
 	}
 	return getMethodLinks(set);
     }
@@ -182,18 +164,7 @@ public class MetadataRepository implements TestsMetadata {
 	MethodInfo tested = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);
 	if (includeMethods) {
-	    if (set == null)
-	    {
-		set = new HashSet<LinkMetadata>();
-	    }
-	    for (Method m : clazz.getMethods()) {
-		MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
-		Set<LinkMetadata> s = isTestedByLinks.get(mi);
-		if (s != null)
-		{
-		    set.addAll(s);
-		}
-	    }
+	    set = enrichUsingClassMethods(set, clazz, isTestedByLinks);
 	}
 	return getClassLinks(set);
     }
@@ -218,18 +189,7 @@ public class MetadataRepository implements TestsMetadata {
 	MethodInfo tested = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);
 	if (includeMethods) {
-	    if (set == null)
-	    {
-		set = new HashSet<LinkMetadata>();
-	    }
-	    for (Method m : clazz.getMethods()) {
-		MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
-		Set<LinkMetadata> s = isTestedByLinks.get(mi);
-		if (s != null)
-		{
-		    set.addAll(s);
-		}
-	    }
+	    set = enrichUsingClassMethods(set, clazz, isTestedByLinks);
 	}
 	return getMethodLinks(set);
     }
@@ -260,12 +220,26 @@ public class MetadataRepository implements TestsMetadata {
 	}
 	return result;
     }
+    
+    private static Set<LinkMetadata> enrichUsingClassMethods(Set<LinkMetadata> set, Class<?> clazz, Map<MethodInfo, Set<LinkMetadata>> source) {
+	if (set == null) {
+	    set = new HashSet<LinkMetadata>();
+	}
+	for (Method m : clazz.getMethods()) {
+	    MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
+	    Set<LinkMetadata> s = source.get(mi);
+	    if (s != null) {
+		set.addAll(s);
+	    }
+	}
+	return set;
+    }
 
     /**
      * An inner class for class-method couples
      * 
      */
-    private class MethodInfo {
+    private static class MethodInfo {
 	private String classRef;
 
 	private MethodMetadata methodRef;
