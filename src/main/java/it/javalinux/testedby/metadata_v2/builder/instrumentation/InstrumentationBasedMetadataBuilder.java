@@ -72,6 +72,8 @@ public class InstrumentationBasedMetadataBuilder {
 	    for (String testedMethod : invocationsMap.get(testedClass))
 	    {
 		StatusMetadata status = new StatusMetadata();
+		status.setFromInstrumentation(true);
+		status.setValid(true);
 		metadata.addConnection(testClass, testMethod, parameterTypes, testedClass, Helper.getMethodNameFromJavaAssistLongName(testedMethod),
 			Helper.getMethodParametersFromJavaAssistLongName(testedMethod), status);
 	    }
