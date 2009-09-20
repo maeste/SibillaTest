@@ -24,8 +24,6 @@ import it.javalinux.testedby.metadata_v2.MethodMetadata;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * An immutable method metadata that can be built from both plain strings and a
@@ -54,15 +52,7 @@ public class ImmutableMethodMetadata implements MethodMetadata {
 
     public ImmutableMethodMetadata(Method method) {
 	this.name = method.getName();
-	List<String> l = new LinkedList<String>();
-	for (Class<?> c : method.getParameterTypes()) {
-	    l.add(c.getName());
-	}
-	if (l.isEmpty()) {
-	    this.parameterTypes = new String[0];
-	} else {
-	    this.parameterTypes = l.toArray(new String[l.size()]);
-	}
+	this.parameterTypes = Helper.getParameterTypesAsStringArray(method);
     }
 
     public String getName() {
