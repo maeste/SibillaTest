@@ -36,6 +36,25 @@ public class StatusMetadata {
 
     private boolean fromInstrumentation;
 
+    public StatusMetadata()
+    {
+	super();
+    }
+    
+    /**
+     * @param valid
+     * @param justCreated
+     * @param fromAnnotation
+     * @param fromInstrumentation
+     */
+    public StatusMetadata(boolean valid, boolean justCreated, boolean fromAnnotation, boolean fromInstrumentation) {
+	super();
+	this.valid = valid;
+	this.justCreated = justCreated;
+	this.fromAnnotation = fromAnnotation;
+	this.fromInstrumentation = fromInstrumentation;
+    }
+
     /**
      * @return valid
      */
