@@ -20,7 +20,7 @@
  */
 package it.javalinux.testedby.instrumentation;
 
-import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
+import it.javalinux.testedby.metadata_v2.builder.instrumentation.InvocationTracker;
 
 import java.io.ByteArrayInputStream;
 import java.lang.instrument.ClassFileTransformer;
