@@ -60,16 +60,19 @@ public class ConcurrencyTest {
 
     @Test
     public void testInvocationTrakerCorrectlyHandlesMultithreading() {
+	InvocationTracker.cleanUp();
 	performTest(null);
     }
 
     @Test
     public void testInvocationTrakerCorrectlyHandlesMultithreadingDefaultThreadFactory() {
+	InvocationTracker.cleanUp();
 	performTest(Executors.defaultThreadFactory());
     }
 
     @Test
     public void testInvocationTrakerCorrectlyHandlesMultithreadingWithSimpleThreadFactory() {
+	InvocationTracker.cleanUp();
 	class SimpleThreadFactory implements ThreadFactory {
 	    public Thread newThread(Runnable r) {
 		return new Thread(r);
@@ -80,6 +83,7 @@ public class ConcurrencyTest {
 
     @Test
     public void testInvocationTrakerCorrectlyHandlesMultithreadingWithComplexThreadFactory() {
+	InvocationTracker.cleanUp();
 	/**
 	 * A thread factory that creates each thread in a new thread group
 	 */
