@@ -72,6 +72,7 @@ public class Agent implements ClassFileTransformer {
 	instrumentation.addTransformer(new Agent());
     }
     
+    @SuppressWarnings("unused")
     public byte[] transform(ClassLoader loader,
 	     		    String className,
 	     		    Class<?> classBeingRedefined,
@@ -79,9 +80,8 @@ public class Agent implements ClassFileTransformer {
 	     		    byte[] classfileBuffer) throws IllegalClassFormatException {
 	if (isInstrumentationRequired(className)) {
 	    return modifyClass(className, classBeingRedefined, classfileBuffer);
-	} else {
-	    return classfileBuffer;
 	}
+	return classfileBuffer;
     }
     
     private static boolean isInstrumentationRequired(String className) {
@@ -92,14 +92,14 @@ public class Agent implements ClassFileTransformer {
 	}
 	if (includes == null) {
 	    return true;
-	} else {
-	    for (String s : includes) {
-		if (className.startsWith(s)) {
-		    return true;
-		}
-	    }
-	    return false;
 	}
+	for (String s : includes) {
+	    if (className.startsWith(s)) {
+		return true;
+	    }
+	}
+	return false;
+
     }
     
     private byte[] modifyClass(String className, Class<?> clazz, byte[] bytes) {

@@ -21,6 +21,8 @@
 package it.javalinux.testedby.metadata_v2;
 
 /**
+ * The status of a link
+ * 
  * @author alessio.soldano@javalinux.it
  * 
  */
