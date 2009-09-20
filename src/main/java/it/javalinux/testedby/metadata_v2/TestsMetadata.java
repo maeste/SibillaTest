@@ -107,4 +107,32 @@ public interface TestsMetadata extends Metadata {
      * 	       the corresponding class.
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods);
+    
+    /**
+     * Returns all tested classes currently hold in the metadata model 
+     * 
+     * @return all tested classes currently hold in the metadata model
+     */
+    public List<ClassLinkMetadata> getAllTestedClasses();
+    
+    /**
+     * Returns all tested methods currently hold in the metadata model 
+     * 
+     * @return all tested methods currently hold in the metadata model 
+     */
+    public List<MethodLinkMetadata> getAllTestedMethods();
+    
+    /**
+     * Returns all test classes currently hold in the metadata model 
+     * 
+     * @return all test classes currently hold in the metadata model
+     */
+    public List<ClassLinkMetadata> getAllTestClasses();
+    
+    /**
+     * Returns all test methods currently hold in the metadata model 
+     * 
+     * @return all test methods currently hold in the metadata model 
+     */
+    public List<MethodLinkMetadata> getAllTestMethods();
 }

@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import it.javalinux.testedby.metadata_v2.ClassLinkMetadata;
 import it.javalinux.testedby.metadata_v2.LinkMetadata;
@@ -285,6 +286,62 @@ public class MetadataRepository implements TestsMetadata {
 	public int hashCode() {
 	    return 31 * (classRef.hashCode() + methodRef.hashCode());
 	}
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getAllTestClasses()
+     */
+    public List<ClassLinkMetadata> getAllTestClasses() {
+	Set<LinkMetadata> links = new HashSet<LinkMetadata>(testsLinks.size());
+	for (Entry<MethodInfo, Set<LinkMetadata>> entry: testsLinks.entrySet())
+	{
+	    links.addAll(entry.getValue());
+	}
+	return getClassLinks(links);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getAllTestMethods()
+     */
+    public List<MethodLinkMetadata> getAllTestMethods() {
+	Set<LinkMetadata> links = new HashSet<LinkMetadata>(testsLinks.size());
+	for (Entry<MethodInfo, Set<LinkMetadata>> entry: testsLinks.entrySet())
+	{
+	    links.addAll(entry.getValue());
+	}
+	return getMethodLinks(links);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getAllTestedClasses()
+     */
+    public List<ClassLinkMetadata> getAllTestedClasses() {
+	Set<LinkMetadata> links = new HashSet<LinkMetadata>(isTestedByLinks.size());
+	for (Entry<MethodInfo, Set<LinkMetadata>> entry: isTestedByLinks.entrySet())
+	{
+	    links.addAll(entry.getValue());
+	}
+	return getClassLinks(links);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getAllTestedMethods()
+     */
+    public List<MethodLinkMetadata> getAllTestedMethods() {
+	Set<LinkMetadata> links = new HashSet<LinkMetadata>(isTestedByLinks.size());
+	for (Entry<MethodInfo, Set<LinkMetadata>> entry: isTestedByLinks.entrySet())
+	{
+	    links.addAll(entry.getValue());
+	}
+	return getMethodLinks(links);
     }
 
 }
