@@ -83,9 +83,9 @@ public class AnnotationBasedMetadataBuilderTest {
 	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
 	classesUnderTest.add(ClassUnderTestAnnotationListOnClass.class);
 	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
-	assertThat(metadatas.getTestClassesFor(ClassUnderTestAnnotationListOnClass.class), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
-	assertThat(metadatas.getTestMethodsFor(ClassUnderTestAnnotationListOnClass.class).size(), is(4));
-	assertThat(metadatas.getTestMethodsFor(ClassUnderTestAnnotationListOnClass.class), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE), equalTo(TEST_METHOD_TWO_IN_CLASS_ONE), equalTo(TEST_METHOD_ONE_IN_CLASS_TWO), equalTo(TEST_METHOD_TWO_IN_CLASS_TWO)));
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestAnnotationListOnClass.class, false), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestAnnotationListOnClass.class, false).size(), is(4));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestAnnotationListOnClass.class, false), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE), equalTo(TEST_METHOD_TWO_IN_CLASS_ONE), equalTo(TEST_METHOD_ONE_IN_CLASS_TWO), equalTo(TEST_METHOD_TWO_IN_CLASS_TWO)));
 
     }
 
@@ -96,9 +96,9 @@ public class AnnotationBasedMetadataBuilderTest {
 	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
 	classesUnderTest.add(ClassUnderTestOneAnnotationAndListOnClass.class);
 	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
-	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnClass.class), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
-	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnClass.class).size(), is(4));
-	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnClass.class), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE), equalTo(TEST_METHOD_TWO_IN_CLASS_ONE), equalTo(TEST_METHOD_ONE_IN_CLASS_TWO), equalTo(TEST_METHOD_TWO_IN_CLASS_TWO)));
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnClass.class, false), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnClass.class, false).size(), is(4));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnClass.class, false), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE), equalTo(TEST_METHOD_TWO_IN_CLASS_ONE), equalTo(TEST_METHOD_ONE_IN_CLASS_TWO), equalTo(TEST_METHOD_TWO_IN_CLASS_TWO)));
 
     }
 
@@ -112,17 +112,19 @@ public class AnnotationBasedMetadataBuilderTest {
 	Method methodOne = ClassUnderTestOneAnnotationAndListOnMethods.class.getMethod("methodOne");
 	Method methodTwo = ClassUnderTestOneAnnotationAndListOnMethods.class.getMethod("methodTwo");
 
-	// TODO: verify if it is a right behaviour
-	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnMethods.class).size(), is(0));
-
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnMethods.class, false).size(), is(0));
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnMethods.class, true).size(), is(2));
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnMethods.class, true), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
+	
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, methodOne).size(), is(1));
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, methodOne), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE)));
 
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, methodTwo).size(), is(3));
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, methodTwo), hasItems(equalTo(TEST_METHOD_TWO_IN_CLASS_ONE), equalTo(TEST_METHOD_ONE_IN_CLASS_TWO), equalTo(TEST_METHOD_TWO_IN_CLASS_TWO)));
 
-	// TODO: verify if it is a right behaviour
-	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class).size(), is(0));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, false).size(), is(0));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, true).size(), is(4));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, true), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE), equalTo(TEST_METHOD_TWO_IN_CLASS_ONE), equalTo(TEST_METHOD_ONE_IN_CLASS_TWO), equalTo(TEST_METHOD_TWO_IN_CLASS_TWO)));
 
     }
 
@@ -133,8 +135,8 @@ public class AnnotationBasedMetadataBuilderTest {
 	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
 	classesUnderTest.add(ClassUnderTestOneAnnotationOnClass.class);
 	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
-	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnClass.class).size(), is(1));
-	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnClass.class), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE)));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnClass.class, false).size(), is(1));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnClass.class, false), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE)));
 
     }
 
@@ -145,13 +147,16 @@ public class AnnotationBasedMetadataBuilderTest {
 	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
 	classesUnderTest.add(ClassUnderTestOneAnnotationOnMethod.class);
 	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
-	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnMethod.class).size(), is(0));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnMethod.class, false).size(), is(0));
 	Method methodOne = ClassUnderTestOneAnnotationOnMethod.class.getMethod("methodOne");
-	// TODO: not so convenient. Users should know where it have to look for,
+	// This is not so convenient. Users should know where to look for,
 	// and also for which kind of data. IOW you have to know you are looking
 	// for test classes on UT methods in this case. Other getter return
 	// empty collection
 	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationOnMethod.class, methodOne), hasItems(equalTo(TEST_CLASS_ONE_METADATA)));
+	
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationOnMethod.class, true).size(), is(1));
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationOnMethod.class, true), hasItems(equalTo(TEST_CLASS_ONE_METADATA)));
 
     }
     //

@@ -45,9 +45,10 @@ public interface TestsMetadata extends Metadata {
      * Returns the classes tested (classes under test) by the provided class
      * 
      * @param clazz
+     * @param includeMethods True to return classes tested by even a single method of the specified test class
      * @return a set with the full qualified name of classes
      */
-    public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz);
+    public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, boolean includeMethods);
     
     /**
      * Returns the methods (methods under test) tested by the provided class and method
@@ -63,10 +64,11 @@ public interface TestsMetadata extends Metadata {
      * Returns the methods (methods under test) tested by the provided class 
      * 
      * @param clazz
+     * @param includeMethods True to return methods tested by even a single method of the specified test class
      * @return a map whose keys are the class names and whose values are sets of methods of
      * 	       the corresponding class.
      */
-    public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz);
+    public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, boolean includeMethods);
     
     /**
      * Returns the test classes that test the provided class and method
@@ -81,9 +83,10 @@ public interface TestsMetadata extends Metadata {
      * Returns the test classes that test the provided class
      * 
      * @param clazz
+     * @param includeMethods True to return test classes testing even a single method of the specified class
      * @return a set with the full qualified name of classes
      */
-    public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz);
+    public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods);
     
     /**
      * Returns the test methods that test the provided class and method
@@ -99,8 +102,9 @@ public interface TestsMetadata extends Metadata {
      * Returns the test methods that test the provided class
      * 
      * @param clazz
+     * @param includeMethods True to return test methods testing even a single method of the specified class
      * @return a map whose keys are the class names and whose values are sets of methods of
      * 	       the corresponding class.
      */
-    public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz);
+    public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods);
 }

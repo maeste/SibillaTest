@@ -104,11 +104,26 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getClassesTestedBy(java.lang.Class)
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getClassesTestedBy(java.lang.Class, boolean)
      */
-    public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz) {
+    public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, boolean includeMethods) {
 	MethodInfo test = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
-	return getClassLinks(testsLinks.get(test));
+	Set<LinkMetadata> set = testsLinks.get(test);
+	if (includeMethods) {
+	    if (set == null)
+	    {
+		set = new HashSet<LinkMetadata>();
+	    }
+	    for (Method m : clazz.getMethods()) {
+		MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
+		Set<LinkMetadata> s = testsLinks.get(mi);
+		if (s != null)
+		{
+		    set.addAll(s);
+		}
+	    }
+	}
+	return getClassLinks(set);
     }
 
     /**
@@ -125,11 +140,26 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getMethodsTestedBy(java.lang.Class)
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getMethodsTestedBy(java.lang.Class, boolean)
      */
-    public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz) {
+    public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, boolean includeMethods) {
 	MethodInfo test = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
-	return getMethodLinks(testsLinks.get(test));
+	Set<LinkMetadata> set = testsLinks.get(test);
+	if (includeMethods) {
+	    if (set == null)
+	    {
+		set = new HashSet<LinkMetadata>();
+	    }
+	    for (Method m : clazz.getMethods()) {
+		MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
+		Set<LinkMetadata> s = testsLinks.get(mi);
+		if (s != null)
+		{
+		    set.addAll(s);
+		}
+	    }
+	}
+	return getMethodLinks(set);
     }
 
     /**
@@ -146,11 +176,26 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestClassesFor(java.lang.Class)
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestClassesFor(java.lang.Class, boolean)
      */
-    public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz) {
+    public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods) {
 	MethodInfo tested = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
-	return getClassLinks(isTestedByLinks.get(tested));
+	Set<LinkMetadata> set = isTestedByLinks.get(tested);
+	if (includeMethods) {
+	    if (set == null)
+	    {
+		set = new HashSet<LinkMetadata>();
+	    }
+	    for (Method m : clazz.getMethods()) {
+		MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
+		Set<LinkMetadata> s = isTestedByLinks.get(mi);
+		if (s != null)
+		{
+		    set.addAll(s);
+		}
+	    }
+	}
+	return getClassLinks(set);
     }
 
     /**
@@ -167,11 +212,26 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestMethodsFor(java.lang.Class)
+     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestMethodsFor(java.lang.Class, boolean)
      */
-    public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz) {
+    public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods) {
 	MethodInfo tested = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(null, null));
-	return getMethodLinks(isTestedByLinks.get(tested));
+	Set<LinkMetadata> set = isTestedByLinks.get(tested);
+	if (includeMethods) {
+	    if (set == null)
+	    {
+		set = new HashSet<LinkMetadata>();
+	    }
+	    for (Method m : clazz.getMethods()) {
+		MethodInfo mi = new MethodInfo(clazz.getName(), new ImmutableMethodMetadata(m));
+		Set<LinkMetadata> s = isTestedByLinks.get(mi);
+		if (s != null)
+		{
+		    set.addAll(s);
+		}
+	    }
+	}
+	return getMethodLinks(set);
     }
 
     private static List<ClassLinkMetadata> getClassLinks(Collection<LinkMetadata> links) {
