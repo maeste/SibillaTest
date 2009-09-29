@@ -24,52 +24,59 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- * This metadata interface defines what can be known about the tests and the code under test
+ * This metadata interface defines what can be known about the tests and the
+ * code under test
  * 
  * @author alessio.soldano@javalinux.it
  * @since 27-Aug-2009
- *
+ * 
  */
 public interface TestsMetadata extends Metadata {
 
     /**
-     * Returns the classes tested (classes under test) by the provided class and method
+     * Returns the classes tested (classes under test) by the provided class and
+     * method
      * 
      * @param clazz
      * @param method
      * @return a set with the full qualified name of classes
      */
     public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, Method method);
-    
+
     /**
      * Returns the classes tested (classes under test) by the provided class
      * 
      * @param clazz
-     * @param includeMethods True to return classes tested by even a single method of the specified test class
+     * @param includeMethods
+     *            True to return classes tested by even a single method of the
+     *            specified test class
      * @return a set with the full qualified name of classes
      */
     public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, boolean includeMethods);
-    
+
     /**
-     * Returns the methods (methods under test) tested by the provided class and method
+     * Returns the methods (methods under test) tested by the provided class and
+     * method
      * 
      * @param clazz
      * @param method
-     * @return a map whose keys are the class names and whose values are sets of methods of
-     * 	       the corresponding class.
+     * @return a map whose keys are the class names and whose values are sets of
+     *         methods of the corresponding class.
      */
     public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, Method method);
 
     /**
-     * Returns the methods (methods under test) tested by the provided class 
+     * Returns the methods (methods under test) tested by the provided class
      * 
      * @param clazz
-     * @param includeMethods True to return methods tested by even a single method of the specified test class
-     * @return a map whose keys are the class names and whose values are sets of methods of
-     * 	       the corresponding class.
+     * @param includeMethods
+     *            True to return methods tested by even a single method of the
+     *            specified test class
+     * @return a map whose keys are the class names and whose values are sets of
+     *         methods of the corresponding class.
      */
     public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, boolean includeMethods);
-    
+
     /**
      * Returns the test classes that test the provided class and method
      * 
@@ -78,61 +85,87 @@ public interface TestsMetadata extends Metadata {
      * @return a set with the full qualified name of classes
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, Method method);
-    
+
     /**
      * Returns the test classes that test the provided class
      * 
      * @param clazz
-     * @param includeMethods True to return test classes testing even a single method of the specified class
+     * @param includeMethods
+     *            True to return test classes testing even a single method of
+     *            the specified class
      * @return a set with the full qualified name of classes
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods);
-    
+
+    /**
+     * Returns the test classes that test the provided class and all its
+     * hirearchy (superclasses and/or interfaces)
+     * 
+     * @param clazz
+     * @param includeMethods
+     *            True to return test classes testing even a single method of
+     *            the specified class
+     * @return a set with the full qualified name of classes
+     */
+    public List<ClassLinkMetadata> getTestClassesHirearchyOf(Class<?> clazz, boolean includeMethods);
+
     /**
      * Returns the test methods that test the provided class and method
      * 
      * @param clazz
      * @param method
-     * @return a map whose keys are the class names and whose values are sets of methods of
-     * 	       the corresponding class.
+     * @return a map whose keys are the class names and whose values are sets of
+     *         methods of the corresponding class.
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, Method method);
-    
+
+    /**
+     * Returns the test methods that test the provided class and its hirearchy
+     * 
+     * @param clazz
+     * @param includeMethods
+     * @return a map whose keys are the class names and whose values are sets of
+     *         methods of the corresponding class.
+     */
+    public List<MethodLinkMetadata> getTestMethodsHirearchyOf(Class<?> clazz, boolean includeMethods);
+
     /**
      * Returns the test methods that test the provided class
      * 
      * @param clazz
-     * @param includeMethods True to return test methods testing even a single method of the specified class
-     * @return a map whose keys are the class names and whose values are sets of methods of
-     * 	       the corresponding class.
+     * @param includeMethods
+     *            True to return test methods testing even a single method of
+     *            the specified class
+     * @return a map whose keys are the class names and whose values are sets of
+     *         methods of the corresponding class.
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods);
-    
+
     /**
-     * Returns all tested classes currently hold in the metadata model 
+     * Returns all tested classes currently hold in the metadata model
      * 
      * @return all tested classes currently hold in the metadata model
      */
     public List<ClassLinkMetadata> getAllTestedClasses();
-    
+
     /**
-     * Returns all tested methods currently hold in the metadata model 
+     * Returns all tested methods currently hold in the metadata model
      * 
-     * @return all tested methods currently hold in the metadata model 
+     * @return all tested methods currently hold in the metadata model
      */
     public List<MethodLinkMetadata> getAllTestedMethods();
-    
+
     /**
-     * Returns all test classes currently hold in the metadata model 
+     * Returns all test classes currently hold in the metadata model
      * 
      * @return all test classes currently hold in the metadata model
      */
     public List<ClassLinkMetadata> getAllTestClasses();
-    
+
     /**
-     * Returns all test methods currently hold in the metadata model 
+     * Returns all test methods currently hold in the metadata model
      * 
-     * @return all test methods currently hold in the metadata model 
+     * @return all test methods currently hold in the metadata model
      */
     public List<MethodLinkMetadata> getAllTestMethods();
 }

@@ -65,7 +65,7 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
     }
 
     public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid) {
-	this.considerOnlyValidLink(onlyValidLink);
+	this.considerOnlyValidLink(onlyValid);
 	Map<String, Class<?>> testClassesMap = new HashMap<String, Class<?>>();
 	for (Class<?> clazz : testClasses) {
 	    testClassesMap.put(clazz.getCanonicalName(), clazz);
@@ -136,7 +136,6 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      *         classes and interfaces
      */
     private MetadataRepository createTestClassMetadatas(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, MetadataRepository repository) {
-	TestMetadataMergingList<ImmutableTestClassMetadata> testClassesMetadatas = new TestMetadataMergingList<ImmutableTestClassMetadata>();
 	List<TestedBy> listOfTestedBy = createListOfTestedBy(clazzUnderTest);
 	for (TestedBy testedBy : listOfTestedBy) {
 	    repository = createTestClassMetadata(testClasses, clazzUnderTest, testedBy, null, repository);
@@ -183,11 +182,16 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	status.setValid(validateTestedByAnnotation(testClasses, testClassName, testedBy.testMethod()));
 	status.setFromAnnotation(true);
 	String[] testMethodsNames = createTestMethodsNameList(testClasses, testClassName, testedBy.testMethod());
-	for (String testMethodName : testMethodsNames) {
-	    if (isOnlyValidLinkConsidered() && !status.isValid()) {
-		// skip
-	    } else {
-		repository.addConnection(testClassName, testMethodName, null, clazz.getCanonicalName(), methodUTName, methodUTParameters, status);
+	if (testMethodsNames.length == 0 && !isOnlyValidLinkConsidered()) {
+	    repository.addConnection(testClassName, null, null, clazz.getCanonicalName(), methodUTName, methodUTParameters, status);
+	} else {
+	    for (String testMethodName : testMethodsNames) {
+		if (isOnlyValidLinkConsidered() && !status.isValid()) {
+		    // skip
+		} else {
+		    repository.addConnection(testClassName, testMethodName, null, clazz.getCanonicalName(), methodUTName, methodUTParameters, status);
+		}
+
 	    }
 	}
 	return repository;

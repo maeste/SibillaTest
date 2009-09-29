@@ -115,7 +115,7 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnMethods.class, false).size(), is(0));
 	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnMethods.class, true).size(), is(2));
 	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnMethods.class, true), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
-	
+
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, methodOne).size(), is(1));
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnMethods.class, methodOne), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE)));
 
@@ -149,183 +149,91 @@ public class AnnotationBasedMetadataBuilderTest {
 	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnMethod.class, false).size(), is(0));
 	Method methodOne = ClassUnderTestOneAnnotationOnMethod.class.getMethod("methodOne");
-	// This is not so convenient. Users should know where to look for,
-	// and also for which kind of data. IOW you have to know you are looking
-	// for test classes on UT methods in this case. Other getter return
-	// empty collection
 	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationOnMethod.class, methodOne), hasItems(equalTo(TEST_CLASS_ONE_METADATA)));
-	
+
 	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationOnMethod.class, true).size(), is(1));
 	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationOnMethod.class, true), hasItems(equalTo(TEST_CLASS_ONE_METADATA)));
 
     }
-    //
-    // @Test
-    // public void buildShouldRunClassUnderTestOneAnnotationOnWrongMethod() {
-    // List<Class<?>> testClasses = Arrays.asList(TestClassOne.class,
-    // TestClassTwo.class);
-    // AnnotationBasedMetadataBuilder builder = new
-    // AnnotationBasedMetadataBuilder();
-    // List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
-    // classesUnderTest.add(ClassUnderTestOneAnnotationOnWrongMethod.class);
-    // Map<String, ClassUnderTestMetadata> metadatas =
-    // builder.build(classesUnderTest, testClasses);
-    // assertThat(metadatas.keySet(),
-    // hasItem("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnWrongMethod"));
-    // ClassUnderTestMetadata metadata =
-    // metadatas.get("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnWrongMethod");
-    // // no metadata directly on class
-    // assertThat(metadata.getTestClassesMetadata().size(), is(0));
-    // // metadatas from methods
-    // assertThat(metadata.getAllTestMetadata().size(), is(1));
-    // assertThat(metadata.getAllTestMetadata(),
-    // hasItems(equalTo(TEST_CLASS_ONE_METADATA)));
-    // assertThat(metadata.getAllTestMetadata().iterator().next().isValid(),
-    // is(false));
-    // for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-    // assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(1));
-    // assertThat(classMetadata.getMethodsSpecificMetadata(),
-    // hasItem(equalTo((TestMethodMetadata) new
-    // ImmutableTestMethodMetadata("wrongMethod", classMetadata))));
-    // }
-    // }
-    //
-    // @Test
-    // public void buildShouldRunClassUnderTestOneAnnotationWithWrongClassName()
-    // {
-    // List<Class<?>> testClasses = Arrays.asList(TestClassOne.class,
-    // TestClassTwo.class);
-    // AnnotationBasedMetadataBuilder builder = new
-    // AnnotationBasedMetadataBuilder();
-    // List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
-    // classesUnderTest.add(ClassUnderTestOneAnnotationWithWrongClassName.class);
-    // Map<String, ClassUnderTestMetadata> metadatas =
-    // builder.build(classesUnderTest, testClasses);
-    // assertThat(metadatas.keySet(),
-    // hasItem("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationWithWrongClassName"));
-    // ClassUnderTestMetadata metadata =
-    // metadatas.get("it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationWithWrongClassName");
-    // // no metadata directly on class
-    // assertThat(metadata.getTestClassesMetadata().size(), is(1));
-    // // metadatas from methods
-    // assertThat(metadata.getAllTestMetadata().size(), is(1));
-    // TestClassMetadata testClassWrong = new ImmutableTestClassMetadata(true,
-    // "it.javalinux.testedby.testsupport.TestClassWrong", "");
-    // assertThat(metadata.getAllTestMetadata(),
-    // hasItems(equalTo(testClassWrong)));
-    // assertThat(metadata.getAllTestMetadata().iterator().next().isValid(),
-    // is(false));
-    //
-    // }
-    //
-    // @Test
-    // public void buildShouldRunOnClassUnderTestWithAllAnnotations() {
-    // List<Class<?>> testClasses = Arrays.asList(TestClassOne.class,
-    // TestClassTwo.class);
-    // AnnotationBasedMetadataBuilder builder = new
-    // AnnotationBasedMetadataBuilder();
-    // List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
-    // classesUnderTest.add(ClassUnderTestWithAllAnnotations.class);
-    // Map<String, ClassUnderTestMetadata> metadatas =
-    // builder.build(classesUnderTest, testClasses);
-    // assertThat(metadatas.keySet(),
-    // hasItem("it.javalinux.testedby.testsupport.ClassUnderTestWithAllAnnotations"));
-    // ClassUnderTestMetadata metadata =
-    // metadatas.get("it.javalinux.testedby.testsupport.ClassUnderTestWithAllAnnotations");
-    // assertThat(metadata.getAllTestMetadata().size(), is(2));
-    // assertThat(metadata.getAllTestMetadata(),
-    // hasItems(equalTo(TEST_CLASS_ONE_METADATA),
-    // equalTo(TEST_CLASS_TWO_METADATA)));
-    // for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-    // assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
-    // assertThat(classMetadata.getMethodsSpecificMetadata(),
-    // hasItems(equalTo((TestMethodMetadata) new
-    // ImmutableTestMethodMetadata("testMethodOne", classMetadata)),
-    // equalTo((TestMethodMetadata) new
-    // ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
-    // }
-    // }
-    //
-    // @Test
-    // public void
-    // buildShouldRunOnClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods()
-    // {
-    // List<Class<?>> testClasses = Arrays.asList(TestClassOne.class,
-    // TestClassTwo.class);
-    // AnnotationBasedMetadataBuilder builder = new
-    // AnnotationBasedMetadataBuilder();
-    // List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
-    // classesUnderTest.add(ClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods.class);
-    // Map<String, ClassUnderTestMetadata> metadatas =
-    // builder.build(classesUnderTest, testClasses, true);
-    // assertThat(metadatas.keySet(),
-    // hasItem("it.javalinux.testedby.testsupport.ClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods"));
-    // ClassUnderTestMetadata metadata =
-    // metadatas.get("it.javalinux.testedby.testsupport.ClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods");
-    // assertThat(metadata.getAllTestMetadata().size(), is(1));
-    // assertThat(metadata.getAllTestMetadata(),
-    // hasItems(equalTo(TEST_CLASS_TWO_METADATA)));
-    // for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-    // assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(1));
-    // assertThat(classMetadata.getMethodsSpecificMetadata(),
-    // hasItems(equalTo((TestMethodMetadata) new
-    // ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
-    // }
-    // }
-    //
-    // @Test
-    // public void
-    // buildShouldRunOnClassImplementingInterfaceUnderTestWithItsOwnAnnotations()
-    // {
-    // List<Class<?>> testClasses = Arrays.asList(TestClassOne.class,
-    // TestClassTwo.class, TestClassOnInterfaceOne.class,
-    // TestClassOnInterfaceTwo.class);
-    // AnnotationBasedMetadataBuilder builder = new
-    // AnnotationBasedMetadataBuilder();
-    // List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
-    // classesUnderTest.add(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class);
-    // Map<String, ClassUnderTestMetadata> metadatas =
-    // builder.build(classesUnderTest, testClasses, false);
-    // assertThat(metadatas.keySet(),
-    // hasItem("it.javalinux.testedby.testsupport.ClassImplementingInterfaceUnderTestWithItsOwnAnnotations"));
-    // ClassUnderTestMetadata metadata =
-    // metadatas.get("it.javalinux.testedby.testsupport.ClassImplementingInterfaceUnderTestWithItsOwnAnnotations");
-    // assertThat(metadata.getAllTestMetadata().size(), is(2));
-    // assertThat(metadata.getAllTestMetadata(),
-    // hasItems(equalTo(TEST_CLASS_TWO_METADATA),
-    // equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
-    // for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-    // assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
-    // assertThat(classMetadata.getMethodsSpecificMetadata(),
-    // hasItems(equalTo((TestMethodMetadata) new
-    // ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
-    // }
-    // }
-    //
-    // @Test
-    // public void buildShouldRunOnClassExtendingAbstractClass() {
-    // List<Class<?>> testClasses = Arrays.asList(TestClassOne.class,
-    // TestClassTwo.class, TestClassOnInterfaceOne.class,
-    // TestClassOnInterfaceTwo.class);
-    // AnnotationBasedMetadataBuilder builder = new
-    // AnnotationBasedMetadataBuilder();
-    // List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
-    // classesUnderTest.add(ClassExtendingAbstractClass.class);
-    // Map<String, ClassUnderTestMetadata> metadatas =
-    // builder.build(classesUnderTest, testClasses, true);
-    // assertThat(metadatas.keySet(),
-    // hasItem("it.javalinux.testedby.testsupport.ClassExtendingAbstractClass"));
-    // ClassUnderTestMetadata metadata =
-    // metadatas.get("it.javalinux.testedby.testsupport.ClassExtendingAbstractClass");
-    // assertThat(metadata.getAllTestMetadata().size(), is(2));
-    // assertThat(metadata.getAllTestMetadata(),
-    // hasItems(equalTo(TEST_CLASS_ONE_ON_INTERFACE_METADATA),
-    // equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
-    // for (TestClassMetadata classMetadata : metadata.getAllTestMetadata()) {
-    // assertThat(classMetadata.getMethodsSpecificMetadata().size(), is(2));
-    // assertThat(classMetadata.getMethodsSpecificMetadata(),
-    // hasItems(equalTo((TestMethodMetadata) new
-    // ImmutableTestMethodMetadata("testMethodTwo", classMetadata))));
-    // }
-    // }
+
+    @Test
+    public void buildShouldRunClassUnderTestOneAnnotationOnWrongMethod() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassUnderTestOneAnnotationOnWrongMethod.class);
+	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
+	// no metadata directly on class
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationOnWrongMethod.class, true).size(), is(1));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnWrongMethod.class, true).size(), is(1));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationOnWrongMethod.class, true).get(0).getStatus().isValid(), is(false));
+
+    }
+
+    @Test
+    public void buildShouldRunClassUnderTestOneAnnotationWithWrongClassName() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassUnderTestOneAnnotationWithWrongClassName.class);
+	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
+	// no metadata directly on class
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationWithWrongClassName.class, false).size(), is(1));
+	// metadatas from methods
+	ClassLinkMetadata testClassWrong = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.TestClassWrong");
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationWithWrongClassName.class, false), hasItems(equalTo(testClassWrong)));
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationWithWrongClassName.class, false).iterator().next().getStatus().isValid(), is(false));
+
+    }
+
+    @Test
+    public void buildShouldRunOnClassUnderTestWithAllAnnotations() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassUnderTestWithAllAnnotations.class);
+	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestWithAllAnnotations.class, true).size(), is(2));
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestWithAllAnnotations.class, true), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
+	assertThat(metadatas.getTestMethodsFor(ClassUnderTestWithAllAnnotations.class, true), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE), equalTo(TEST_METHOD_TWO_IN_CLASS_ONE), equalTo(TEST_METHOD_ONE_IN_CLASS_TWO), equalTo(TEST_METHOD_TWO_IN_CLASS_TWO)));
+
+    }
+
+    @Test
+    public void buildShouldRunOnClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods.class);
+	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses, true);
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods.class, true).size(), is(1));
+	assertThat(metadatas.getTestClassesFor(ClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods.class, true), hasItems(equalTo(TEST_CLASS_TWO_METADATA)));
+
+    }
+
+    @Test
+    public void buildShouldRunOnClassImplementingInterfaceUnderTestWithItsOwnAnnotations() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class, TestClassOnInterfaceOne.class, TestClassOnInterfaceTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class);
+	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses, true);
+	assertThat(metadatas.getTestClassesHirearchyOf(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true).size(), is(2));
+	assertThat(metadatas.getTestClassesHirearchyOf(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true), hasItems(equalTo(TEST_CLASS_TWO_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
+	assertThat(metadatas.getTestMethodsHirearchyOf(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true).size(), is(4));
+
+    }
+
+    @Test
+    public void buildShouldRunOnClassExtendingAbstractClass() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class, TestClassOnInterfaceOne.class, TestClassOnInterfaceTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassExtendingAbstractClass.class);
+	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses, true);
+	assertThat(metadatas.getTestClassesHirearchyOf(ClassExtendingAbstractClass.class, true).size(), is(2));
+	assertThat(metadatas.getTestClassesHirearchyOf(ClassExtendingAbstractClass.class, true), hasItems(equalTo(TEST_CLASS_ONE_ON_INTERFACE_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
+	assertThat(metadatas.getTestMethodsHirearchyOf(ClassExtendingAbstractClass.class, true).size(), is(4));
+
+    }
 }
