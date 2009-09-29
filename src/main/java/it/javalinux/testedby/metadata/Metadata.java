@@ -23,11 +23,9 @@ package it.javalinux.testedby.metadata;
 import java.io.Serializable;
 
 /**
- * Marker interface for metadata. It requires each implementor to redefine
- * equals and hasCode methods.
- * 
- * @author Stefano Maestri stefano.maestri@javalinux.it
- * 
+ * @author alessio.soldano@javalinux.it
+ * @since 27-Aug-2009
+ *
  */
 public interface Metadata extends Serializable {
 

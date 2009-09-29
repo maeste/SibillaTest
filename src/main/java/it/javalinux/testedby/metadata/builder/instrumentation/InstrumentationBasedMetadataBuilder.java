@@ -18,16 +18,16 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata_v2.builder.instrumentation;
+package it.javalinux.testedby.metadata.builder.instrumentation;
 
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
 
-import it.javalinux.testedby.metadata_v2.StatusMetadata;
-import it.javalinux.testedby.metadata_v2.TestsMetadata;
-import it.javalinux.testedby.metadata_v2.impl.Helper;
-import it.javalinux.testedby.metadata_v2.impl.MetadataRepository;
+import it.javalinux.testedby.metadata.StatusMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
+import it.javalinux.testedby.metadata.impl.Helper;
+import it.javalinux.testedby.metadata.impl.MetadataRepository;
 
 /**
  * A metadata builder based on the data collected through instrumentation

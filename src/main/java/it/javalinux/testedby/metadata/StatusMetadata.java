@@ -18,7 +18,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata_v2;
+package it.javalinux.testedby.metadata;
 
 /**
  * The status of a link

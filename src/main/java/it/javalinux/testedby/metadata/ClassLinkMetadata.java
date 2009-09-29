@@ -18,53 +18,67 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata.impl.immutable;
-
-import it.javalinux.testedby.metadata.TestClassMetadata;
-import it.javalinux.testedby.metadata.TestMethodMetadata;
+package it.javalinux.testedby.metadata;
 
 /**
- * An immutable implementation of {@link TestMethodMetadata}.
- * 
- * @author Stefano Maestri stefano.maestri@javalinux.it
+ * @author alessio.soldano@javalinux.it
  * 
  */
-public class ImmutableTestMethodMetadata extends TestMethodMetadata {
+public class ClassLinkMetadata extends LinkMetadata {
 
     private static final long serialVersionUID = 1L;
 
-    private final String methodName;
-
-    private final TestClassMetadata testClassMetadata;
+    private String clazz;
 
     /**
-     * @param methodName
-     * @param testClassMetadata
+     * @param status
+     * @param clazz
      */
-    public ImmutableTestMethodMetadata(String methodName, TestClassMetadata testClassMetadata) {
-	super();
-	this.methodName = methodName;
-	this.testClassMetadata = testClassMetadata;
+    public ClassLinkMetadata(StatusMetadata status, String clazz) {
+	super(status);
+	this.clazz = clazz;
+    }
+
+    /**
+     * @return clazz
+     */
+    public String getClazz() {
+	return clazz;
     }
 
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.TestMethodMetadata#getMethodName()
+     * @see java.lang.Object#hashCode()
      */
     @Override
-    public String getMethodName() {
-	return methodName;
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+	return result;
     }
 
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.TestMethodMetadata#getTestClassMetadata()
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public TestClassMetadata getTestClassMetadata() {
-	return testClassMetadata;
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	ClassLinkMetadata other = (ClassLinkMetadata) obj;
+	if (clazz == null) {
+	    if (other.clazz != null)
+		return false;
+	} else if (!clazz.equals(other.clazz))
+	    return false;
+	return true;
     }
 
 }

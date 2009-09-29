@@ -30,14 +30,14 @@ import static org.hamcrest.core.Is.is;
 
 import static org.junit.Assert.assertThat;
 
-import it.javalinux.testedby.metadata_v2.ClassLinkMetadata;
-import it.javalinux.testedby.metadata_v2.LinkMetadata;
-import it.javalinux.testedby.metadata_v2.MethodLinkMetadata;
-import it.javalinux.testedby.metadata_v2.StatusMetadata;
-import it.javalinux.testedby.metadata_v2.TestsMetadata;
-import it.javalinux.testedby.metadata_v2.builder.instrumentation.InstrumentationBasedMetadataBuilder;
-import it.javalinux.testedby.metadata_v2.builder.instrumentation.InvocationTracker;
-import it.javalinux.testedby.metadata_v2.impl.ImmutableMethodMetadata;
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.metadata.LinkMetadata;
+import it.javalinux.testedby.metadata.MethodLinkMetadata;
+import it.javalinux.testedby.metadata.StatusMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
+import it.javalinux.testedby.metadata.builder.instrumentation.InstrumentationBasedMetadataBuilder;
+import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
+import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
 
 import org.junit.Test;
 

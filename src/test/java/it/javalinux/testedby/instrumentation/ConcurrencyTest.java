@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import it.javalinux.testedby.metadata_v2.builder.instrumentation.InvocationTracker;
+import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

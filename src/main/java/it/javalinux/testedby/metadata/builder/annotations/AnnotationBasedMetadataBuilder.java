@@ -22,17 +22,11 @@ package it.javalinux.testedby.metadata.builder.annotations;
 
 import it.javalinux.testedby.annotations.TestedBy;
 import it.javalinux.testedby.annotations.TestedByList;
-import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
-import it.javalinux.testedby.metadata.MethodUnderTestMetadata;
-import it.javalinux.testedby.metadata.TestMetadataMergingList;
+import it.javalinux.testedby.metadata.Metadata;
+import it.javalinux.testedby.metadata.StatusMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
-import it.javalinux.testedby.metadata.impl.immutable.ImmutableClassUnderTestMetadata;
-import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodMetadata;
-import it.javalinux.testedby.metadata.impl.immutable.ImmutableMethodUnderTestMetadata;
-import it.javalinux.testedby.metadata.impl.immutable.ImmutableTestClassMetadata;
-import it.javalinux.testedby.metadata_v2.StatusMetadata;
-import it.javalinux.testedby.metadata_v2.TestsMetadata;
-import it.javalinux.testedby.metadata_v2.impl.MetadataRepository;
+import it.javalinux.testedby.metadata.impl.MetadataRepository;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -100,8 +94,8 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param clazzUnderTest
      * @param methodUnderTest
      * @param repository
-     * @return {@link TestMetadataMergingList} for this method defined in this
-     *         class or in its super classes and interfaces
+     * @return {@link Metadata} for this method defined in this class or in its
+     *         super classes and interfaces
      */
     private MetadataRepository createTestClassMetadatasForMethod(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, Method methodUnderTest, MetadataRepository repository) {
 	List<TestedBy> listOfTestedByOnMethod = createListOfTestedBy(methodUnderTest);
@@ -132,8 +126,8 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param testClasses
      * @param clazzUnderTest
      * @param repository
-     * @return {@link TestMetadataMergingList} for this class and its super
-     *         classes and interfaces
+     * @return {@link Metadata} for this class and its super classes and
+     *         interfaces
      */
     private MetadataRepository createTestClassMetadatas(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, MetadataRepository repository) {
 	List<TestedBy> listOfTestedBy = createListOfTestedBy(clazzUnderTest);
@@ -273,11 +267,6 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	    return className;
 	}
 	return packageName.getName() + "." + className;
-    }
-
-    /* package */Map<String, ClassUnderTestMetadata> buildFromTestClasses(Collection<Class<?>> testClasses) {
-	// not yet implemented
-	return null;
     }
 
     /**

@@ -18,18 +18,27 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata_v2;
-
-import java.io.Serializable;
+package it.javalinux.testedby.metadata;
 
 /**
  * @author alessio.soldano@javalinux.it
- * @since 27-Aug-2009
  *
  */
-public interface Metadata extends Serializable {
+public class LinkMetadata implements Metadata {
+    
+    private static final long serialVersionUID = 1L;
+    
+    private StatusMetadata status;
+    
+    public LinkMetadata(StatusMetadata status) {
+	this.status = status;
+    }
 
-    public boolean equals(Object o);
+    /**
+     * @return status
+     */
+    public StatusMetadata getStatus() {
+        return status;
+    }
 
-    public int hashCode();
 }

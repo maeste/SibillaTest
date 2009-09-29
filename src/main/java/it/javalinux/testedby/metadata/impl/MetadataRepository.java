@@ -18,7 +18,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata_v2.impl;
+package it.javalinux.testedby.metadata.impl;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -31,12 +31,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import it.javalinux.testedby.metadata_v2.ClassLinkMetadata;
-import it.javalinux.testedby.metadata_v2.LinkMetadata;
-import it.javalinux.testedby.metadata_v2.MethodLinkMetadata;
-import it.javalinux.testedby.metadata_v2.MethodMetadata;
-import it.javalinux.testedby.metadata_v2.StatusMetadata;
-import it.javalinux.testedby.metadata_v2.TestsMetadata;
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.metadata.LinkMetadata;
+import it.javalinux.testedby.metadata.MethodLinkMetadata;
+import it.javalinux.testedby.metadata.MethodMetadata;
+import it.javalinux.testedby.metadata.StatusMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
  * A repository containing the whole tests<->classesUnderTests relationships.
@@ -105,7 +105,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getClassesTestedBy(java.lang.Class,
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getClassesTestedBy(java.lang.Class,
      *      java.lang.reflect.Method)
      */
     public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, Method method) {
@@ -116,7 +116,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getClassesTestedBy(java.lang.Class,
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getClassesTestedBy(java.lang.Class,
      *      boolean)
      */
     public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, boolean includeMethods) {
@@ -131,7 +131,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getMethodsTestedBy(java.lang.Class,
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getMethodsTestedBy(java.lang.Class,
      *      java.lang.reflect.Method)
      */
     public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, Method method) {
@@ -142,7 +142,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getMethodsTestedBy(java.lang.Class,
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getMethodsTestedBy(java.lang.Class,
      *      boolean)
      */
     public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, boolean includeMethods) {
@@ -157,7 +157,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestClassesFor(java.lang.Class,
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestClassesFor(java.lang.Class,
      *      java.lang.reflect.Method)
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, Method method) {
@@ -168,7 +168,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestClassesFor(java.lang.Class,
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestClassesFor(java.lang.Class,
      *      boolean)
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods) {
@@ -199,7 +199,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getTestMethodsFor(java.lang.Class,
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestMethodsFor(java.lang.Class,
      *      java.lang.reflect.Method)
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, Method method) {
@@ -328,7 +328,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getAllTestClasses()
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getAllTestClasses()
      */
     public List<ClassLinkMetadata> getAllTestClasses() {
 	Set<LinkMetadata> links = new HashSet<LinkMetadata>(testsLinks.size());
@@ -341,7 +341,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getAllTestMethods()
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getAllTestMethods()
      */
     public List<MethodLinkMetadata> getAllTestMethods() {
 	Set<LinkMetadata> links = new HashSet<LinkMetadata>(testsLinks.size());
@@ -354,7 +354,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getAllTestedClasses()
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getAllTestedClasses()
      */
     public List<ClassLinkMetadata> getAllTestedClasses() {
 	Set<LinkMetadata> links = new HashSet<LinkMetadata>(isTestedByLinks.size());
@@ -367,7 +367,7 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata_v2.TestsMetadata#getAllTestedMethods()
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getAllTestedMethods()
      */
     public List<MethodLinkMetadata> getAllTestedMethods() {
 	Set<LinkMetadata> links = new HashSet<LinkMetadata>(isTestedByLinks.size());

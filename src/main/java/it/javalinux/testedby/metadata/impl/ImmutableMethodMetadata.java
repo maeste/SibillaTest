@@ -18,9 +18,9 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata_v2.impl;
+package it.javalinux.testedby.metadata.impl;
 
-import it.javalinux.testedby.metadata_v2.MethodMetadata;
+import it.javalinux.testedby.metadata.MethodMetadata;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

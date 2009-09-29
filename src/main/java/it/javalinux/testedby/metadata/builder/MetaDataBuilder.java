@@ -20,11 +20,9 @@
  */
 package it.javalinux.testedby.metadata.builder;
 
-import it.javalinux.testedby.metadata.ClassUnderTestMetadata;
-import it.javalinux.testedby.metadata_v2.TestsMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * This is a Builder interface. Implementors provide their own metadata

@@ -18,25 +18,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.metadata_v2;
+package it.javalinux.testedby.metadata;
 
 /**
  * @author alessio.soldano@javalinux.it
  * 
  */
-public class ClassLinkMetadata extends LinkMetadata {
+public class MethodLinkMetadata extends LinkMetadata {
 
     private static final long serialVersionUID = 1L;
 
     private String clazz;
 
+    private MethodMetadata method;
+
     /**
      * @param status
      * @param clazz
+     * @param method
      */
-    public ClassLinkMetadata(StatusMetadata status, String clazz) {
+    public MethodLinkMetadata(StatusMetadata status, String clazz, MethodMetadata method) {
 	super(status);
 	this.clazz = clazz;
+	this.method = method;
     }
 
     /**
@@ -44,6 +48,13 @@ public class ClassLinkMetadata extends LinkMetadata {
      */
     public String getClazz() {
 	return clazz;
+    }
+
+    /**
+     * @return method
+     */
+    public MethodMetadata getMethod() {
+	return method;
     }
 
     /**
@@ -56,6 +67,7 @@ public class ClassLinkMetadata extends LinkMetadata {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+	result = prime * result + ((method == null) ? 0 : method.hashCode());
 	return result;
     }
 
@@ -72,11 +84,16 @@ public class ClassLinkMetadata extends LinkMetadata {
 	    return false;
 	if (getClass() != obj.getClass())
 	    return false;
-	ClassLinkMetadata other = (ClassLinkMetadata) obj;
+	MethodLinkMetadata other = (MethodLinkMetadata) obj;
 	if (clazz == null) {
 	    if (other.clazz != null)
 		return false;
 	} else if (!clazz.equals(other.clazz))
+	    return false;
+	if (method == null) {
+	    if (other.method != null)
+		return false;
+	} else if (!method.equals(other.method))
 	    return false;
 	return true;
     }

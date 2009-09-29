@@ -28,7 +28,7 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 
 import static org.junit.Assert.assertThat;
 
-import it.javalinux.testedby.metadata_v2.impl.Helper;
+import it.javalinux.testedby.metadata.impl.Helper;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -57,9 +57,9 @@ public class HelperTest {
     @Test
     public void shouldMethodInfoFromJavaAssistLongName()
     {
-	String s1 = "it.javalinux.testedby.metadata_v2.impl.MetadataRepository.addConnection(java.lang.String,java.lang.String," +
+	String s1 = "it.javalinux.testedby.metadata.impl.MetadataRepository.addConnection(java.lang.String,java.lang.String," +
 			"java.lang.String[],java.lang.String,java.lang.String,java.lang.String[],it.javalinux.testedby.metadata_v2.StatusMetadata)";
-	String s2 = "it.javalinux.testedby.metadata_v2.impl.MetadataRepository.getClassesTestedBy(java.lang.Class,boolean)";
+	String s2 = "it.javalinux.testedby.metadata.impl.MetadataRepository.getClassesTestedBy(java.lang.Class,boolean)";
 	String s3 = "ping()";
 	String s4 = "it.echo(java.lang.String)";
 	
