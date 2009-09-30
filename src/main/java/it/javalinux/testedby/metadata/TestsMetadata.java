@@ -96,10 +96,10 @@ public interface TestsMetadata extends Metadata {
      * @return a set with the full qualified name of classes
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods);
-
+    
     /**
-     * Returns the test classes that test the provided class and all its
-     * hirearchy (superclasses and/or interfaces)
+     * Returns the test classes that test the provided class, recursing over
+     * superclasses / interfaces of the provided class.
      * 
      * @param clazz
      * @param includeMethods
@@ -107,7 +107,7 @@ public interface TestsMetadata extends Metadata {
      *            the specified class
      * @return a set with the full qualified name of classes
      */
-    public List<ClassLinkMetadata> getTestClassesHirearchyOf(Class<?> clazz, boolean includeMethods);
+    public List<ClassLinkMetadata> getTestClassesForRecursive(Class<?> clazz, boolean includeMethods);
 
     /**
      * Returns the test methods that test the provided class and method
@@ -120,16 +120,6 @@ public interface TestsMetadata extends Metadata {
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, Method method);
 
     /**
-     * Returns the test methods that test the provided class and its hirearchy
-     * 
-     * @param clazz
-     * @param includeMethods
-     * @return a map whose keys are the class names and whose values are sets of
-     *         methods of the corresponding class.
-     */
-    public List<MethodLinkMetadata> getTestMethodsHirearchyOf(Class<?> clazz, boolean includeMethods);
-
-    /**
      * Returns the test methods that test the provided class
      * 
      * @param clazz
@@ -140,6 +130,19 @@ public interface TestsMetadata extends Metadata {
      *         methods of the corresponding class.
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods);
+    
+    /**
+     * Returns the test methods that test the provided class, recursing over
+     * superclasses / interfaces of the provided class.
+     * 
+     * @param clazz
+     * @param includeMethods
+     *            True to return test methods testing even a single method of
+     *            the specified class
+     * @return a map whose keys are the class names and whose values are sets of
+     *         methods of the corresponding class.
+     */
+    public List<MethodLinkMetadata> getTestMethodsForRecursive(Class<?> clazz, boolean includeMethods);
 
     /**
      * Returns all tested classes currently hold in the metadata model

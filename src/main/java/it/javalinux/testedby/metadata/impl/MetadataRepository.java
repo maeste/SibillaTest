@@ -165,7 +165,7 @@ public class MetadataRepository implements TestsMetadata {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(method));
 	return getClassLinks(isTestedByLinks.get(tested));
     }
-
+    
     /**
      * {@inheritDoc}
      * 
@@ -173,26 +173,33 @@ public class MetadataRepository implements TestsMetadata {
      *      boolean)
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods) {
-	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
-	Set<LinkMetadata> set = isTestedByLinks.get(tested);
-	if (includeMethods) {
-	    set = enrichUsingClassMethods(set, clazz, isTestedByLinks);
-	}
-	return getClassLinks(set);
+	return this.getTestClassesFor(clazz, includeMethods, false);
     }
 
-    public List<ClassLinkMetadata> getTestClassesHirearchyOf(Class<?> clazz, boolean includeMethods) {
+    /**
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestClassesForRecursive(java.lang.Class,
+     *      boolean)
+     */
+    public List<ClassLinkMetadata> getTestClassesForRecursive(Class<?> clazz, boolean includeMethods) {
+	return this.getTestClassesFor(clazz, includeMethods, true);
+    }
+    
+    protected List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods, boolean recursive) {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);
 	if (includeMethods) {
 	    set = enrichUsingClassMethods(set, clazz, isTestedByLinks);
 	}
-
-	for (Class<?> interfaceUnderTest : clazz.getInterfaces()) {
-	    set.addAll(this.getTestClassesHirearchyOf(interfaceUnderTest, includeMethods));
-	}
-	if (clazz.getSuperclass() != null && clazz.getSuperclass().getPackage() != null && !clazz.getSuperclass().getPackage().toString().startsWith("java")) {
-	    set.addAll(this.getTestClassesHirearchyOf(clazz.getSuperclass(), includeMethods));
+	if (recursive) {
+	    for (Class<?> interfaceUnderTest : clazz.getInterfaces()) {
+		set.addAll(this.getTestClassesFor(interfaceUnderTest, includeMethods, recursive));
+	    }
+	    Class<?> superClass = clazz.getSuperclass();
+	    if (superClass != null && !Helper.isInJVMPackage(superClass)) {
+		set.addAll(this.getTestClassesFor(superClass, includeMethods, recursive));
+	    }
 	}
 	return getClassLinks(set);
     }
@@ -207,32 +214,45 @@ public class MetadataRepository implements TestsMetadata {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(method));
 	return getMethodLinks(isTestedByLinks.get(tested));
     }
-
-    public List<MethodLinkMetadata> getTestMethodsHirearchyOf(Class<?> clazz, boolean includeMethods) {
-	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
-	Set<LinkMetadata> set = isTestedByLinks.get(tested);
-	if (includeMethods) {
-	    set = enrichUsingClassMethods(set, clazz, isTestedByLinks);
-	}
-	for (Class<?> interfaceUnderTest : clazz.getInterfaces()) {
-	    set.addAll(this.getTestMethodsHirearchyOf(interfaceUnderTest, includeMethods));
-	}
-	if (clazz.getSuperclass() != null && clazz.getSuperclass().getPackage() != null && !clazz.getSuperclass().getPackage().toString().startsWith("java")) {
-	    set.addAll(this.getTestMethodsHirearchyOf(clazz.getSuperclass(), includeMethods));
-	}
-
-	return getMethodLinks(set);
-    }
-
+    
+    /**
+     * 
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestMethodsFor(java.lang.Class, boolean)
+     */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods) {
+	return this.getTestMethodsFor(clazz, includeMethods, false);
+    }
+
+    /**
+     * 
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestMethodsForRecursive(java.lang.Class, boolean)
+     */
+    public List<MethodLinkMetadata> getTestMethodsForRecursive(Class<?> clazz, boolean includeMethods) {
+	return this.getTestMethodsFor(clazz, includeMethods, true);
+    }
+    
+    protected List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods, boolean recursive) {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);
 	if (includeMethods) {
 	    set = enrichUsingClassMethods(set, clazz, isTestedByLinks);
 	}
+	if (recursive) {
+	    for (Class<?> interfaceUnderTest : clazz.getInterfaces()) {
+		set.addAll(this.getTestMethodsFor(interfaceUnderTest, includeMethods, recursive));
+	    }
+	    Class<?> superClass = clazz.getSuperclass();
+	    if (superClass != null && !Helper.isInJVMPackage(superClass)) {
+		set.addAll(this.getTestMethodsFor(superClass, includeMethods, recursive));
+	    }
+	}
 	return getMethodLinks(set);
     }
-
+    
     private static List<ClassLinkMetadata> getClassLinks(Collection<LinkMetadata> links) {
 	Set<ClassLinkMetadata> result = new HashSet<ClassLinkMetadata>();
 	if (links != null) {
@@ -279,6 +299,9 @@ public class MetadataRepository implements TestsMetadata {
      * 
      */
     private static class MethodInfo implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
 	private String classRef;
 
 	private MethodMetadata methodRef;

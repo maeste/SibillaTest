@@ -21,12 +21,9 @@
 package it.javalinux.testedby.metadata;
 
 import static org.hamcrest.core.Is.is;
-
 import static org.hamcrest.core.IsEqual.equalTo;
-
-import static org.junit.matchers.JUnitMatchers.hasItems;
-
 import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 import it.javalinux.testedby.metadata.impl.Helper;
 
@@ -81,6 +78,21 @@ public class HelperTest {
 	assertThat(parameters1, hasItems(equalTo("java.lang.String"), equalTo("java.lang.String[]"), equalTo("it.javalinux.testedby.metadata_v2.StatusMetadata")));
 	assertThat(parameters2, hasItems(equalTo("java.lang.Class"), equalTo("boolean")));
 	assertThat(parameters4, hasItems(equalTo("java.lang.String")));
+    }
+    
+    @Test
+    public void shouldDetectJVMPackages()
+    {
+	assertThat(Helper.isInJVMPackage("javax/xml/bind/MyClass"), is(true));
+	assertThat(Helper.isInJVMPackage("javax.xml.bind.MyClass"), is(true));
+	assertThat(Helper.isInJVMPackage("java/xml/bind/MyClass"), is(true));
+	assertThat(Helper.isInJVMPackage("java.xml.bind.MyClass"), is(true));
+	assertThat(Helper.isInJVMPackage("foo/xml/bind/MyClass"), is(false));
+	assertThat(Helper.isInJVMPackage("foo.xml.bind.MyClass"), is(false));
+	assertThat(Helper.isInJVMPackage("java"), is(false));
+	assertThat(Helper.isInJVMPackage("java.Foo"), is(true));
+	assertThat(Helper.isInJVMPackage(Boolean.class), is(true));
+	assertThat(Helper.isInJVMPackage(HelperTest.class), is(false));
     }
     
     private static class TestClassOne

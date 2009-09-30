@@ -209,9 +209,9 @@ public class AnnotationBasedMetadataBuilderTest {
 	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
 	classesUnderTest.add(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class);
 	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses, true);
-	assertThat(metadatas.getTestClassesHirearchyOf(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true).size(), is(2));
-	assertThat(metadatas.getTestClassesHirearchyOf(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true), hasItems(equalTo(TEST_CLASS_TWO_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
-	assertThat(metadatas.getTestMethodsHirearchyOf(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true).size(), is(4));
+	assertThat(metadatas.getTestClassesForRecursive(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true).size(), is(2));
+	assertThat(metadatas.getTestClassesForRecursive(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true), hasItems(equalTo(TEST_CLASS_TWO_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
+	assertThat(metadatas.getTestMethodsForRecursive(ClassImplementingInterfaceUnderTestWithItsOwnAnnotations.class, true).size(), is(4));
 
     }
 
@@ -222,9 +222,9 @@ public class AnnotationBasedMetadataBuilderTest {
 	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
 	classesUnderTest.add(ClassExtendingAbstractClass.class);
 	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses, true);
-	assertThat(metadatas.getTestClassesHirearchyOf(ClassExtendingAbstractClass.class, true).size(), is(2));
-	assertThat(metadatas.getTestClassesHirearchyOf(ClassExtendingAbstractClass.class, true), hasItems(equalTo(TEST_CLASS_ONE_ON_INTERFACE_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
-	assertThat(metadatas.getTestMethodsHirearchyOf(ClassExtendingAbstractClass.class, true).size(), is(4));
+	assertThat(metadatas.getTestClassesForRecursive(ClassExtendingAbstractClass.class, true).size(), is(2));
+	assertThat(metadatas.getTestClassesForRecursive(ClassExtendingAbstractClass.class, true), hasItems(equalTo(TEST_CLASS_ONE_ON_INTERFACE_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
+	assertThat(metadatas.getTestMethodsForRecursive(ClassExtendingAbstractClass.class, true).size(), is(4));
 
     }
 }

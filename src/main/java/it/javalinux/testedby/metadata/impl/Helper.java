@@ -32,6 +32,8 @@ import java.util.StringTokenizer;
  */
 public class Helper {
     
+    private static String[] jvmPackages = new String[]{"sun.", "java.", "javax." };
+    
     public static String[] getParameterTypesAsStringArray(Method method)
     {
 	List<String> l = new LinkedList<String>();
@@ -70,5 +72,23 @@ public class Helper {
 	    return new String[0];
 	}
 	return list.toArray(new String[list.size()]);
+    }
+    
+    public static boolean isInJVMPackage(Class<?> clazz) {
+	return (clazz != null && isInJVMPackage(clazz.getName()));
+    }
+    
+    public static boolean isInJVMPackage(String className) {
+	if (className == null) {
+	    return false;
+	}
+	String modified = className.replaceFirst("/", ".");
+	for (String s : jvmPackages)
+	{
+	    if (modified.startsWith(s)) {
+		return true;
+	    }
+	}
+	return false;
     }
 }

@@ -21,6 +21,7 @@
 package it.javalinux.testedby.instrumentation;
 
 import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
+import it.javalinux.testedby.metadata.impl.Helper;
 
 import java.io.ByteArrayInputStream;
 import java.lang.instrument.ClassFileTransformer;
@@ -46,7 +47,6 @@ public class Agent implements ClassFileTransformer {
 
     private static Logger LOG = Logger.getLogger(Agent.class.getName());
     
-    private static String[] ignore = new String[]{"sun/", "java/", "javax/" };
     private static String[] includes = null;
     
     /**
@@ -85,10 +85,8 @@ public class Agent implements ClassFileTransformer {
     }
     
     private static boolean isInstrumentationRequired(String className) {
-	for (String s : ignore) {
-	    if (className.startsWith(s)) {
-		return false;
-	    }
+	if (Helper.isInJVMPackage(className)) {
+	    return false;
 	}
 	if (includes == null) {
 	    return true;
