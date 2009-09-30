@@ -20,6 +20,7 @@
  */
 package it.javalinux.testedby.metadata.impl;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -277,7 +278,7 @@ public class MetadataRepository implements TestsMetadata {
      * An inner class for class-method couples
      * 
      */
-    private static class MethodInfo {
+    private static class MethodInfo implements Serializable {
 	private String classRef;
 
 	private MethodMetadata methodRef;
@@ -375,6 +376,47 @@ public class MetadataRepository implements TestsMetadata {
 	    links.addAll(entry.getValue());
 	}
 	return getMethodLinks(links);
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((isTestedByLinks == null) ? 0 : isTestedByLinks.hashCode());
+	result = prime * result + ((testsLinks == null) ? 0 : testsLinks.hashCode());
+	return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	MetadataRepository other = (MetadataRepository) obj;
+	if (isTestedByLinks == null) {
+	    if (other.isTestedByLinks != null)
+		return false;
+	} else if (!isTestedByLinks.equals(other.isTestedByLinks))
+	    return false;
+	if (testsLinks == null) {
+	    if (other.testsLinks != null)
+		return false;
+	} else if (!testsLinks.equals(other.testsLinks))
+	    return false;
+	return true;
     }
 
 }

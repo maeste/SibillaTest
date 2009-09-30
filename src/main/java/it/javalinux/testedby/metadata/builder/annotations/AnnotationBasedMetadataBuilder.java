@@ -217,7 +217,9 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param testClasses
      * @param testedByTestClassName
      * @param testedByMethodName
-     * @return //TODO
+     * @return true if testedby annotation point an existing method decorated
+     *         with Test annotation. If no method name specified it veify only
+     *         the testedby class name is present in testClass Map passed
      */
 
     private boolean validateTestedByAnnotation(Map<String, Class<?>> testClasses, String testedByTestClassName, String testedByMethodName) {

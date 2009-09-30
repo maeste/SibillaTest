@@ -20,13 +20,15 @@
  */
 package it.javalinux.testedby.metadata;
 
+import java.io.Serializable;
+
 /**
  * The status of a link
  * 
  * @author alessio.soldano@javalinux.it
  * 
  */
-public class StatusMetadata {
+public class StatusMetadata implements Serializable {
 
     private boolean valid;
 
@@ -36,11 +38,10 @@ public class StatusMetadata {
 
     private boolean fromInstrumentation;
 
-    public StatusMetadata()
-    {
+    public StatusMetadata() {
 	super();
     }
-    
+
     /**
      * @param valid
      * @param justCreated

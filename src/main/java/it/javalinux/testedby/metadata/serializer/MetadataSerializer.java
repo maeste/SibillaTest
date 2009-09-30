@@ -20,10 +20,48 @@
  */
 package it.javalinux.testedby.metadata.serializer;
 
+import it.javalinux.testedby.metadata.Metadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
+
 /**
  * @author oracle
  * 
  */
 public interface MetadataSerializer {
+
+    /**
+     * 
+     * @param metadata
+     * @return true if serialisations is possible and went well. False if
+     *         serialisation fails. It puts them in a file on current directory
+     *         named testedbyMetadata.bin
+     */
+    public boolean serialize(TestsMetadata metadata);
+
+    /**
+     * 
+     * @return deserialised TestsMetadata It gets them from a file on current
+     *         directory named testedbyMetadata.bin
+     */
+    public TestsMetadata deserialize();
+
+    /**
+     * 
+     * @param metadata
+     * @param fileName
+     *            filename where serialise the metadata
+     * @return true if serialisations is possible and went well. False if
+     *         serialisation fails.
+     */
+    public boolean serialize(TestsMetadata metadata, String fileName);
+
+    /**
+     * 
+     * @param filename
+     *            from which deserialise metadatas
+     * @return deserialised TestsMetadata It gets them from a file on current
+     *         directory named testedbyMetadata.bin
+     */
+    public TestsMetadata deserialize(String filename);
 
 }
