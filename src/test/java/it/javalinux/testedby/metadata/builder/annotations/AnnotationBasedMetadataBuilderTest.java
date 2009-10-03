@@ -39,7 +39,7 @@ public class AnnotationBasedMetadataBuilderTest {
 
     private static AnnotationBasedMetadataBuilder builder;
 
-    private final static StatusMetadata status = new StatusMetadata().setFromAnnotation(true).setValid(true);
+    private final static StatusMetadata status = new StatusMetadata().setFromAnnotation(true).setValid(true).setJustCreated(true);
 
     private final static ClassLinkMetadata TEST_CLASS_ONE_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.TestClassOne");
 

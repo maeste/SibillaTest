@@ -22,6 +22,7 @@ package it.javalinux.testedby.metadata.builder.annotations;
 
 import it.javalinux.testedby.annotations.TestedBy;
 import it.javalinux.testedby.annotations.TestedByList;
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.Metadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
@@ -47,6 +48,19 @@ import org.junit.Test;
 public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 
     private boolean onlyValidLink;
+
+    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<ClassLinkMetadata> testClassesMetadata, Collection<Class<?>> testClasses) {
+	for (ClassLinkMetadata classLink : testClassesMetadata) {
+	    try {
+		testClasses.add(Thread.currentThread().getContextClassLoader().loadClass(classLink.getClazz()));
+	    } catch (Exception e) {
+		e.printStackTrace();
+		// ignore
+	    }
+	}
+
+	return this.build(classesUnderTest, testClasses);
+    }
 
     /**
      * {@inheritDoc}

@@ -114,6 +114,11 @@ public class MetadataRepository implements TestsMetadata {
 	return getClassLinks(testsLinks.get(test));
     }
 
+    public List<ClassLinkMetadata> getClassesTestedBy(String className, MethodMetadata methodMetadata) {
+	MethodInfo test = new MethodInfo(className, methodMetadata);
+	return getClassLinks(testsLinks.get(test));
+    }
+
     /**
      * {@inheritDoc}
      * 
@@ -165,7 +170,7 @@ public class MetadataRepository implements TestsMetadata {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(method));
 	return getClassLinks(isTestedByLinks.get(tested));
     }
-    
+
     /**
      * {@inheritDoc}
      * 
@@ -185,7 +190,7 @@ public class MetadataRepository implements TestsMetadata {
     public List<ClassLinkMetadata> getTestClassesForRecursive(Class<?> clazz, boolean includeMethods) {
 	return this.getTestClassesFor(clazz, includeMethods, true);
     }
-    
+
     protected List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods, boolean recursive) {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);
@@ -214,12 +219,13 @@ public class MetadataRepository implements TestsMetadata {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(method));
 	return getMethodLinks(isTestedByLinks.get(tested));
     }
-    
+
     /**
      * 
      * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestMethodsFor(java.lang.Class, boolean)
+     * 
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestMethodsFor(java.lang.Class,
+     *      boolean)
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods) {
 	return this.getTestMethodsFor(clazz, includeMethods, false);
@@ -228,13 +234,14 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * 
      * {@inheritDoc}
-     *
-     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestMethodsForRecursive(java.lang.Class, boolean)
+     * 
+     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestMethodsForRecursive(java.lang.Class,
+     *      boolean)
      */
     public List<MethodLinkMetadata> getTestMethodsForRecursive(Class<?> clazz, boolean includeMethods) {
 	return this.getTestMethodsFor(clazz, includeMethods, true);
     }
-    
+
     protected List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods, boolean recursive) {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);
@@ -252,7 +259,7 @@ public class MetadataRepository implements TestsMetadata {
 	}
 	return getMethodLinks(set);
     }
-    
+
     private static List<ClassLinkMetadata> getClassLinks(Collection<LinkMetadata> links) {
 	Set<ClassLinkMetadata> result = new HashSet<ClassLinkMetadata>();
 	if (links != null) {
@@ -299,7 +306,7 @@ public class MetadataRepository implements TestsMetadata {
      * 
      */
     private static class MethodInfo implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private String classRef;

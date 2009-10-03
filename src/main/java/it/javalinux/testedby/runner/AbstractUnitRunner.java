@@ -20,9 +20,19 @@
  */
 package it.javalinux.testedby.runner;
 
-import it.javalinux.testedby.metadata.Metadata;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.Test;
+
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
+import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
+import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadataBuilder;
+import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
@@ -30,25 +40,48 @@ import it.javalinux.testedby.metadata.TestsMetadata;
  */
 public abstract class AbstractUnitRunner implements TestRunner {
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see it.javalinux.testedby.runner.TestRunner#run(Class, TestsMetadata)
-     */
-    public void run(Class<?> classUnderTest, TestsMetadata metadata) throws Exception {
-	for (MethodLinkMetadata methodMetadata : metadata.getTestMethodsHirearchyOf(classUnderTest, true)) {
-	    runTestedByElement(classUnderTest, methodMetadata.getClazz(), methodMetadata.getMethod().getName());
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMetadata metadata) throws Exception {
+
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	metadata = builder.build(changedClassesUnderTest, metadata.getAllTestClasses(), changedTestClasses);
+	Set<MethodLinkMetadata> methodLinkToRun = new HashSet<MethodLinkMetadata>();
+	for (MethodLinkMetadata methodMetadata : metadata.getAllTestMethods()) {
+	    if (methodMetadata.getStatus().isJustCreated()) {
+		methodLinkToRun.add(methodMetadata);
+	    }
 	}
+	for (Class<?> classUnderTest : changedClassesUnderTest) {
+	    for (MethodLinkMetadata methodMetadata : metadata.getTestMethodsForRecursive(classUnderTest, true)) {
+		methodLinkToRun.add(methodMetadata);
+	    }
+	}
+
+	for (Class<?> testClass : changedTestClasses) {
+	    for (Method method : testClass.getMethods()) {
+		if (method.getAnnotation(Test.class) != null) {
+		    methodLinkToRun.add(new MethodLinkMetadata(new StatusMetadata(true, true, false, false), testClass.getCanonicalName(), new ImmutableMethodMetadata(method)));
+		}
+	    }
+	}
+
+	for (MethodLinkMetadata methodLinkMetadata : methodLinkToRun) {
+	    boolean success = runTestedByElement(metadata.getClassesTestedBy(methodLinkMetadata.getClazz(), methodLinkMetadata.getMethod()), methodLinkMetadata.getClazz(), methodLinkMetadata.getMethod().getName());
+	    // TODO update status inside metadata
+	}
+
+	return metadata;
+
     }
 
     /**
-     * @param classUnderTest
+     * @param classesUnderTest
      * @param testClass
      * @param methodName
+     * @return true if test pass, false if it fails or got errors
      * @throws Exception
      * @throws ClassNotFoundException
      */
 
-    public abstract void runTestedByElement(Class<?> classUnderTest, String testClass, String methodName) throws Exception, ClassNotFoundException;
+    public abstract boolean runTestedByElement(List<ClassLinkMetadata> classesUnderTest, String testClass, String methodName) throws Exception, ClassNotFoundException;
 
 }

@@ -44,6 +44,16 @@ public interface TestsMetadata extends Metadata {
     public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, Method method);
 
     /**
+     * Returns the classes tested (classes under test) by the provided class and
+     * method
+     * 
+     * @param className
+     * @param methodMetadata
+     * @return a set with the full qualified name of classes
+     */
+    public List<ClassLinkMetadata> getClassesTestedBy(String className, MethodMetadata methodMetadata);
+
+    /**
      * Returns the classes tested (classes under test) by the provided class
      * 
      * @param clazz
@@ -96,7 +106,7 @@ public interface TestsMetadata extends Metadata {
      * @return a set with the full qualified name of classes
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods);
-    
+
     /**
      * Returns the test classes that test the provided class, recursing over
      * superclasses / interfaces of the provided class.
@@ -130,7 +140,7 @@ public interface TestsMetadata extends Metadata {
      *         methods of the corresponding class.
      */
     public List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods);
-    
+
     /**
      * Returns the test methods that test the provided class, recursing over
      * superclasses / interfaces of the provided class.

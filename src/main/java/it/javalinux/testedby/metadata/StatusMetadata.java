@@ -38,6 +38,8 @@ public class StatusMetadata implements Serializable {
 
     private boolean fromInstrumentation;
 
+    private boolean passedOnLastRun = false;
+
     public StatusMetadata() {
 	super();
     }
@@ -54,6 +56,7 @@ public class StatusMetadata implements Serializable {
 	this.justCreated = justCreated;
 	this.fromAnnotation = fromAnnotation;
 	this.fromInstrumentation = fromInstrumentation;
+	this.passedOnLastRun = false;
     }
 
     /**
@@ -122,6 +125,21 @@ public class StatusMetadata implements Serializable {
     public StatusMetadata setFromInstrumentation(boolean fromInstrumentation) {
 	this.fromInstrumentation = fromInstrumentation;
 	return this;
+    }
+
+    /**
+     * @return passedOnLastRun
+     */
+    private synchronized boolean isPassedOnLastRun() {
+	return passedOnLastRun;
+    }
+
+    /**
+     * @param passedOnLastRun
+     *            Sets passedOnLastRun to the specified value.
+     */
+    private synchronized void setPassedOnLastRun(boolean passedOnLastRun) {
+	this.passedOnLastRun = passedOnLastRun;
     }
 
 }

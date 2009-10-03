@@ -20,6 +20,8 @@
  */
 package it.javalinux.testedby.runner;
 
+import java.util.List;
+
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
@@ -29,11 +31,14 @@ import it.javalinux.testedby.metadata.TestsMetadata;
 public interface TestRunner {
 
     /**
-     * run all tests which is linked to classUndertest on passed metadata
+     * run all tests which is linked to classUndertest on passed metadata. It
+     * return modified metadatas
      * 
-     * @param classUnderTest
+     * @param changedClassesUnderTest
+     * @param changedTestClasses
      * @param metadata
+     * @return modified TestsMetadata
      * @throws Exception
      */
-    public void run(Class<?> classUnderTest, TestsMetadata metadata) throws Exception;
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMetadata metadata) throws Exception;
 }

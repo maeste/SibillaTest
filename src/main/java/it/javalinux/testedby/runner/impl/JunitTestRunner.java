@@ -20,7 +20,11 @@
  */
 package it.javalinux.testedby.runner.impl;
 
-import java.util.Collection;
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
+import it.javalinux.testedby.runner.AbstractUnitRunner;
+
+import java.util.List;
 
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
@@ -30,51 +34,62 @@ import org.junit.runner.Request;
 import org.junit.runner.Result;
 import org.junit.runner.notification.RunListener;
 
-import it.javalinux.testedby.legacy.annotations.TestedBy;
-import it.javalinux.testedby.metadata.Metadata;
-import it.javalinux.testedby.metadata.MethodLinkMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.runner.AbstractUnitRunner;
-import it.javalinux.testedby.runner.TestRunner;
-
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
 public class JunitTestRunner extends AbstractUnitRunner {
 
-    private final JUnitCore core = new JUnitCore();
+    private final JUnitCore core;
 
     private final RunListener listener;
+
+    /**
+     * @param _core
+     * @param _listener
+     */
+    public JunitTestRunner(JUnitCore _core, RunListener _listener) {
+	super();
+	this.core = _core;
+	this.listener = _listener;
+	core.addListener(listener);
+    }
 
     /**
      * @param _listener
      */
     public JunitTestRunner(RunListener _listener) {
-	super();
-	this.listener = _listener;
-	core.addListener(listener);
+	this(new JUnitCore(), _listener);
+    }
+
+    public JunitTestRunner(JUnitCore _core) {
+	this(_core, new TextListener(new RealSystem()));
     }
 
     public JunitTestRunner() {
-	super();
-	this.listener = new TextListener(new RealSystem());
-	core.addListener(listener);
+	this(new JUnitCore());
     }
 
     /**
      * 
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.runner.AbstractUnitRunner#runTestedByElement(java.lang.Class,
+     * @see it.javalinux.testedby.runner.AbstractUnitRunner#runTestedByElement(java.util.List,
      *      java.lang.String, java.lang.String)
      */
     @Override
-    public void runTestedByElement(Class<?> classUnderTest, String testClass, String methodName) throws Exception, ClassNotFoundException {
-	listener.testRunStarted(Description.createTestDescription(classUnderTest, "Going to test classUnderTest named:" + testClass));
+    public boolean runTestedByElement(List<ClassLinkMetadata> classesUnderTest, String testClass, String methodName) throws ClassNotFoundException {
+	try {
+	    listener.testRunStarted(Description.createSuiteDescription("Test:" + testClass + "." + methodName + "is running stressing " + classesUnderTest));
+	} catch (Exception e) {
+	}
 	Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);
 	Result result = core.run(request);
-	System.out.println(result.wasSuccessful());
+	try {
+	    listener.testRunFinished(result);
+	} catch (Exception e) {
+	}
+	return result.wasSuccessful();
     }
 
 }
