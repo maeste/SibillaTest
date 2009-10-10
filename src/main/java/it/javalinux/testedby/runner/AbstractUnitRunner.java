@@ -27,35 +27,54 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import it.javalinux.testedby.instrumentation.InstrumentationTestRunner;
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
+import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadataBuilder;
+import it.javalinux.testedby.metadata.builder.instrumentation.InstrumentationBasedMetadataBuilder;
+import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
 
 /**
+ * An abstract unit test runner that provides basic implementation for both TestRunner
+ * and InstrumentationRunner, while leaving test framework specific implementation
+ * details to extending classes.
+ * 
  * @author Stefano Maestri stefano.maestri@javalinux.it
+ * @author alessio.soldano@javalinux.it
  * 
  */
-public abstract class AbstractUnitRunner implements TestRunner {
+public abstract class AbstractUnitRunner implements TestRunner, InstrumentationTestRunner {
 
+    /**
+     * 
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.runner.TestRunner#run(java.util.List, java.util.List, it.javalinux.testedby.metadata.TestsMetadata)
+     */
     public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMetadata metadata) throws Exception {
-
 	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
 	metadata = builder.build(changedClassesUnderTest, metadata.getAllTestClasses(), changedTestClasses);
 	Set<MethodLinkMetadata> methodLinkToRun = new HashSet<MethodLinkMetadata>();
+	
+	//we need to run all the new test methods
 	for (MethodLinkMetadata methodMetadata : metadata.getAllTestMethods()) {
 	    if (methodMetadata.getStatus().isJustCreated()) {
 		methodLinkToRun.add(methodMetadata);
 	    }
 	}
+	
+	//... as well as all the methods testing changed classes
 	for (Class<?> classUnderTest : changedClassesUnderTest) {
 	    for (MethodLinkMetadata methodMetadata : metadata.getTestMethodsForRecursive(classUnderTest, true)) {
 		methodLinkToRun.add(methodMetadata);
 	    }
 	}
 
+	//... as well as all the changed test classes' methods
 	for (Class<?> testClass : changedTestClasses) {
 	    for (Method method : testClass.getMethods()) {
 		if (method.getAnnotation(Test.class) != null) {
@@ -65,23 +84,47 @@ public abstract class AbstractUnitRunner implements TestRunner {
 	}
 
 	for (MethodLinkMetadata methodLinkMetadata : methodLinkToRun) {
-	    boolean success = runTestedByElement(metadata.getClassesTestedBy(methodLinkMetadata.getClazz(), methodLinkMetadata.getMethod()), methodLinkMetadata.getClazz(), methodLinkMetadata.getMethod().getName());
-	    // TODO update status inside metadata
+	    String clazz = methodLinkMetadata.getClazz();
+	    MethodMetadata method = methodLinkMetadata.getMethod();
+	    List<ClassLinkMetadata> list = metadata.getClassesTestedBy(clazz, method);
+	    boolean success = runTest(clazz, method.getName(), list.toArray(new ClassLinkMetadata[list.size()]));// TODO update status inside metadata
 	}
-
 	return metadata;
-
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.instrumentation.InstrumentationTestRunner#run(java.util.List)
+     */
+    public TestsMetadata run(List<Class<?>> tests) throws Exception
+    {
+	InstrumentationBasedMetadataBuilder builder = new InstrumentationBasedMetadataBuilder();
+	for (Class<?> test : tests)
+	{
+	    for (Method method : test.getMethods())
+	    {
+		InvocationTracker.cleanUp();
+		runTest(test.getName(), method.getName());
+		StatusMetadata status = new StatusMetadata();
+		status.setFromInstrumentation(true);
+		status.setValid(true);
+		//TODO further set the status, perhaps also according to the test result?
+		builder.performBuildStep(test, method, status);
+	    }
+	}
+	return builder.getMetadata();
     }
 
     /**
-     * @param classesUnderTest
      * @param testClass
      * @param methodName
+     * @param classesUnderTest
      * @return true if test pass, false if it fails or got errors
      * @throws Exception
      * @throws ClassNotFoundException
      */
-
-    public abstract boolean runTestedByElement(List<ClassLinkMetadata> classesUnderTest, String testClass, String methodName) throws Exception, ClassNotFoundException;
+    public abstract boolean runTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception, ClassNotFoundException;
 
 }

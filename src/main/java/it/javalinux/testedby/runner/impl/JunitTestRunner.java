@@ -21,10 +21,7 @@
 package it.javalinux.testedby.runner.impl;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.runner.AbstractUnitRunner;
-
-import java.util.List;
 
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
@@ -74,13 +71,12 @@ public class JunitTestRunner extends AbstractUnitRunner {
      * 
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.runner.AbstractUnitRunner#runTestedByElement(java.util.List,
-     *      java.lang.String, java.lang.String)
+     * @see it.javalinux.testedby.runner.AbstractUnitRunner#runTest(String, String, ClassLinkMetadata...)
      */
     @Override
-    public boolean runTestedByElement(List<ClassLinkMetadata> classesUnderTest, String testClass, String methodName) throws ClassNotFoundException {
+    public boolean runTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws ClassNotFoundException {
 	try {
-	    listener.testRunStarted(Description.createSuiteDescription("Test:" + testClass + "." + methodName + "is running stressing " + classesUnderTest));
+	    listener.testRunStarted(Description.createSuiteDescription("Test:" + testClass + "." + methodName + " is running stressing " + classesUnderTest));
 	} catch (Exception e) {
 	}
 	Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);

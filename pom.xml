@@ -10,7 +10,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<javassistVersion>3.6.0.GA</javassistVersion>
-
 	</properties>
 
 
@@ -25,12 +24,10 @@
 				<artifactId>javassist</artifactId>
 				<version>${javassistVersion}</version>
 			</dependency>
-
 		</dependencies>
-
 	</dependencyManagement>
+	
 	<build>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -63,7 +60,6 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>integration-test</phase>
 						<goals>
 							<goal>test</goal>
 						</goals>
@@ -73,9 +69,19 @@
 					</execution>
 				</executions>
 			</plugin>
-
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+              <configuration>
+                <archive>
+                  <manifestEntries>
+                    <Premain-Class>it.javalinux.testedby.instrumentation.Agent</Premain-Class>
+                    <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                  </manifestEntries>
+                </archive>
+              </configuration>
+            </plugin>
 		</plugins>
-
 	</build>
 
 	<dependencies>

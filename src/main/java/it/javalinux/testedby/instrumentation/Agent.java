@@ -39,6 +39,9 @@ import javassist.CtClass;
  * classes being loaded adding a call to the utility
  * collecting metadata.
  * 
+ * See the specified attributes in the manifest added
+ * through the maven-jar-plugin in pom.xml.
+ * 
  * @author alessio.soldano@javalinux.it
  * @since 23-Aug-2009
  *
@@ -79,13 +82,23 @@ public class Agent implements ClassFileTransformer {
 	     		    ProtectionDomain protectionDomain,
 	     		    byte[] classfileBuffer) throws IllegalClassFormatException {
 	if (isInstrumentationRequired(className)) {
-	    return modifyClass(className, classBeingRedefined, classfileBuffer);
+	    try {
+		return modifyClass(className, classBeingRedefined, classfileBuffer);
+	    } catch (Throwable t) {
+		LOG.throwing(Agent.class.getName(), "transform", t);
+		t.printStackTrace();
+		return null;
+	    }
 	}
 	return classfileBuffer;
     }
     
     private static boolean isInstrumentationRequired(String className) {
 	if (Helper.isInJVMPackage(className)) {
+	    return false;
+	}
+	if (Helper.isInRestrictedPackage(className))
+	{
 	    return false;
 	}
 	if (includes == null) {
@@ -108,17 +121,15 @@ public class Agent implements ClassFileTransformer {
 	    if (!cl.isInterface()) {
 		CtBehavior[] methods = cl.getDeclaredBehaviors();
 		for (CtBehavior m : methods) {
-		    if (!m.isEmpty()) {
-			//InvocationTracker.getInstance().addInvokedMethod(className, m.getLongName());
-			StringBuilder code = new StringBuilder();
-			code.append(InvocationTracker.class.getName());
-			code.append(".getInstance().addInvokedMethod(\"");
-			code.append(className);
-			code.append("\", \"");
-			code.append(m.getLongName());
-			code.append("\");");
-			m.insertBefore(code.toString());
-		    }
+		    //InvocationTracker.getInstance().addInvokedMethod(className, m.getLongName());
+		    StringBuilder code = new StringBuilder();
+		    code.append(InvocationTracker.class.getName());
+		    code.append(".getInstance().addInvokedMethod(\"");
+		    code.append(Helper.getCanonicalNameFromJavaAssistName(className));
+		    code.append("\", \"");
+		    code.append(m.getLongName());
+		    code.append("\");");
+		    m.insertBefore(code.toString());
 		}
 	    }
 	    bytes = cl.toBytecode();
