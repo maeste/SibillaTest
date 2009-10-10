@@ -34,55 +34,94 @@ import it.javalinux.testedby.metadata.impl.MetadataRepository;
  * 
  * @author alessio.soldano@javalinux.it
  * @since 20-Sep-2009
- *
+ * 
  */
 public class InstrumentationBasedMetadataBuilder {
-    
+
     private MetadataRepository metadata;
-    
-    public InstrumentationBasedMetadataBuilder()
-    {
+
+    public InstrumentationBasedMetadataBuilder() {
 	reset();
     }
-    
-    public void reset()
-    {
+
+    public void reset() {
 	this.metadata = new MetadataRepository();
     }
-    
-    public void performBuildStep(Class<?> testClass, Method testMethod)
-    {
+
+    /**
+     * Run a single build step linking information coming from instrumentation
+     * to the specified test method run.
+     * 
+     * @param testClass	  The test class that has just been run
+     * @param testMethod  The test method that has just been run
+     */
+    public void performBuildStep(Class<?> testClass, Method testMethod) {
+	performBuildStep(testClass, testMethod, null);
+    }
+
+    /**
+     * Run a single build step linking information coming from instrumentation
+     * to the specified test method run.
+     * 
+     * @param testClass	  The test class that has just been run
+     * @param testMethod  The test method that has just been run
+     * @param status	  The status to be assigned to the link created in this step (the status is cloned)
+     */
+    public void performBuildStep(Class<?> testClass, Method testMethod, StatusMetadata status) {
 	performBuildStep(InvocationTracker.getInstance().getInvokedMethodMap(), testClass, testMethod);
     }
-    
-    public void performBuildStep(String testClass, String testMethod, String[] parameterTypes)
-    {
-	performBuildStep(InvocationTracker.getInstance().getInvokedMethodMap(), testClass, testMethod, parameterTypes);
+
+    /**
+     * Run a single build step linking information coming from instrumentation
+     * to the specified test method run.
+     * 
+     * @param testClass	  	The test class that has just been run
+     * @param testMethod  	The test method that has just been run
+     * @param parameterTypes	The parameters of the test method that has just been run
+     */
+    public void performBuildStep(String testClass, String testMethod, String[] parameterTypes) {
+	performBuildStep(testClass, testMethod, parameterTypes, null);
     }
-    
-    void performBuildStep(Map<String, Set<String>> invocationsMap, Class<?> testClass, Method testMethod)
-    {
-	performBuildStep(invocationsMap, testClass.getName(), testMethod.getName(), Helper.getParameterTypesAsStringArray(testMethod));
+
+    /**
+     * Run a single build step linking information coming from instrumentation
+     * to the specified test method run.
+     * 
+     * @param testClass	  	The test class that has just been run
+     * @param testMethod  	The test method that has just been run
+     * @param parameterTypes	The parameters of the test method that has just been run
+     * @param status		he status to be assigned to the link created in this step (the status is cloned)
+     */
+    public void performBuildStep(String testClass, String testMethod, String[] parameterTypes, StatusMetadata status) {
+	performBuildStep(InvocationTracker.getInstance().getInvokedMethodMap(), testClass, testMethod, parameterTypes, status);
     }
-    
-    void performBuildStep(Map<String, Set<String>> invocationsMap, String testClass, String testMethod, String[] parameterTypes)
-    {
-	for (String testedClass : invocationsMap.keySet())
-	{
-	    for (String testedMethod : invocationsMap.get(testedClass))
-	    {
-		StatusMetadata status = new StatusMetadata();
-		status.setFromInstrumentation(true);
-		status.setValid(true);
+
+    void performBuildStep(Map<String, Set<String>> invocationsMap, Class<?> testClass, Method testMethod) {
+	performBuildStep(invocationsMap, testClass, testMethod, null);
+    }
+
+    void performBuildStep(Map<String, Set<String>> invocationsMap, Class<?> testClass, Method testMethod, StatusMetadata status) {
+	performBuildStep(invocationsMap, testClass.getCanonicalName(), testMethod.getName(), Helper.getParameterTypesAsStringArray(testMethod), status);
+    }
+
+    void performBuildStep(Map<String, Set<String>> invocationsMap, String testClass, String testMethod, String[] parameterTypes, StatusMetadata status) {
+	for (String testedClass : invocationsMap.keySet()) {
+	    for (String testedMethod : invocationsMap.get(testedClass)) {
+		if (status == null) {
+		    status = new StatusMetadata();
+		    status.setFromInstrumentation(true);
+		    status.setValid(true);
+		} else {
+		    status = (StatusMetadata)status.clone();
+		}
 		metadata.addConnection(testClass, testMethod, parameterTypes, testedClass, Helper.getMethodNameFromJavaAssistLongName(testedMethod),
 			Helper.getMethodParametersFromJavaAssistLongName(testedMethod), status);
 	    }
 	}
     }
-    
-    public TestsMetadata getMetadata()
-    {
+
+    public TestsMetadata getMetadata() {
 	return this.metadata;
     }
-    
+
 }
