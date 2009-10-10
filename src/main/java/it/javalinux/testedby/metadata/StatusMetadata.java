@@ -26,18 +26,17 @@ import java.io.Serializable;
  * The status of a link
  * 
  * @author alessio.soldano@javalinux.it
+ * @author stefano.maestri@javalinux.it
  * 
  */
-public class StatusMetadata implements Serializable {
+public class StatusMetadata implements Serializable, Cloneable {
+
+    private static final long serialVersionUID = 7755553308719275165L;
 
     private boolean valid;
-
     private boolean justCreated;
-
     private boolean fromAnnotation;
-
     private boolean fromInstrumentation;
-
     private boolean passedOnLastRun = false;
 
     public StatusMetadata() {
@@ -140,6 +139,18 @@ public class StatusMetadata implements Serializable {
      */
     private synchronized void setPassedOnLastRun(boolean passedOnLastRun) {
 	this.passedOnLastRun = passedOnLastRun;
+    }
+    
+    @Override
+    public Object clone()
+    {
+	StatusMetadata status = new StatusMetadata();
+	status.fromAnnotation = this.fromAnnotation;
+	status.fromInstrumentation = this.fromInstrumentation;
+	status.justCreated = this.justCreated;
+	status.passedOnLastRun = this.passedOnLastRun;
+	status.valid = this.valid;
+	return status;
     }
 
 }
