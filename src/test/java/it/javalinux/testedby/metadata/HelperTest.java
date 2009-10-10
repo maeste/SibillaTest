@@ -25,6 +25,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
+import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 import it.javalinux.testedby.metadata.impl.Helper;
 
 import java.lang.reflect.Method;
@@ -93,6 +94,25 @@ public class HelperTest {
 	assertThat(Helper.isInJVMPackage("java.Foo"), is(true));
 	assertThat(Helper.isInJVMPackage(Boolean.class), is(true));
 	assertThat(Helper.isInJVMPackage(HelperTest.class), is(false));
+    }
+    
+    @Test
+    public void shouldDetectRestrictedPackages()
+    {
+	assertThat(Helper.isInRestrictedPackage("it/javalinux/testedby/annotation/Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.annotation.Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it/javalinux/testedby/builder/Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.builder.Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it/javalinux/testedby/metadata/Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.metadata.Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it/javalinux/testedby/instrumentation/Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.instrumentation.Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it/javalinux/testedby/runner/Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.runner.Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it/javalinux/testedby/legacy/Foo"), is(false));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.legacy.Foo"), is(false));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.annotation"), is(false));
+	assertThat(Helper.isInRestrictedPackage(InvocationTracker.class), is(true));
     }
     
     private static class TestClassOne

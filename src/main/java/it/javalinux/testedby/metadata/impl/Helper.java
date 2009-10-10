@@ -33,6 +33,11 @@ import java.util.StringTokenizer;
 public class Helper {
     
     private static String[] jvmPackages = new String[]{"sun.", "java.", "javax." };
+    private static String[] restrictedPackages = new String[] { "it.javalinux.testedby.instrumentation.",
+							       "it.javalinux.testedby.metadata.",
+							       "it.javalinux.testedby.builder.",
+							       "it.javalinux.testedby.annotation.",
+							       "it.javalinux.testedby.runner." };
     
     public static String[] getParameterTypesAsStringArray(Method method)
     {
@@ -41,6 +46,11 @@ public class Helper {
 	    l.add(c.getCanonicalName());
 	}
 	return listToString(l);
+    }
+    
+    public static String getCanonicalNameFromJavaAssistName(String className)
+    {
+	return className != null ? className.replaceAll("/", ".") : null;
     }
     
     public static String getMethodNameFromJavaAssistLongName(String methodLongName)
@@ -84,6 +94,24 @@ public class Helper {
 	}
 	String modified = className.replaceFirst("/", ".");
 	for (String s : jvmPackages)
+	{
+	    if (modified.startsWith(s)) {
+		return true;
+	    }
+	}
+	return false;
+    }
+    
+    public static boolean isInRestrictedPackage(Class<?> clazz) {
+	return (clazz != null && isInRestrictedPackage(clazz.getName()));
+    }
+    
+    public static boolean isInRestrictedPackage(String className) {
+	if (className == null) {
+	    return false;
+	}
+	String modified = className.replaceAll("/", ".");
+	for (String s : restrictedPackages)
 	{
 	    if (modified.startsWith(s)) {
 		return true;
