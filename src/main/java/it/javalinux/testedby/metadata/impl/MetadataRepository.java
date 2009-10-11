@@ -76,7 +76,6 @@ public class MetadataRepository implements TestsMetadata {
      */
     public void addConnection(String testClass, String testMethod, String[] testMethodParameters, String testedClass, String testedMethod, String[] testedMethodParameters, StatusMetadata status) {
 	// TODO!! Clone status
-	System.out.println("addConnection: testClass="+testClass+" testMethod="+testMethod+" testedClass="+testedClass+" testedMethod="+testedMethod);
 	MethodMetadata invokedMethodMetadata = new ImmutableMethodMetadata(testedMethod, testedMethodParameters);
 	MethodInfo invoked = new MethodInfo(testedClass, invokedMethodMetadata);
 	MethodMetadata testMethodMetadata = new ImmutableMethodMetadata(testMethod, testMethodParameters);
