@@ -107,6 +107,10 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	    for (Method method : getTestMethods(test))
 	    {
 		InvocationTracker.cleanUp();
+		InvocationTracker tracker = InvocationTracker.getInstance();
+		tracker.setTestClass(test.getName());
+		tracker.setTestMethod(method.getName());
+		tracker.setSkipTestClass(true);
 		runTest(test.getName(), method.getName());
 		StatusMetadata status = new StatusMetadata();
 		status.setFromInstrumentation(true);

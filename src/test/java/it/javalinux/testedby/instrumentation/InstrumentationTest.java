@@ -24,6 +24,7 @@ import static org.hamcrest.core.Is.is;
 
 import static org.junit.Assert.assertThat;
 
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.runner.impl.JunitTestRunner;
 import it.javalinux.testedby.testsupport.instrumentation.SampleTest;
@@ -99,8 +100,15 @@ public class InstrumentationTest {
 	    List<Class<?>> tests = new LinkedList<Class<?>>();
 	    tests.add(SampleTest.class);
 	    TestsMetadata metadata = runner.run(tests);
-	    System.out.println("tested: "+metadata.getAllTestedClasses());
-	    System.out.println("test: "+metadata.getAllTestClasses());
+	    
+	    System.out.println("** Tests:");
+	    for (ClassLinkMetadata test : metadata.getAllTestClasses()) {
+		System.out.println(test.getClazz());
+	    }
+	    System.out.println("** Tested classes:");
+	    for (ClassLinkMetadata tested : metadata.getAllTestedClasses()) {
+		System.out.println(tested.getClazz());
+	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    throw new RuntimeException(e);

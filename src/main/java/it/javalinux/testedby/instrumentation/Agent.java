@@ -28,6 +28,7 @@ import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javassist.ClassPool;
@@ -50,7 +51,13 @@ public class Agent implements ClassFileTransformer {
 
     private static Logger LOG = Logger.getLogger(Agent.class.getName());
     
-    private static String[] includes = null;
+    static String[] includes;
+    static String[] excludes;
+    static String[] classesExcludes;
+    
+    static {
+	resetConfiguration();
+    }
     
     /**
      * The premain method required for this class to be called when
@@ -62,17 +69,48 @@ public class Agent implements ClassFileTransformer {
      */
     public static void premain(String args, Instrumentation instrumentation) {
 	LOG.info("Performing class instrumentation...");
+	parseArguments(args);
+	instrumentation.addTransformer(new Agent());
+    }
+    
+    static void parseArguments(String args) {
 	if (args != null) {
-	    includes = args.split(",");
-	    for (int i=0; i < includes.length; i++) {
-		String s = includes[i];
-		if (!s.endsWith("/"))
-		{
-		    includes[i] = s + "/";
+	    StringTokenizer st = new StringTokenizer(args, "#", false);
+	    while (st.hasMoreTokens()) {
+		String token = st.nextToken();
+		int j = token.indexOf("=");
+		if (j > 0) {
+		    String key = token.substring(0, j);
+		    if ("include".equalsIgnoreCase(key)) {
+			includes = token.substring(j+1).split(",");
+			for (int i = 0; i < includes.length; i++) {
+			    String s = includes[i];
+			    if (!s.endsWith("/")) {
+				includes[i] = s + "/";
+			    }
+			}
+		    } else if ("exclude".equalsIgnoreCase(key)) {
+			excludes = token.substring(j+1).split(",");
+			for (int i = 0; i < excludes.length; i++) {
+			    String s = excludes[i];
+			    if (!s.endsWith("/")) {
+				excludes[i] = s + "/";
+			    }
+			}
+		    } else if ("classesExclude".equalsIgnoreCase(key)) {
+			classesExcludes = token.substring(j+1).split(",");
+		    }
 		}
 	    }
+	} else {
+	    resetConfiguration();
 	}
-	instrumentation.addTransformer(new Agent());
+    }
+
+    private static void resetConfiguration() {
+	includes = null;
+	excludes = null;
+	classesExcludes = new String[] { "$Proxy" };
     }
     
     @SuppressWarnings("unused")
@@ -93,24 +131,49 @@ public class Agent implements ClassFileTransformer {
 	return classfileBuffer;
     }
     
-    private static boolean isInstrumentationRequired(String className) {
+    static boolean isInstrumentationRequired(String className) {
 	if (Helper.isInJVMPackage(className)) {
 	    return false;
 	}
-	if (Helper.isInRestrictedPackage(className))
-	{
+	if (Helper.isInRestrictedPackage(className)) {
 	    return false;
 	}
-	if (includes == null) {
-	    return true;
-	}
-	for (String s : includes) {
-	    if (className.startsWith(s)) {
-		return true;
+	if (classesExcludes != null) {
+	    for (String ce : classesExcludes) {
+		// TODO improve this
+		if (className.contains(ce)) {
+		    return false;
+		}
 	    }
 	}
-	return false;
-
+	String matchedInclude = null;
+	String matchedExclude = null;
+	if (includes != null) {
+	    for (String in : includes) {
+		if (className.startsWith(in)) {
+		    if (matchedInclude == null || in.length() > matchedInclude.length()) {
+			matchedInclude = in;
+		    }
+		}
+	    }
+	}
+	if (excludes != null) {
+	    for (String ex : excludes) {
+		if (className.startsWith(ex)) {
+		    if (matchedExclude == null || ex.length() > matchedExclude.length()) {
+			matchedExclude = ex;
+		    }
+		}
+	    }
+	}
+	if (matchedExclude == null && matchedInclude != null) {
+	    return true;
+	} else if (matchedExclude != null && matchedInclude == null) {
+	    return false;
+	} else if (matchedExclude != null && matchedInclude != null) {
+	    return matchedInclude.length() > matchedExclude.length();
+	}
+	return (includes == null);
     }
     
     private byte[] modifyClass(String className, Class<?> clazz, byte[] bytes) {

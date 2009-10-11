@@ -20,6 +20,8 @@
  */
 package it.javalinux.testedby.metadata.builder.instrumentation;
 
+import it.javalinux.testedby.metadata.impl.Helper;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -46,7 +48,28 @@ public class InvocationTracker {
     private String testMethod;
     // a map className->methodNames of the invoked classes-methods
     private Map<String, Set<String>> invoked = new HashMap<String, Set<String>>();
+    private boolean skipTestClass;
     
+    /**
+     * Return true if the tracker is going to skip
+     * tracking invocations to the current testClass.
+     * 
+     * @return skipTestClass
+     */
+    public boolean isSkipTestClass() {
+        return skipTestClass;
+    }
+
+    /**
+     * Set true to make the tracker skip
+     * tracking invocations to the current testClass.
+     * 
+     * @param skipTestClass Sets skipTestClass to the specified value.
+     */
+    public void setSkipTestClass(boolean skipTestClass) {
+        this.skipTestClass = skipTestClass;
+    }
+
     public synchronized static InvocationTracker getInstance() {
 	return metadataCollector.get();
     }
@@ -60,7 +83,7 @@ public class InvocationTracker {
     }
 
     public void setTestClass(String testClass) {
-        this.testClass = testClass;
+        this.testClass = Helper.getCanonicalNameFromJavaAssistName(testClass);
     }
 
     public String getTestMethod() {
@@ -72,13 +95,15 @@ public class InvocationTracker {
     }
     
     public synchronized void addInvokedMethod(String clazz, String method) {
-	if (invoked.keySet().contains(clazz)) {
-	    Set<String> methods = invoked.get(clazz);
-	    methods.add(method);
-	} else {
-	    Set<String> s = new HashSet<String>();
-	    s.add(method);
-	    invoked.put(clazz, s);
+	if (!skipTestClass || !clazz.equalsIgnoreCase(testClass)) {
+	    if (invoked.keySet().contains(clazz)) {
+		Set<String> methods = invoked.get(clazz);
+		methods.add(method);
+	    } else {
+		Set<String> s = new HashSet<String>();
+		s.add(method);
+		invoked.put(clazz, s);
+	    }
 	}
     }
     
