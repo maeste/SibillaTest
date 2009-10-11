@@ -38,7 +38,8 @@ public class Helper {
 							       "it.javalinux.testedby.builder.",
 							       "it.javalinux.testedby.annotation.",
 							       "it.javalinux.testedby.runner.",
-							       "org.junit." };
+    							       "junit.",
+    							       "org.junit." };
     
     public static String[] getParameterTypesAsStringArray(Method method)
     {

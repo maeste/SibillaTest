@@ -76,6 +76,7 @@ public class MetadataRepository implements TestsMetadata {
      */
     public void addConnection(String testClass, String testMethod, String[] testMethodParameters, String testedClass, String testedMethod, String[] testedMethodParameters, StatusMetadata status) {
 	// TODO!! Clone status
+	System.out.println("addConnection: testClass="+testClass+" testMethod="+testMethod+" testedClass="+testedClass+" testedMethod="+testedMethod);
 	MethodMetadata invokedMethodMetadata = new ImmutableMethodMetadata(testedMethod, testedMethodParameters);
 	MethodInfo invoked = new MethodInfo(testedClass, invokedMethodMetadata);
 	MethodMetadata testMethodMetadata = new ImmutableMethodMetadata(testMethod, testMethodParameters);
@@ -362,8 +363,8 @@ public class MetadataRepository implements TestsMetadata {
      * @see it.javalinux.testedby.metadata.TestsMetadata#getAllTestClasses()
      */
     public List<ClassLinkMetadata> getAllTestClasses() {
-	Set<LinkMetadata> links = new HashSet<LinkMetadata>(testsLinks.size());
-	for (Entry<MethodInfo, Set<LinkMetadata>> entry : testsLinks.entrySet()) {
+	Set<LinkMetadata> links = new HashSet<LinkMetadata>(isTestedByLinks.size());
+	for (Entry<MethodInfo, Set<LinkMetadata>> entry : isTestedByLinks.entrySet()) {
 	    links.addAll(entry.getValue());
 	}
 	return getClassLinks(links);
@@ -375,8 +376,8 @@ public class MetadataRepository implements TestsMetadata {
      * @see it.javalinux.testedby.metadata.TestsMetadata#getAllTestMethods()
      */
     public List<MethodLinkMetadata> getAllTestMethods() {
-	Set<LinkMetadata> links = new HashSet<LinkMetadata>(testsLinks.size());
-	for (Entry<MethodInfo, Set<LinkMetadata>> entry : testsLinks.entrySet()) {
+	Set<LinkMetadata> links = new HashSet<LinkMetadata>(isTestedByLinks.size());
+	for (Entry<MethodInfo, Set<LinkMetadata>> entry : isTestedByLinks.entrySet()) {
 	    links.addAll(entry.getValue());
 	}
 	return getMethodLinks(links);
@@ -388,8 +389,8 @@ public class MetadataRepository implements TestsMetadata {
      * @see it.javalinux.testedby.metadata.TestsMetadata#getAllTestedClasses()
      */
     public List<ClassLinkMetadata> getAllTestedClasses() {
-	Set<LinkMetadata> links = new HashSet<LinkMetadata>(isTestedByLinks.size());
-	for (Entry<MethodInfo, Set<LinkMetadata>> entry : isTestedByLinks.entrySet()) {
+	Set<LinkMetadata> links = new HashSet<LinkMetadata>(testsLinks.size());
+	for (Entry<MethodInfo, Set<LinkMetadata>> entry : testsLinks.entrySet()) {
 	    links.addAll(entry.getValue());
 	}
 	return getClassLinks(links);
@@ -401,8 +402,8 @@ public class MetadataRepository implements TestsMetadata {
      * @see it.javalinux.testedby.metadata.TestsMetadata#getAllTestedMethods()
      */
     public List<MethodLinkMetadata> getAllTestedMethods() {
-	Set<LinkMetadata> links = new HashSet<LinkMetadata>(isTestedByLinks.size());
-	for (Entry<MethodInfo, Set<LinkMetadata>> entry : isTestedByLinks.entrySet()) {
+	Set<LinkMetadata> links = new HashSet<LinkMetadata>(testsLinks.size());
+	for (Entry<MethodInfo, Set<LinkMetadata>> entry : testsLinks.entrySet()) {
 	    links.addAll(entry.getValue());
 	}
 	return getMethodLinks(links);

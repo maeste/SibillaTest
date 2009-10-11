@@ -20,14 +20,13 @@
  */
 package it.javalinux.testedby.runner.impl;
 
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.runner.AbstractUnitRunner;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import it.javalinux.testedby.metadata.ClassLinkMetadata;
-import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
-import it.javalinux.testedby.runner.AbstractUnitRunner;
 
 import org.junit.Test;
 import org.junit.internal.RealSystem;
