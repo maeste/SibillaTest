@@ -21,6 +21,7 @@
 package it.javalinux.testedby.runner;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,7 +77,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 
 	//... as well as all the changed test classes' methods
 	for (Class<?> testClass : changedTestClasses) {
-	    for (Method method : testClass.getMethods()) {
+	    for (Method method : getTestMethods(testClass)) {
 		if (method.getAnnotation(Test.class) != null) {
 		    methodLinkToRun.add(new MethodLinkMetadata(new StatusMetadata(true, true, false, false), testClass.getCanonicalName(), new ImmutableMethodMetadata(method)));
 		}
@@ -103,7 +104,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	InstrumentationBasedMetadataBuilder builder = new InstrumentationBasedMetadataBuilder();
 	for (Class<?> test : tests)
 	{
-	    for (Method method : test.getMethods())
+	    for (Method method : getTestMethods(test))
 	    {
 		InvocationTracker.cleanUp();
 		runTest(test.getName(), method.getName());
@@ -126,5 +127,13 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
      * @throws ClassNotFoundException
      */
     public abstract boolean runTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception, ClassNotFoundException;
+    
+    /**
+     * Return the test methods of the given test class
+     * 
+     * @param testClass	The test class
+     * @return		The test methods of the provided test class
+     */
+    protected abstract Collection<Method> getTestMethods(Class<?> testClass);
 
 }

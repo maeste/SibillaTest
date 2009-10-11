@@ -20,9 +20,16 @@
  */
 package it.javalinux.testedby.runner.impl;
 
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 import it.javalinux.testedby.runner.AbstractUnitRunner;
 
+import org.junit.Test;
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
 import org.junit.runner.Description;
@@ -86,6 +93,23 @@ public class JunitTestRunner extends AbstractUnitRunner {
 	} catch (Exception e) {
 	}
 	return result.wasSuccessful();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.runner.AbstractUnitRunner#getTestMethods(java.lang.Class)
+     */
+    @Override
+    protected Collection<Method> getTestMethods(Class<?> testClass) {
+	List<Method> list = new LinkedList<Method>();
+	for (Method method : testClass.getMethods()) {
+	    InvocationTracker.getInstance();
+		if (method.getAnnotation(Test.class) != null) {
+		    list.add(method);
+		}
+	}
+	return list;
     }
 
 }
