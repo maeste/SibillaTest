@@ -104,10 +104,9 @@ public class JunitTestRunner extends AbstractUnitRunner {
     protected Collection<Method> getTestMethods(Class<?> testClass) {
 	List<Method> list = new LinkedList<Method>();
 	for (Method method : testClass.getMethods()) {
-	    InvocationTracker.getInstance();
-		if (method.getAnnotation(Test.class) != null) {
-		    list.add(method);
-		}
+	    if (method.getAnnotation(Test.class) != null) {
+		list.add(method);
+	    }
 	}
 	return list;
     }
