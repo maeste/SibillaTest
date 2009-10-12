@@ -50,6 +50,9 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
     private boolean onlyValidLink;
 
     public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<ClassLinkMetadata> testClassesMetadata, Collection<Class<?>> testClasses) {
+	if (testClasses == null) {
+	    testClasses = new LinkedList<Class<?>>();
+	}
 	for (ClassLinkMetadata classLink : testClassesMetadata) {
 	    try {
 		testClasses.add(Thread.currentThread().getContextClassLoader().loadClass(classLink.getClazz()));
