@@ -34,9 +34,11 @@ import java.util.Map.Entry;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.LinkMetadata;
+import it.javalinux.testedby.metadata.MergeableMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
 import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
+import it.javalinux.testedby.metadata.TestsMergeableMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
@@ -46,7 +48,7 @@ import it.javalinux.testedby.metadata.TestsMetadata;
  * @since 27-Aug-2009
  * 
  */
-public class MetadataRepository implements TestsMetadata {
+public class MetadataRepository implements TestsMergeableMetadata {
 
     private static final long serialVersionUID = 1L;
 
@@ -447,6 +449,36 @@ public class MetadataRepository implements TestsMetadata {
 	} else if (!testsLinks.equals(other.testsLinks))
 	    return false;
 	return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.metadata.MergeableMetadata#merge(it.javalinux.testedby.metadata.MergeableMetadata)
+     */
+    public void merge(MergeableMetadata right) {
+	if (right instanceof MetadataRepository) {
+	    MetadataRepository r = (MetadataRepository) right;
+	    for (Entry<MethodInfo, Set<LinkMetadata>> entry : this.testsLinks.entrySet()) {
+		if (r.testsLinks.containsKey(entry.getKey())) {
+		    for (LinkMetadata leftLink : entry.getValue()) {
+			for (LinkMetadata rightLink : r.testsLinks.get(entry.getKey())) {
+			    leftLink.merge(rightLink);
+			}
+		    }
+		}
+	    }
+
+	    for (Entry<MethodInfo, Set<LinkMetadata>> entry : this.isTestedByLinks.entrySet()) {
+		if (r.isTestedByLinks.containsKey(entry.getKey())) {
+		    for (LinkMetadata leftLink : entry.getValue()) {
+			for (LinkMetadata rightLink : r.isTestedByLinks.get(entry.getKey())) {
+			    leftLink.merge(rightLink);
+			}
+		    }
+		}
+	    }
+	}
     }
 
 }

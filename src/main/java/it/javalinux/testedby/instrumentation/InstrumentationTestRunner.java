@@ -22,25 +22,32 @@ package it.javalinux.testedby.instrumentation;
 
 import java.util.List;
 
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.metadata.TestsMergeableMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
- * Interface for test runner leveraging instrumentation for
- * getting the TestedBy metadata.
+ * Interface for test runner leveraging instrumentation for getting the TestedBy
+ * metadata.
  * 
  * @author alessio.soldano@javalinux.it
  * @since 10-Oct-2009
- *
+ * 
  */
 public interface InstrumentationTestRunner {
-    
+
     /**
-     * Run all the specified tests and return the metadata obtained
-     * through tested code instrumentation.
+     * Run the specified tests and return the metadata obtained through tested
+     * code instrumentation.
      * 
-     * @param tests	The test classes to run
-     * @return 		Metadata obtained using instrumentation
+     * @param testClass
+     * @param methodName
+     * @param classesUnderTest
+     *            optional parameter specifying classesUnderTest previous
+     *            collected in metadata. For logging purpose
+     * 
+     * @return Metadata obtained using instrumentation
      * @throws Exception
      */
-    public TestsMetadata run(List<Class<?>> tests) throws Exception;
+    public TestsMergeableMetadata instrumentAndRunTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception;
 }

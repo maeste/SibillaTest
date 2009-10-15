@@ -98,4 +98,17 @@ public class MethodLinkMetadata extends LinkMetadata {
 	return true;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.metadata.MergeableMetadata#merge(it.javalinux.testedby.metadata.MergeableMetadata)
+     */
+    public void merge(MergeableMetadata right) {
+	if (right instanceof MethodLinkMetadata && this.equals((right))) {
+	    this.getStatus().merge(((MethodLinkMetadata) right).getStatus());
+
+	}
+
+    }
+
 }

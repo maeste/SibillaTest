@@ -21,24 +21,9 @@
 package it.javalinux.testedby.metadata;
 
 /**
- * @author alessio.soldano@javalinux.it
- * 
+ * @author Stefano Maestri stefano.maestri@javalinux.it
+ *
  */
-public abstract class LinkMetadata implements Metadata, MergeableMetadata {
-
-    private static final long serialVersionUID = 1L;
-
-    private StatusMetadata status;
-
-    public LinkMetadata(StatusMetadata status) {
-	this.status = status;
-    }
-
-    /**
-     * @return status
-     */
-    public StatusMetadata getStatus() {
-	return status;
-    }
+public interface TestsMergeableMetadata extends TestsMetadata, MergeableMetadata {
 
 }

@@ -29,14 +29,18 @@ import java.io.Serializable;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public class StatusMetadata implements Serializable, Cloneable {
+public class StatusMetadata implements Serializable, Cloneable, MergeableMetadata {
 
     private static final long serialVersionUID = 7755553308719275165L;
 
     private boolean valid;
+
     private boolean justCreated;
+
     private boolean fromAnnotation;
+
     private boolean fromInstrumentation;
+
     private boolean passedOnLastRun = false;
 
     public StatusMetadata() {
@@ -129,21 +133,43 @@ public class StatusMetadata implements Serializable, Cloneable {
     /**
      * @return passedOnLastRun
      */
-    private synchronized boolean isPassedOnLastRun() {
+    public synchronized boolean isPassedOnLastRun() {
 	return passedOnLastRun;
+    }
+
+    /**
+     * @return passedOnLastRun
+     */
+    public synchronized boolean isFailedOnLastRun() {
+	return !passedOnLastRun;
     }
 
     /**
      * @param passedOnLastRun
      *            Sets passedOnLastRun to the specified value.
      */
-    private synchronized void setPassedOnLastRun(boolean passedOnLastRun) {
+    public synchronized void setPassedOnLastRun(boolean passedOnLastRun) {
 	this.passedOnLastRun = passedOnLastRun;
     }
-    
+
+    /**
+     * 
+     * Sets passedOnLastRun to true.
+     */
+    public synchronized void passedOnLastRun() {
+	this.passedOnLastRun = true;
+    }
+
+    /**
+     * 
+     * Sets passedOnLastRun to false
+     */
+    public synchronized void failedOnLastRun() {
+	this.passedOnLastRun = false;
+    }
+
     @Override
-    public Object clone()
-    {
+    public Object clone() {
 	StatusMetadata status = new StatusMetadata();
 	status.fromAnnotation = this.fromAnnotation;
 	status.fromInstrumentation = this.fromInstrumentation;
@@ -153,4 +179,19 @@ public class StatusMetadata implements Serializable, Cloneable {
 	return status;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.metadata.MergeableMetadata#merge(it.javalinux.testedby.metadata.MergeableMetadata)
+     */
+    public void merge(MergeableMetadata right) {
+	if (right instanceof StatusMetadata) {
+	    StatusMetadata r = (StatusMetadata) right;
+	    this.fromAnnotation |= r.isFromAnnotation();
+	    this.fromInstrumentation |= r.isFromInstrumentation();
+	    this.justCreated &= r.isJustCreated();
+	    this.passedOnLastRun &= r.isPassedOnLastRun();
+	    this.valid &= r.isValid();
+	}
+    }
 }

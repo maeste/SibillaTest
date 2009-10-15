@@ -21,24 +21,18 @@
 package it.javalinux.testedby.metadata;
 
 /**
- * @author alessio.soldano@javalinux.it
+ * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public abstract class LinkMetadata implements Metadata, MergeableMetadata {
-
-    private static final long serialVersionUID = 1L;
-
-    private StatusMetadata status;
-
-    public LinkMetadata(StatusMetadata status) {
-	this.status = status;
-    }
+public interface MergeableMetadata {
 
     /**
-     * @return status
+     * Merge this Metadata with provided right. this method modify the current
+     * object. In case of passed right parameter isn't mergeable the original
+     * instance of the object is untouched without any merge
+     * 
+     * @param right
      */
-    public StatusMetadata getStatus() {
-	return status;
-    }
+    public void merge(MergeableMetadata right);
 
 }

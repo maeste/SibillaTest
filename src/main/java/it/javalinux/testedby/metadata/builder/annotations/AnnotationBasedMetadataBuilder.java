@@ -25,7 +25,7 @@ import it.javalinux.testedby.annotations.TestedByList;
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.Metadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
+import it.javalinux.testedby.metadata.TestsMergeableMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import it.javalinux.testedby.metadata.impl.MetadataRepository;
 
@@ -49,16 +49,18 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 
     private boolean onlyValidLink;
 
-    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<ClassLinkMetadata> testClassesMetadata, Collection<Class<?>> testClasses) {
+    public TestsMergeableMetadata build(Collection<Class<?>> classesUnderTest, Collection<ClassLinkMetadata> testClassesMetadata, Collection<Class<?>> testClasses) {
 	if (testClasses == null) {
 	    testClasses = new LinkedList<Class<?>>();
 	}
-	for (ClassLinkMetadata classLink : testClassesMetadata) {
-	    try {
-		testClasses.add(Thread.currentThread().getContextClassLoader().loadClass(classLink.getClazz()));
-	    } catch (Exception e) {
-		e.printStackTrace();
-		// ignore
+	if (testClassesMetadata != null) {
+	    for (ClassLinkMetadata classLink : testClassesMetadata) {
+		try {
+		    testClasses.add(Thread.currentThread().getContextClassLoader().loadClass(classLink.getClazz()));
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    // ignore
+		}
 	    }
 	}
 
@@ -71,11 +73,11 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @see it.javalinux.testedby.metadata.builder.MetaDataBuilder#build(Collection,
      *      Collection)
      */
-    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses) {
+    public TestsMergeableMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses) {
 	return this.build(classesUnderTest, testClasses, false);
     }
 
-    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid) {
+    public TestsMergeableMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid) {
 	this.considerOnlyValidLink(onlyValid);
 	Map<String, Class<?>> testClassesMap = new HashMap<String, Class<?>>();
 	for (Class<?> clazz : testClasses) {
@@ -92,14 +94,16 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param testClasses
      * @return application metadata collected only from class under test
      */
-    private TestsMetadata buildFromClassUnderTest(Collection<Class<?>> classesUnderTest, Map<String, Class<?>> testClasses) {
+    private TestsMergeableMetadata buildFromClassUnderTest(Collection<Class<?>> classesUnderTest, Map<String, Class<?>> testClasses) {
 	MetadataRepository repository = new MetadataRepository();
 
-	for (Class<?> clazzUnderTest : classesUnderTest) {
-	    repository = createTestClassMetadatas(testClasses, clazzUnderTest, repository);
+	if (classesUnderTest != null) {
+	    for (Class<?> clazzUnderTest : classesUnderTest) {
+		repository = createTestClassMetadatas(testClasses, clazzUnderTest, repository);
 
-	    for (Method methodUnderTest : clazzUnderTest.getMethods()) {
-		repository = createTestClassMetadatasForMethod(testClasses, clazzUnderTest, methodUnderTest, repository);
+		for (Method methodUnderTest : clazzUnderTest.getMethods()) {
+		    repository = createTestClassMetadatasForMethod(testClasses, clazzUnderTest, methodUnderTest, repository);
+		}
 	    }
 	}
 

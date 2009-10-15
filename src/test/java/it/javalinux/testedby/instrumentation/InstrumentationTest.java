@@ -26,6 +26,7 @@ import static org.junit.Assert.assertThat;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
+import it.javalinux.testedby.runner.TestRunner;
 import it.javalinux.testedby.runner.impl.JunitTestRunner;
 import it.javalinux.testedby.testsupport.instrumentation.SampleTest;
 
@@ -44,37 +45,36 @@ import org.junit.runner.JUnitCore;
 /**
  * Instrumentation test
  * 
- * Please note this need to run at integration-test phase (Maven) as it requires the
- * project package jar for running the instrumentation.
+ * Please note this need to run at integration-test phase (Maven) as it requires
+ * the project package jar for running the instrumentation.
  * 
  * @author alessio.soldano@javalinux.it
  * @since 11-Oct-2009
  * 
  */
 public class InstrumentationTest {
-    
+
     @Test
     public void testNoInstrumentation() throws Exception {
-	InstrumentationTestRunner runner = new JunitTestRunner();
+	TestRunner runner = new JunitTestRunner();
 	List<Class<?>> tests = new LinkedList<Class<?>>();
 	tests.add(SampleTest.class);
-	TestsMetadata metadata = runner.run(tests);
+	TestsMetadata metadata = runner.run(null, tests, null);
 	assertThat(metadata.getAllTestClasses().size(), is(0));
 	assertThat(metadata.getAllTestedClasses().size(), is(0));
     }
-    
+
     @Test
     public void testInstrumentation() throws Exception {
-	
-	String command = "java -Xbootclasspath/a:" + getOwnJarPath() + ":" + getJUnitJarPath() + ":" + getJavassistJarPath() +
-			 " -javaagent:" + getOwnJarPath() + " -cp " + getTestClassesDir().getPath() + " " + InstrumentationTest.class.getCanonicalName();
-	
+
+	String command = "java -Xbootclasspath/a:" + getOwnJarPath() + ":" + getJUnitJarPath() + ":" + getJavassistJarPath() + " -javaagent:" + getOwnJarPath() + " -cp " + getTestClassesDir().getPath() + " " + InstrumentationTest.class.getCanonicalName();
+
 	Process p = Runtime.getRuntime().exec(command);
 	assertThat(p.waitFor(), is(0));
-	
+
 	BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 	BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-	
+
 	String s = null;
 	System.out.println("Here is the standard output of the command:\n");
 	while ((s = stdInput.readLine()) != null) {
@@ -86,7 +86,7 @@ public class InstrumentationTest {
 	while ((s = stdError.readLine()) != null) {
 	    System.out.println(s);
 	}
-	//TODO!!! add assertions to check the result
+	// TODO!!! add assertions to check the result
     }
 
     /**
@@ -96,11 +96,11 @@ public class InstrumentationTest {
      */
     public static void main(String[] args) {
 	try {
-	    InstrumentationTestRunner runner = new JunitTestRunner();
+	    TestRunner runner = new JunitTestRunner();
 	    List<Class<?>> tests = new LinkedList<Class<?>>();
 	    tests.add(SampleTest.class);
-	    TestsMetadata metadata = runner.run(tests);
-	    
+	    TestsMetadata metadata = runner.run(null, tests, null);
+
 	    System.out.println("** Tests:");
 	    for (ClassLinkMetadata test : metadata.getAllTestClasses()) {
 		System.out.println(test.getClazz());
@@ -115,23 +115,19 @@ public class InstrumentationTest {
 	}
     }
 
-    private static String getJUnitJarPath() throws Exception
-    {
+    private static String getJUnitJarPath() throws Exception {
 	return new File(JUnitCore.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
     }
-    
-    private static String getJavassistJarPath() throws Exception
-    {
+
+    private static String getJavassistJarPath() throws Exception {
 	return new File(ClassPool.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
     }
-    
-    private static File getTestClassesDir() throws Exception
-    {
+
+    private static File getTestClassesDir() throws Exception {
 	return new File(Thread.currentThread().getContextClassLoader().getResource(".").toURI());
     }
-    
-    private static String getOwnJarPath() throws Exception
-    {
+
+    private static String getOwnJarPath() throws Exception {
 	File testClassesDir = getTestClassesDir();
 	File[] files = testClassesDir.getParentFile().listFiles(new FilenameFilter() {
 	    public boolean accept(File dir, String name) {
@@ -140,5 +136,5 @@ public class InstrumentationTest {
 	});
 	return files[0].getPath();
     }
-    
+
 }

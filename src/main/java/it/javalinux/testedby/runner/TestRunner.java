@@ -22,6 +22,7 @@ package it.javalinux.testedby.runner;
 
 import java.util.List;
 
+import it.javalinux.testedby.metadata.TestsMergeableMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
@@ -40,5 +41,5 @@ public interface TestRunner {
      * @return modified TestsMetadata
      * @throws Exception
      */
-    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMetadata metadata) throws Exception;
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMergeableMetadata metadata) throws Exception;
 }

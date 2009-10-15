@@ -181,4 +181,5 @@ public interface TestsMetadata extends Metadata {
      * @return all test methods currently hold in the metadata model
      */
     public List<MethodLinkMetadata> getAllTestMethods();
+
 }

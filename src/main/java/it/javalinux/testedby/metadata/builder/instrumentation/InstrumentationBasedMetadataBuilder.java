@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import it.javalinux.testedby.metadata.StatusMetadata;
+import it.javalinux.testedby.metadata.TestsMergeableMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.impl.Helper;
 import it.javalinux.testedby.metadata.impl.MetadataRepository;
@@ -52,8 +53,10 @@ public class InstrumentationBasedMetadataBuilder {
      * Run a single build step linking information coming from instrumentation
      * to the specified test method run.
      * 
-     * @param testClass	  The test class that has just been run
-     * @param testMethod  The test method that has just been run
+     * @param testClass
+     *            The test class that has just been run
+     * @param testMethod
+     *            The test method that has just been run
      */
     public void performBuildStep(Class<?> testClass, Method testMethod) {
 	performBuildStep(testClass, testMethod, null);
@@ -63,9 +66,13 @@ public class InstrumentationBasedMetadataBuilder {
      * Run a single build step linking information coming from instrumentation
      * to the specified test method run.
      * 
-     * @param testClass	  The test class that has just been run
-     * @param testMethod  The test method that has just been run
-     * @param status	  The status to be assigned to the link created in this step (the status is cloned)
+     * @param testClass
+     *            The test class that has just been run
+     * @param testMethod
+     *            The test method that has just been run
+     * @param status
+     *            The status to be assigned to the link created in this step
+     *            (the status is cloned)
      */
     public void performBuildStep(Class<?> testClass, Method testMethod, StatusMetadata status) {
 	performBuildStep(InvocationTracker.getInstance().getInvokedMethodMap(), testClass, testMethod);
@@ -75,9 +82,12 @@ public class InstrumentationBasedMetadataBuilder {
      * Run a single build step linking information coming from instrumentation
      * to the specified test method run.
      * 
-     * @param testClass	  	The test class that has just been run
-     * @param testMethod  	The test method that has just been run
-     * @param parameterTypes	The parameters of the test method that has just been run
+     * @param testClass
+     *            The test class that has just been run
+     * @param testMethod
+     *            The test method that has just been run
+     * @param parameterTypes
+     *            The parameters of the test method that has just been run
      */
     public void performBuildStep(String testClass, String testMethod, String[] parameterTypes) {
 	performBuildStep(testClass, testMethod, parameterTypes, null);
@@ -87,10 +97,15 @@ public class InstrumentationBasedMetadataBuilder {
      * Run a single build step linking information coming from instrumentation
      * to the specified test method run.
      * 
-     * @param testClass	  	The test class that has just been run
-     * @param testMethod  	The test method that has just been run
-     * @param parameterTypes	The parameters of the test method that has just been run
-     * @param status		he status to be assigned to the link created in this step (the status is cloned)
+     * @param testClass
+     *            The test class that has just been run
+     * @param testMethod
+     *            The test method that has just been run
+     * @param parameterTypes
+     *            The parameters of the test method that has just been run
+     * @param status
+     *            he status to be assigned to the link created in this step (the
+     *            status is cloned)
      */
     public void performBuildStep(String testClass, String testMethod, String[] parameterTypes, StatusMetadata status) {
 	performBuildStep(InvocationTracker.getInstance().getInvokedMethodMap(), testClass, testMethod, parameterTypes, status);
@@ -112,15 +127,14 @@ public class InstrumentationBasedMetadataBuilder {
 		    status.setFromInstrumentation(true);
 		    status.setValid(true);
 		} else {
-		    status = (StatusMetadata)status.clone();
+		    status = (StatusMetadata) status.clone();
 		}
-		metadata.addConnection(testClass, testMethod, parameterTypes, testedClass, Helper.getMethodNameFromJavaAssistLongName(testedMethod),
-			Helper.getMethodParametersFromJavaAssistLongName(testedMethod), status);
+		metadata.addConnection(testClass, testMethod, parameterTypes, testedClass, Helper.getMethodNameFromJavaAssistLongName(testedMethod), Helper.getMethodParametersFromJavaAssistLongName(testedMethod), status);
 	    }
 	}
     }
 
-    public TestsMetadata getMetadata() {
+    public TestsMergeableMetadata getMetadata() {
 	return this.metadata;
     }
 
