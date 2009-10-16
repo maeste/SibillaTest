@@ -20,14 +20,12 @@
  */
 package it.javalinux.testedby.metadata.serializer.impl;
 
-import it.javalinux.testedby.metadata.Metadata;
+import it.javalinux.testedby.metadata.TestsMergeableMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -42,7 +40,7 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
      * 
      * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#deserialize()
      */
-    public TestsMetadata deserialize() {
+    public TestsMergeableMetadata deserialize() {
 	return this.deserialize("testedbyMetadata.bin");
 
     }
@@ -50,9 +48,9 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#serialize(it.javalinux.testedby.metadata.TestsMetadata)
+     * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#serialize(it.javalinux.testedby.metadata.TestsMergeableMetadata)
      */
-    public boolean serialize(TestsMetadata metadata) {
+    public boolean serialize(TestsMergeableMetadata metadata) {
 	return this.serialize(metadata, "testedbyMetadata.bin");
     }
 
@@ -61,16 +59,16 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
      * 
      * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#deserialize(java.lang.String)
      */
-    public TestsMetadata deserialize(String filename) {
+    public TestsMergeableMetadata deserialize(String filename) {
 	FileInputStream fis = null;
 	ObjectInputStream ois = null;
-	TestsMetadata metadata = null;
+	TestsMergeableMetadata metadata = null;
 	try {
 	    fis = new FileInputStream(filename);
 
 	    ois = new ObjectInputStream(fis);
 
-	    metadata = (TestsMetadata) ois.readObject();
+	    metadata = (TestsMergeableMetadata) ois.readObject();
 	} catch (Exception e) {
 	    return null;
 	} finally {
@@ -90,10 +88,10 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#serialize(it.javalinux.testedby.metadata.TestsMetadata,
-     *      java.lang.String)
+     * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#serialize(TestsMergeableMetadata,
+     *      String)
      */
-    public boolean serialize(TestsMetadata metadata, String fileName) {
+    public boolean serialize(TestsMergeableMetadata metadata, String fileName) {
 	FileOutputStream fos = null;
 	ObjectOutputStream oos = null;
 	try {

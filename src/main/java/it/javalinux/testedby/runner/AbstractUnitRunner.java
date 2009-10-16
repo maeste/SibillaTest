@@ -31,6 +31,8 @@ import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadat
 import it.javalinux.testedby.metadata.builder.instrumentation.InstrumentationBasedMetadataBuilder;
 import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
+import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
+import it.javalinux.testedby.metadata.serializer.impl.SimpleMetadataSerializer;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -51,6 +53,14 @@ import org.junit.Test;
  * 
  */
 public abstract class AbstractUnitRunner implements TestRunner, InstrumentationTestRunner {
+
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception {
+	return run(changedClassesUnderTest, changedTestClasses, new SimpleMetadataSerializer());
+    }
+
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception {
+	return run(changedClassesUnderTest, changedTestClasses, serializer.deserialize());
+    }
 
     /**
      * 

@@ -24,6 +24,8 @@ import java.util.List;
 
 import it.javalinux.testedby.metadata.TestsMergeableMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
+import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
+import it.javalinux.testedby.metadata.serializer.impl.SimpleMetadataSerializer;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
@@ -32,8 +34,79 @@ import it.javalinux.testedby.metadata.TestsMetadata;
 public interface TestRunner {
 
     /**
+     * deserialize metadata using default serializer implementation and use
+     * 
+     * it to run tests it have to run test collected by annotations of modified
+     * classes it have to consider previous failed tests
+     * 
+     * it have to enrich previous metadata with new one (merging of metadata
+     * needed); it have to run instrumented tests to collect new metadata
+     * 
+     * it have to run all new tests classes even if they arent connected by
+     * annotation to class under tests to collect new metadata via
+     * instrumentation
+     * 
+     * After run
+     * 
+     * 1. update methods successfully run as notToRun for next time
+     * 
+     * 2. Leave failed methods as ToRun for next time
+     * 
+     * 
+     * @param changedClassesUnderTest
+     * @param changedTestClasses
+     * @return modified TestsMetadata
+     * @throws Exception
+     */
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception;
+
+    /**
+     * deserialize metadata using passed serializer implementation and use it to
+     * run tests it to run tests
+     * 
+     * it have to run test collected by annotations of modified classes it have
+     * to consider previous failed tests
+     * 
+     * it have to enrich previous metadata with new one (merging of metadata
+     * needed); it have to run instrumented tests to collect new metadata
+     * 
+     * it have to run all new tests classes even if they arent connected by
+     * annotation to class under tests to collect new metadata via
+     * instrumentation
+     * 
+     * After run
+     * 
+     * 1. update methods successfully run as notToRun for next time
+     * 
+     * 2. Leave failed methods as ToRun for next time
+     * 
+     * @param changedClassesUnderTest
+     * @param changedTestClasses
+     * @param serializer
+     * @return modified TestsMetadata
+     * @throws Exception
+     */
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception;
+
+    /**
      * run all tests which is linked to classUndertest on passed metadata. It
-     * return modified metadatas
+     * return modified metadatas it to run tests
+     * 
+     * it have to run test collected by annotations of modified classes it have
+     * to consider previous failed tests
+     * 
+     * it have to enrich previous metadata with new one (merging of metadata
+     * needed); it have to run instrumented tests to collect new metadata
+     * 
+     * it have to run all new tests classes even if they arent connected by
+     * annotation to class under tests to collect new metadata via
+     * instrumentation
+     * 
+     * After run
+     * 
+     * 1. update methods successfully run as notToRun for next time
+     * 
+     * 2. Leave failed methods as ToRun for next time
      * 
      * @param changedClassesUnderTest
      * @param changedTestClasses

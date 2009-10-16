@@ -21,6 +21,7 @@
 package it.javalinux.testedby.metadata.serializer;
 
 import it.javalinux.testedby.metadata.Metadata;
+import it.javalinux.testedby.metadata.TestsMergeableMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
@@ -36,14 +37,14 @@ public interface MetadataSerializer {
      *         serialisation fails. It puts them in a file on current directory
      *         named testedbyMetadata.bin
      */
-    public boolean serialize(TestsMetadata metadata);
+    public boolean serialize(TestsMergeableMetadata metadata);
 
     /**
      * 
      * @return deserialised TestsMetadata It gets them from a file on current
      *         directory named testedbyMetadata.bin
      */
-    public TestsMetadata deserialize();
+    public TestsMergeableMetadata deserialize();
 
     /**
      * 
@@ -53,7 +54,7 @@ public interface MetadataSerializer {
      * @return true if serialisations is possible and went well. False if
      *         serialisation fails.
      */
-    public boolean serialize(TestsMetadata metadata, String fileName);
+    public boolean serialize(TestsMergeableMetadata metadata, String fileName);
 
     /**
      * 
@@ -62,6 +63,6 @@ public interface MetadataSerializer {
      * @return deserialised TestsMetadata It gets them from a file on current
      *         directory named testedbyMetadata.bin
      */
-    public TestsMetadata deserialize(String filename);
+    public TestsMergeableMetadata deserialize(String filename);
 
 }
