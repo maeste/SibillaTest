@@ -54,12 +54,15 @@ import org.junit.Test;
  */
 public abstract class AbstractUnitRunner implements TestRunner, InstrumentationTestRunner {
 
-    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception {
+    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception {
 	return run(changedClassesUnderTest, changedTestClasses, new SimpleMetadataSerializer());
     }
 
-    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception {
-	return run(changedClassesUnderTest, changedTestClasses, serializer.deserialize());
+    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception {
+	TestsMergeableMetadata metadata = run(changedClassesUnderTest, changedTestClasses, serializer.deserialize());
+	serializer.serialize(metadata);
+	return metadata;
+
     }
 
     /**
@@ -70,7 +73,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
      *      java.util.List,
      *      it.javalinux.testedby.metadata.TestsMergeableMetadata)
      */
-    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMergeableMetadata metadata) throws Exception {
+    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMergeableMetadata metadata) throws Exception {
 	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
 
 	if (metadata != null) {

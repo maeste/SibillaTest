@@ -58,7 +58,7 @@ public interface TestRunner {
      * @return modified TestsMetadata
      * @throws Exception
      */
-    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception;
+    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception;
 
     /**
      * deserialize metadata using passed serializer implementation and use it to
@@ -86,7 +86,7 @@ public interface TestRunner {
      * @return modified TestsMetadata
      * @throws Exception
      */
-    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception;
+    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception;
 
     /**
      * run all tests which is linked to classUndertest on passed metadata. It
@@ -114,5 +114,5 @@ public interface TestRunner {
      * @return modified TestsMetadata
      * @throws Exception
      */
-    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMergeableMetadata metadata) throws Exception;
+    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMergeableMetadata metadata) throws Exception;
 }
