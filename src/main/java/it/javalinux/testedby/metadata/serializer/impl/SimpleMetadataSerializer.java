@@ -55,9 +55,11 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
     }
 
     /**
-     * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#deserialize(java.lang.String)
+     * @param filename
+     *            from which deserialise metadatas
+     * @return deserialised TestsMetadata It gets them from a file on current
+     *         directory named testedbyMetadata.bin
      */
     public TestsMergeableMetadata deserialize(String filename) {
 	FileInputStream fis = null;
@@ -86,10 +88,12 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
     }
 
     /**
-     * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#serialize(TestsMergeableMetadata,
-     *      String)
+     * @param metadata
+     * @param fileName
+     *            filename where serialise the metadata
+     * @return true if serialisations is possible and went well. False if
+     *         serialisation fails.
      */
     public boolean serialize(TestsMergeableMetadata metadata, String fileName) {
 	FileOutputStream fos = null;

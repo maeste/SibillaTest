@@ -46,23 +46,4 @@ public interface MetadataSerializer {
      */
     public TestsMergeableMetadata deserialize();
 
-    /**
-     * 
-     * @param metadata
-     * @param fileName
-     *            filename where serialise the metadata
-     * @return true if serialisations is possible and went well. False if
-     *         serialisation fails.
-     */
-    public boolean serialize(TestsMergeableMetadata metadata, String fileName);
-
-    /**
-     * 
-     * @param filename
-     *            from which deserialise metadatas
-     * @return deserialised TestsMetadata It gets them from a file on current
-     *         directory named testedbyMetadata.bin
-     */
-    public TestsMergeableMetadata deserialize(String filename);
-
 }
