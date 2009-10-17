@@ -85,7 +85,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 
 	// run all new tests
 	for (Class<?> testClass : changedTestClasses) {
-	    for (Method m : testClass.getMethods()) {
+	    for (Method m : getTestMethods(testClass)) {
 		metadata.merge(instrumentAndRunTest(testClass.getCanonicalName(), m.getName()));
 	    }
 

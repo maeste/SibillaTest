@@ -21,7 +21,6 @@
 package it.javalinux.testedby.metadata.serializer.impl;
 
 import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
 
 import java.io.FileInputStream;
