@@ -20,10 +20,7 @@
  */
 package it.javalinux.testedby.instrumentation;
 
-import java.util.List;
-
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**

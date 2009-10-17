@@ -20,24 +20,19 @@
  */
 package it.javalinux.testedby.metadata.builder.instrumentation;
 
-import static org.junit.matchers.JUnitMatchers.hasItem;
-
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
-
 import static org.hamcrest.core.Is.is;
-
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.matchers.JUnitMatchers.hasItem;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.LinkMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.metadata.builder.instrumentation.InstrumentationBasedMetadataBuilder;
-import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
+
+import java.util.List;
 
 import org.junit.Test;
 

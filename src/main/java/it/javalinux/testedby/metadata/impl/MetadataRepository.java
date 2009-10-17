@@ -20,6 +20,14 @@
  */
 package it.javalinux.testedby.metadata.impl;
 
+import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.metadata.LinkMetadata;
+import it.javalinux.testedby.metadata.MergeableMetadata;
+import it.javalinux.testedby.metadata.MethodLinkMetadata;
+import it.javalinux.testedby.metadata.MethodMetadata;
+import it.javalinux.testedby.metadata.StatusMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -31,15 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-
-import it.javalinux.testedby.metadata.ClassLinkMetadata;
-import it.javalinux.testedby.metadata.LinkMetadata;
-import it.javalinux.testedby.metadata.MergeableMetadata;
-import it.javalinux.testedby.metadata.MethodLinkMetadata;
-import it.javalinux.testedby.metadata.MethodMetadata;
-import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
  * A repository containing the whole tests<->classesUnderTests relationships.

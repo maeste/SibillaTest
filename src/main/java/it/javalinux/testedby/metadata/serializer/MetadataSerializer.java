@@ -20,8 +20,6 @@
  */
 package it.javalinux.testedby.metadata.serializer;
 
-import it.javalinux.testedby.metadata.Metadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**

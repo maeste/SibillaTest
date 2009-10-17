@@ -20,17 +20,11 @@
  */
 package it.javalinux.testedby.instrumentation;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import static org.hamcrest.core.Is.is;
-
 import static org.junit.Assert.assertThat;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
 import it.javalinux.testedby.runner.TestRunner;
 import it.javalinux.testedby.runner.impl.JunitTestRunner;
 import it.javalinux.testedby.testsupport.instrumentation.SampleTest;

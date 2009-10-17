@@ -1,22 +1,13 @@
 package it.javalinux.testedby.metadata.serializer.impl;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItems;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.hamcrest.core.IsEqual.equalTo;
-
-import static org.hamcrest.core.Is.is;
-
-import static org.mockito.Mockito.mock;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadataBuilder;
 import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
@@ -25,7 +16,10 @@ import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
 import it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationAndListOnClass;
 import it.javalinux.testedby.testsupport.TestClassOne;
 import it.javalinux.testedby.testsupport.TestClassTwo;
-import static org.junit.Assert.*;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Test;
 

@@ -26,7 +26,6 @@ import it.javalinux.testedby.metadata.MethodLinkMetadata;
 import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadataBuilder;
 import it.javalinux.testedby.metadata.builder.instrumentation.InstrumentationBasedMetadataBuilder;
 import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
@@ -70,8 +69,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
      * {@inheritDoc}
      * 
      * @see it.javalinux.testedby.runner.TestRunner#run(java.util.List,
-     *      java.util.List,
-     *      it.javalinux.testedby.metadata.TestsMetadata)
+     *      java.util.List, it.javalinux.testedby.metadata.TestsMetadata)
      */
     public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMetadata metadata) throws Exception {
 	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();

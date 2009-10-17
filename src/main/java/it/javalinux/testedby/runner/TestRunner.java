@@ -20,12 +20,10 @@
  */
 package it.javalinux.testedby.runner;
 
-import java.util.List;
-
-import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
-import it.javalinux.testedby.metadata.serializer.impl.SimpleMetadataSerializer;
+
+import java.util.List;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it

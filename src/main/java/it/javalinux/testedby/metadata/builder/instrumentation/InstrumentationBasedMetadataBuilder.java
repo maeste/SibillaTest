@@ -20,15 +20,14 @@
  */
 package it.javalinux.testedby.metadata.builder.instrumentation;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.Set;
-
 import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.impl.Helper;
 import it.javalinux.testedby.metadata.impl.MetadataRepository;
+
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A metadata builder based on the data collected through instrumentation
