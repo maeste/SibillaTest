@@ -37,8 +37,6 @@ import org.junit.Test;
 
 public class AnnotationBasedMetadataBuilderTest {
 
-    private static AnnotationBasedMetadataBuilder builder;
-
     private final static StatusMetadata status = new StatusMetadata().setFromAnnotation(true).setValid(true).setJustCreated(true);
 
     private final static ClassLinkMetadata TEST_CLASS_ONE_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.TestClassOne");
@@ -56,12 +54,6 @@ public class AnnotationBasedMetadataBuilderTest {
     private final static ClassLinkMetadata TEST_CLASS_ONE_ON_INTERFACE_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceOne");
 
     private final static ClassLinkMetadata TEST_CLASS_TWO_ON_INTERFACE_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceTwo");
-
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
-
-    }
 
     @Before
     public void setUp() throws Exception {
