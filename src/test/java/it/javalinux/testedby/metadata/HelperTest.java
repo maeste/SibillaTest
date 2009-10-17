@@ -39,51 +39,49 @@ import org.junit.Test;
  * 
  * @author alessio.soldano@javalinux.it
  * @since 20-Sep-2009
- *
+ * 
  */
 public class HelperTest {
-    
+
     @Test
-    public void shouldGetParametersStringArrayFromMethod()
-    {
+    @SuppressWarnings(value = { "unchecked" })
+    public void shouldGetParametersStringArrayFromMethod() {
 	Method m = TestClassOne.class.getMethods()[0];
 	String[] parameters = Helper.getParameterTypesAsStringArray(m);
 	assertThat(parameters.length, is(3));
 	assertThat(Arrays.asList(parameters), hasItems(equalTo("java.lang.String"), equalTo("java.lang.String[]"), equalTo("it.javalinux.testedby.metadata.HelperTest.TestClassTwo")));
     }
-    
+
     @Test
-    public void shouldMethodInfoFromJavaAssistLongName()
-    {
-	String s1 = "it.javalinux.testedby.metadata.impl.MetadataRepository.addConnection(java.lang.String,java.lang.String," +
-			"java.lang.String[],java.lang.String,java.lang.String,java.lang.String[],it.javalinux.testedby.metadata_v2.StatusMetadata)";
+    @SuppressWarnings(value = { "unchecked" })
+    public void shouldMethodInfoFromJavaAssistLongName() {
+	String s1 = "it.javalinux.testedby.metadata.impl.MetadataRepository.addConnection(java.lang.String,java.lang.String," + "java.lang.String[],java.lang.String,java.lang.String,java.lang.String[],it.javalinux.testedby.metadata_v2.StatusMetadata)";
 	String s2 = "it.javalinux.testedby.metadata.impl.MetadataRepository.getClassesTestedBy(java.lang.Class,boolean)";
 	String s3 = "ping()";
 	String s4 = "it.echo(java.lang.String)";
-	
+
 	assertThat(Helper.getMethodNameFromJavaAssistLongName(s1), equalTo("addConnection"));
 	assertThat(Helper.getMethodNameFromJavaAssistLongName(s2), equalTo("getClassesTestedBy"));
 	assertThat(Helper.getMethodNameFromJavaAssistLongName(s3), equalTo("ping"));
 	assertThat(Helper.getMethodNameFromJavaAssistLongName(s4), equalTo("echo"));
-	
+
 	List<String> parameters1 = Arrays.asList(Helper.getMethodParametersFromJavaAssistLongName(s1));
 	List<String> parameters2 = Arrays.asList(Helper.getMethodParametersFromJavaAssistLongName(s2));
 	List<String> parameters3 = Arrays.asList(Helper.getMethodParametersFromJavaAssistLongName(s3));
 	List<String> parameters4 = Arrays.asList(Helper.getMethodParametersFromJavaAssistLongName(s4));
-	
+
 	assertThat(parameters1.size(), is(7));
 	assertThat(parameters2.size(), is(2));
 	assertThat(parameters3.size(), is(0));
 	assertThat(parameters4.size(), is(1));
-	
+
 	assertThat(parameters1, hasItems(equalTo("java.lang.String"), equalTo("java.lang.String[]"), equalTo("it.javalinux.testedby.metadata_v2.StatusMetadata")));
 	assertThat(parameters2, hasItems(equalTo("java.lang.Class"), equalTo("boolean")));
 	assertThat(parameters4, hasItems(equalTo("java.lang.String")));
     }
-    
+
     @Test
-    public void shouldDetectJVMPackages()
-    {
+    public void shouldDetectJVMPackages() {
 	assertThat(Helper.isInJVMPackage("javax/xml/bind/MyClass"), is(true));
 	assertThat(Helper.isInJVMPackage("javax.xml.bind.MyClass"), is(true));
 	assertThat(Helper.isInJVMPackage("java/xml/bind/MyClass"), is(true));
@@ -95,10 +93,9 @@ public class HelperTest {
 	assertThat(Helper.isInJVMPackage(Boolean.class), is(true));
 	assertThat(Helper.isInJVMPackage(HelperTest.class), is(false));
     }
-    
+
     @Test
-    public void shouldDetectRestrictedPackages()
-    {
+    public void shouldDetectRestrictedPackages() {
 	assertThat(Helper.isInRestrictedPackage("it/javalinux/testedby/annotation/Foo"), is(true));
 	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.annotation.Foo"), is(true));
 	assertThat(Helper.isInRestrictedPackage("it/javalinux/testedby/builder/Foo"), is(true));
@@ -114,17 +111,14 @@ public class HelperTest {
 	assertThat(Helper.isInRestrictedPackage("it.javalinux.testedby.annotation"), is(false));
 	assertThat(Helper.isInRestrictedPackage(InvocationTracker.class), is(true));
     }
-    
-    private static class TestClassOne
-    {
-	public void getFoo(String a, String[] b, TestClassTwo c)
-	{
-	    //NOOP
+
+    private static class TestClassOne {
+	public void getFoo(String a, String[] b, TestClassTwo c) {
+	    // NOOP
 	}
     }
-    
-    private static class TestClassTwo
-    {
-	
+
+    private static class TestClassTwo {
+
     }
 }
