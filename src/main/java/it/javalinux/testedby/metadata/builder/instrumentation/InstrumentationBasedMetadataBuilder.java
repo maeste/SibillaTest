@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.impl.Helper;
 import it.javalinux.testedby.metadata.impl.MetadataRepository;
@@ -134,7 +134,7 @@ public class InstrumentationBasedMetadataBuilder {
 	}
     }
 
-    public TestsMergeableMetadata getMetadata() {
+    public TestsMetadata getMetadata() {
 	return this.metadata;
     }
 

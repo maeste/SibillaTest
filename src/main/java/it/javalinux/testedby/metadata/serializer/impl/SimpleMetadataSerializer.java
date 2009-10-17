@@ -20,7 +20,7 @@
  */
 package it.javalinux.testedby.metadata.serializer.impl;
 
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
 
@@ -40,7 +40,7 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
      * 
      * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#deserialize()
      */
-    public TestsMergeableMetadata deserialize() {
+    public TestsMetadata deserialize() {
 	return this.deserialize("testedbyMetadata.bin");
 
     }
@@ -48,9 +48,9 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#serialize(it.javalinux.testedby.metadata.TestsMergeableMetadata)
+     * @see it.javalinux.testedby.metadata.serializer.MetadataSerializer#serialize(it.javalinux.testedby.metadata.TestsMetadata)
      */
-    public boolean serialize(TestsMergeableMetadata metadata) {
+    public boolean serialize(TestsMetadata metadata) {
 	return this.serialize(metadata, "testedbyMetadata.bin");
     }
 
@@ -61,16 +61,16 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
      * @return deserialised TestsMetadata It gets them from a file on current
      *         directory named testedbyMetadata.bin
      */
-    public TestsMergeableMetadata deserialize(String filename) {
+    public TestsMetadata deserialize(String filename) {
 	FileInputStream fis = null;
 	ObjectInputStream ois = null;
-	TestsMergeableMetadata metadata = null;
+	TestsMetadata metadata = null;
 	try {
 	    fis = new FileInputStream(filename);
 
 	    ois = new ObjectInputStream(fis);
 
-	    metadata = (TestsMergeableMetadata) ois.readObject();
+	    metadata = (TestsMetadata) ois.readObject();
 	} catch (Exception e) {
 	    return null;
 	} finally {
@@ -95,7 +95,7 @@ public class SimpleMetadataSerializer implements MetadataSerializer {
      * @return true if serialisations is possible and went well. False if
      *         serialisation fails.
      */
-    public boolean serialize(TestsMergeableMetadata metadata, String fileName) {
+    public boolean serialize(TestsMetadata metadata, String fileName) {
 	FileOutputStream fos = null;
 	ObjectOutputStream oos = null;
 	try {

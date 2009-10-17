@@ -25,7 +25,7 @@ import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
 import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadataBuilder;
 import it.javalinux.testedby.metadata.builder.instrumentation.InstrumentationBasedMetadataBuilder;
@@ -54,12 +54,12 @@ import org.junit.Test;
  */
 public abstract class AbstractUnitRunner implements TestRunner, InstrumentationTestRunner {
 
-    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception {
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception {
 	return run(changedClassesUnderTest, changedTestClasses, new SimpleMetadataSerializer());
     }
 
-    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception {
-	TestsMergeableMetadata metadata = run(changedClassesUnderTest, changedTestClasses, serializer.deserialize());
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception {
+	TestsMetadata metadata = run(changedClassesUnderTest, changedTestClasses, serializer.deserialize());
 	serializer.serialize(metadata);
 	return metadata;
 
@@ -71,9 +71,9 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
      * 
      * @see it.javalinux.testedby.runner.TestRunner#run(java.util.List,
      *      java.util.List,
-     *      it.javalinux.testedby.metadata.TestsMergeableMetadata)
+     *      it.javalinux.testedby.metadata.TestsMetadata)
      */
-    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMergeableMetadata metadata) throws Exception {
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMetadata metadata) throws Exception {
 	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
 
 	if (metadata != null) {
@@ -135,7 +135,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
      * @see it.javalinux.testedby.instrumentation.InstrumentationTestRunner#instrumentAndRunTest(String,
      *      String, ClassLinkMetadata...)
      */
-    public TestsMergeableMetadata instrumentAndRunTest(String testClassName, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception {
+    public TestsMetadata instrumentAndRunTest(String testClassName, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception {
 	InstrumentationBasedMetadataBuilder builder = new InstrumentationBasedMetadataBuilder();
 	InvocationTracker.cleanUp();
 	InvocationTracker tracker = InvocationTracker.getInstance();

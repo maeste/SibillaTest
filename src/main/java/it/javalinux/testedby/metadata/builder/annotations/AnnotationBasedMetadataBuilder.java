@@ -25,7 +25,7 @@ import it.javalinux.testedby.annotations.TestedByList;
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.Metadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
 import it.javalinux.testedby.metadata.impl.MetadataRepository;
 
@@ -49,7 +49,7 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 
     private boolean onlyValidLink;
 
-    public TestsMergeableMetadata build(Collection<Class<?>> classesUnderTest, Collection<ClassLinkMetadata> testClassesMetadata, Collection<Class<?>> testClasses) {
+    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<ClassLinkMetadata> testClassesMetadata, Collection<Class<?>> testClasses) {
 	if (testClasses == null) {
 	    testClasses = new LinkedList<Class<?>>();
 	}
@@ -73,11 +73,11 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @see it.javalinux.testedby.metadata.builder.MetaDataBuilder#build(Collection,
      *      Collection)
      */
-    public TestsMergeableMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses) {
+    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses) {
 	return this.build(classesUnderTest, testClasses, false);
     }
 
-    public TestsMergeableMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid) {
+    public TestsMetadata build(Collection<Class<?>> classesUnderTest, Collection<Class<?>> testClasses, boolean onlyValid) {
 	this.considerOnlyValidLink(onlyValid);
 	Map<String, Class<?>> testClassesMap = new HashMap<String, Class<?>>();
 	for (Class<?> clazz : testClasses) {
@@ -94,7 +94,7 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param testClasses
      * @return application metadata collected only from class under test
      */
-    private TestsMergeableMetadata buildFromClassUnderTest(Collection<Class<?>> classesUnderTest, Map<String, Class<?>> testClasses) {
+    private TestsMetadata buildFromClassUnderTest(Collection<Class<?>> classesUnderTest, Map<String, Class<?>> testClasses) {
 	MetadataRepository repository = new MetadataRepository();
 
 	if (classesUnderTest != null) {

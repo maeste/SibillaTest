@@ -38,7 +38,7 @@ import it.javalinux.testedby.metadata.MergeableMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
 import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
@@ -48,7 +48,7 @@ import it.javalinux.testedby.metadata.TestsMetadata;
  * @since 27-Aug-2009
  * 
  */
-public class MetadataRepository implements TestsMergeableMetadata {
+public class MetadataRepository implements TestsMetadata {
 
     private static final long serialVersionUID = 1L;
 

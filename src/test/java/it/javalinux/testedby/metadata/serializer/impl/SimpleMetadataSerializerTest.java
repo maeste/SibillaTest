@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadataBuilder;
 import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
@@ -47,7 +47,7 @@ public class SimpleMetadataSerializerTest {
 
     @Test
     public void shouldSerializeAndDeserializeOnSameEmptyObject() {
-	TestsMergeableMetadata metadata = new MetadataRepository();
+	TestsMetadata metadata = new MetadataRepository();
 	MetadataSerializer serializer = new SimpleMetadataSerializer();
 	assertThat(serializer.serialize(metadata), is(true));
 	assertThat(serializer.deserialize(), equalTo(metadata));
@@ -59,7 +59,7 @@ public class SimpleMetadataSerializerTest {
 	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
 	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
 	classesUnderTest.add(ClassUnderTestOneAnnotationAndListOnClass.class);
-	TestsMergeableMetadata metadatas = builder.build(classesUnderTest, testClasses);
+	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses);
 	assertThat(metadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnClass.class, false), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnClass.class, false).size(), is(4));
 	assertThat(metadatas.getTestMethodsFor(ClassUnderTestOneAnnotationAndListOnClass.class, false), hasItems(equalTo(TEST_METHOD_ONE_IN_CLASS_ONE), equalTo(TEST_METHOD_TWO_IN_CLASS_ONE), equalTo(TEST_METHOD_ONE_IN_CLASS_TWO), equalTo(TEST_METHOD_TWO_IN_CLASS_TWO)));
@@ -67,7 +67,7 @@ public class SimpleMetadataSerializerTest {
 	MetadataSerializer serializer = new SimpleMetadataSerializer();
 	assertThat(serializer.serialize(metadatas), is(true));
 
-	TestsMergeableMetadata DeSmetadatas = serializer.deserialize();
+	TestsMetadata DeSmetadatas = serializer.deserialize();
 
 	assertThat(DeSmetadatas, equalTo(metadatas));
 	assertThat(DeSmetadatas.getTestClassesFor(ClassUnderTestOneAnnotationAndListOnClass.class, false), hasItems(equalTo(TEST_CLASS_ONE_METADATA), equalTo(TEST_CLASS_TWO_METADATA)));

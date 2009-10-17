@@ -31,7 +31,7 @@ import java.util.List;
  * @since 27-Aug-2009
  * 
  */
-public interface TestsMetadata extends Metadata {
+public interface TestsMetadata extends Metadata, MergeableMetadata {
 
     /**
      * Returns the classes tested (classes under test) by the provided class and

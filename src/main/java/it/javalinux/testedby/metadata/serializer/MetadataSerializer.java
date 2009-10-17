@@ -21,7 +21,7 @@
 package it.javalinux.testedby.metadata.serializer;
 
 import it.javalinux.testedby.metadata.Metadata;
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
@@ -37,13 +37,13 @@ public interface MetadataSerializer {
      *         serialisation fails. It puts them in a file on current directory
      *         named testedbyMetadata.bin
      */
-    public boolean serialize(TestsMergeableMetadata metadata);
+    public boolean serialize(TestsMetadata metadata);
 
     /**
      * 
      * @return deserialised TestsMetadata It gets them from a file on current
      *         directory named testedbyMetadata.bin
      */
-    public TestsMergeableMetadata deserialize();
+    public TestsMetadata deserialize();
 
 }

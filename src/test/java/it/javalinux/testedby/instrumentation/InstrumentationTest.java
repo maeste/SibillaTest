@@ -28,7 +28,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
 import it.javalinux.testedby.runner.TestRunner;
@@ -64,7 +64,7 @@ public class InstrumentationTest {
 	TestRunner runner = new JunitTestRunner();
 	List<Class<?>> tests = new LinkedList<Class<?>>();
 	tests.add(SampleTest.class);
-	TestsMetadata metadata = runner.run(null, tests, (TestsMergeableMetadata) null);
+	TestsMetadata metadata = runner.run(null, tests, (TestsMetadata) null);
 	assertThat(metadata.getAllTestClasses().size(), is(0));
 	assertThat(metadata.getAllTestedClasses().size(), is(0));
     }
@@ -104,7 +104,7 @@ public class InstrumentationTest {
 	    TestRunner runner = new JunitTestRunner();
 	    List<Class<?>> tests = new LinkedList<Class<?>>();
 	    tests.add(SampleTest.class);
-	    TestsMetadata metadata = runner.run(null, tests, (TestsMergeableMetadata) null);
+	    TestsMetadata metadata = runner.run(null, tests, (TestsMetadata) null);
 
 	    System.out.println("** Tests:");
 	    for (ClassLinkMetadata test : metadata.getAllTestClasses()) {

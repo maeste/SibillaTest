@@ -22,7 +22,7 @@ package it.javalinux.testedby.runner;
 
 import java.util.List;
 
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.serializer.MetadataSerializer;
 import it.javalinux.testedby.metadata.serializer.impl.SimpleMetadataSerializer;
@@ -58,7 +58,7 @@ public interface TestRunner {
      * @return modified TestsMetadata
      * @throws Exception
      */
-    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception;
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses) throws Exception;
 
     /**
      * deserialize metadata using passed serializer implementation and use it to
@@ -86,7 +86,7 @@ public interface TestRunner {
      * @return modified TestsMetadata
      * @throws Exception
      */
-    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception;
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, MetadataSerializer serializer) throws Exception;
 
     /**
      * run all tests which is linked to classUndertest on passed metadata. It
@@ -114,5 +114,5 @@ public interface TestRunner {
      * @return modified TestsMetadata
      * @throws Exception
      */
-    public TestsMergeableMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMergeableMetadata metadata) throws Exception;
+    public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMetadata metadata) throws Exception;
 }

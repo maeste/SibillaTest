@@ -23,7 +23,7 @@ package it.javalinux.testedby.instrumentation;
 import java.util.List;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
-import it.javalinux.testedby.metadata.TestsMergeableMetadata;
+import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 
 /**
@@ -49,5 +49,5 @@ public interface InstrumentationTestRunner {
      * @return Metadata obtained using instrumentation
      * @throws Exception
      */
-    public TestsMergeableMetadata instrumentAndRunTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception;
+    public TestsMetadata instrumentAndRunTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception;
 }
