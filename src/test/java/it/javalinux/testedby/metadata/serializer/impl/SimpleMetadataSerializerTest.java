@@ -48,6 +48,7 @@ public class SimpleMetadataSerializerTest {
     }
 
     @Test
+    @SuppressWarnings(value = { "unchecked" })
     public void shouldSerializeAndDeserializewithSameContent() {
 	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class);
 	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
