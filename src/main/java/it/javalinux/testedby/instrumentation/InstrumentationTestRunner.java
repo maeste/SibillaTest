@@ -20,8 +20,9 @@
  */
 package it.javalinux.testedby.instrumentation;
 
-import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
+
+import java.util.List;
 
 /**
  * Interface for test runner leveraging instrumentation for getting the TestedBy
@@ -34,17 +35,12 @@ import it.javalinux.testedby.metadata.TestsMetadata;
 public interface InstrumentationTestRunner {
 
     /**
-     * Run the specified tests and return the metadata obtained through tested
-     * code instrumentation.
-     * 
-     * @param testClass
-     * @param methodName
-     * @param classesUnderTest
-     *            optional parameter specifying classesUnderTest previous
-     *            collected in metadata. For logging purpose
-     * 
-     * @return Metadata obtained using instrumentation
+     * Run all the specified tests and return the metadata obtained
+     * through tested code instrumentation.
+     *
+     * @param tests     The test classes to run
+     * @return          Metadata obtained using instrumentation
      * @throws Exception
      */
-    public TestsMetadata instrumentAndRunTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception;
+    public TestsMetadata run(List<Class<?>> tests) throws Exception;
 }

@@ -35,7 +35,6 @@ import it.javalinux.testedby.metadata.serializer.impl.SimpleMetadataSerializer;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -72,25 +71,29 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
      *      java.util.List, it.javalinux.testedby.metadata.TestsMetadata)
      */
     public TestsMetadata run(List<Class<?>> changedClassesUnderTest, List<Class<?>> changedTestClasses, TestsMetadata metadata) throws Exception {
-	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	AnnotationBasedMetadataBuilder annotationBuilder = new AnnotationBasedMetadataBuilder();
+	InstrumentationBasedMetadataBuilder instrumentationBuilder = new InstrumentationBasedMetadataBuilder();
 
 	if (metadata != null) {
-	    metadata.merge(builder.build(changedClassesUnderTest, metadata.getAllTestClasses(), changedTestClasses));
+	    metadata.merge(annotationBuilder.build(changedClassesUnderTest, metadata.getAllTestClasses(), changedTestClasses));
 	} else {
-	    metadata = builder.build(changedClassesUnderTest, Collections.EMPTY_LIST, changedTestClasses);
+	    metadata = annotationBuilder.build(changedClassesUnderTest, null, changedTestClasses);
 	}
 	Set<MethodLinkMetadata> methodLinkToRun = new HashSet<MethodLinkMetadata>();
 
 	// run all new tests
 	for (Class<?> testClass : changedTestClasses) {
 	    for (Method m : getTestMethods(testClass)) {
-		metadata.merge(instrumentAndRunTest(testClass.getCanonicalName(), m.getName()));
+		runSingleTestUsingInstrumentationBuilder(instrumentationBuilder, testClass.getCanonicalName(), m.getName());
 	    }
-
 	}
+	metadata.merge(instrumentationBuilder.getMetadata());
+	instrumentationBuilder.reset();
+	
+	// Now collect the tests to run...
 
 	// we need to run all the new test methods collected by annotations and
-	// previous faild ones
+	// those that failed previously
 	for (MethodLinkMetadata methodMetadata : metadata.getAllTestMethods()) {
 	    if (methodMetadata.getStatus().isJustCreated() || methodMetadata.getStatus().isFailedOnLastRun()) {
 		methodLinkToRun.add(methodMetadata);
@@ -100,7 +103,6 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	// ... as well as all the methods testing changed classes
 	if (changedClassesUnderTest != null) {
 	    for (Class<?> classUnderTest : changedClassesUnderTest) {
-
 		for (MethodLinkMetadata methodMetadata : metadata.getTestMethodsForRecursive(classUnderTest, true)) {
 		    methodLinkToRun.add(methodMetadata);
 		}
@@ -120,34 +122,44 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	    String clazz = methodLinkMetadata.getClazz();
 	    MethodMetadata method = methodLinkMetadata.getMethod();
 	    List<ClassLinkMetadata> list = metadata.getClassesTestedBy(clazz, method);
-	    metadata.merge(instrumentAndRunTest(clazz, method.getName(), list.toArray(new ClassLinkMetadata[list.size()])));
-
+	    runSingleTestUsingInstrumentationBuilder(instrumentationBuilder, clazz, method.getName(), list.toArray(new ClassLinkMetadata[list.size()]));
 	}
+	metadata.merge(instrumentationBuilder.getMetadata());
 	return metadata;
     }
 
-    /**
-     * 
-     * {@inheritDoc}
-     * 
-     * @see it.javalinux.testedby.instrumentation.InstrumentationTestRunner#instrumentAndRunTest(String,
-     *      String, ClassLinkMetadata...)
-     */
-    public TestsMetadata instrumentAndRunTest(String testClassName, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception {
-	InstrumentationBasedMetadataBuilder builder = new InstrumentationBasedMetadataBuilder();
+    protected void runSingleTestUsingInstrumentationBuilder(InstrumentationBasedMetadataBuilder builder, String testClassName, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception {
 	InvocationTracker.cleanUp();
 	InvocationTracker tracker = InvocationTracker.getInstance();
 	tracker.setTestClass(testClassName);
 	tracker.setTestMethod(methodName);
 	tracker.setSkipTestClass(true);
-	boolean result = runTest(testClassName, methodName);
+	boolean result = runTest(testClassName, methodName, classesUnderTest);
 	StatusMetadata status = new StatusMetadata();
 	status.setFromInstrumentation(true);
 	status.setValid(true);
+	status.setJustCreated(true);
 	status.setPassedOnLastRun(result);
 	builder.performBuildStep(testClassName, methodName, null, status);
-	return builder.getMetadata();
     }
+    
+    /**
+    *
+    * {@inheritDoc}
+    *
+    * @see it.javalinux.testedby.instrumentation.InstrumentationTestRunner#run(java.util.List)
+    */
+   public TestsMetadata run(List<Class<?>> tests) throws Exception
+   {
+       InstrumentationBasedMetadataBuilder builder = new InstrumentationBasedMetadataBuilder();
+       for (Class<?> test : tests) {
+           for (Method method : getTestMethods(test)) {
+               runSingleTestUsingInstrumentationBuilder(builder, test.getName(), method.getName());
+           }
+       }
+       return builder.getMetadata();
+   }
+
 
     /**
      * @param testClass
