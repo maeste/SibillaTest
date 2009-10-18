@@ -94,9 +94,9 @@ public class ClassLinkMetadata extends LinkMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.MergeableMetadata#merge(it.javalinux.testedby.metadata.MergeableMetadata)
+     * @see it.javalinux.testedby.metadata.Mergeable#merge(it.javalinux.testedby.metadata.Mergeable)
      */
-    public void merge(MergeableMetadata right) {
+    public void merge(Mergeable right) {
 	if (right instanceof ClassLinkMetadata && this.equals((right))) {
 	    this.getStatus().merge(((ClassLinkMetadata) right).getStatus());
 

@@ -20,7 +20,6 @@
  */
 package it.javalinux.testedby.metadata;
 
-import java.io.Serializable;
 
 /**
  * The status of a link
@@ -29,7 +28,7 @@ import java.io.Serializable;
  * @author stefano.maestri@javalinux.it
  * 
  */
-public class StatusMetadata implements Serializable, Cloneable, MergeableMetadata {
+public class StatusMetadata implements Metadata, Mergeable {
 
     private static final long serialVersionUID = 7755553308719275165L;
 
@@ -182,9 +181,9 @@ public class StatusMetadata implements Serializable, Cloneable, MergeableMetadat
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.MergeableMetadata#merge(it.javalinux.testedby.metadata.MergeableMetadata)
+     * @see it.javalinux.testedby.metadata.Mergeable#merge(it.javalinux.testedby.metadata.Mergeable)
      */
-    public void merge(MergeableMetadata right) {
+    public void merge(Mergeable right) {
 	if (right instanceof StatusMetadata) {
 	    StatusMetadata r = (StatusMetadata) right;
 	    this.fromAnnotation |= r.isFromAnnotation();

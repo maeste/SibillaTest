@@ -24,15 +24,15 @@ package it.javalinux.testedby.metadata;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public interface MergeableMetadata {
+public interface Mergeable {
 
     /**
-     * Merge this Metadata with provided right. this method modify the current
+     * Merge this Mergeable with provided right. this method modify the current
      * object. In case of passed right parameter isn't mergeable the original
      * instance of the object is untouched without any merge
      * 
      * @param right
      */
-    public void merge(MergeableMetadata right);
+    public void merge(Mergeable right);
 
 }

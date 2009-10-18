@@ -22,7 +22,7 @@ package it.javalinux.testedby.metadata.impl;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.LinkMetadata;
-import it.javalinux.testedby.metadata.MergeableMetadata;
+import it.javalinux.testedby.metadata.Mergeable;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
 import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
@@ -453,9 +453,9 @@ public class MetadataRepository implements TestsMetadata {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.MergeableMetadata#merge(it.javalinux.testedby.metadata.MergeableMetadata)
+     * @see it.javalinux.testedby.metadata.Mergeable#merge(it.javalinux.testedby.metadata.Mergeable)
      */
-    public void merge(MergeableMetadata right) {
+    public void merge(Mergeable right) {
 	if (right instanceof MetadataRepository) {
 	    MetadataRepository r = (MetadataRepository) right;
 	    for (Entry<MethodInfo, Set<LinkMetadata>> entry : this.testsLinks.entrySet()) {
