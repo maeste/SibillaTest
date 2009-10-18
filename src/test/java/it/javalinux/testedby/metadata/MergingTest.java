@@ -77,8 +77,8 @@ public class MergingTest {
 	MethodMetadata method2 = new ImmutableMethodMetadata("method2", new String[]{"boolean, int"});
 	
 	MethodLinkMetadata link1 = new MethodLinkMetadata(status1, "it.javalinux.Foo", method1);
-	MethodLinkMetadata link2 = new MethodLinkMetadata(status1, "it.javalinux.Foo", method2);
-	MethodLinkMetadata link3 = new MethodLinkMetadata(status1, "it.javalinux.Foo", method1);
+	MethodLinkMetadata link2 = new MethodLinkMetadata(status2, "it.javalinux.Foo", method2);
+	MethodLinkMetadata link3 = new MethodLinkMetadata(status2, "it.javalinux.Foo", method1);
 	link1.merge(link2);
 	//no merge happened, different classes
 	assertFalse(status1.isValid());
@@ -88,5 +88,10 @@ public class MergingTest {
 	
 	link1.merge(link3);
 	//TODO!! provide status merge assertions
+    }
+    
+    @Test
+    public void shouldCorrectlyMergeTestMetadata() {
+	//TODO!!
     }
 }

@@ -20,13 +20,18 @@
  */
 package it.javalinux.testedby.instrumentation;
 
+import static org.junit.matchers.JUnitMatchers.hasItem;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.metadata.MethodLinkMetadata;
+import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.runner.TestRunner;
+import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
 import it.javalinux.testedby.runner.impl.JunitTestRunner;
+import it.javalinux.testedby.testsupport.instrumentation.Foo;
 import it.javalinux.testedby.testsupport.instrumentation.SampleTest;
 
 import java.io.BufferedReader;
@@ -52,13 +57,14 @@ import org.junit.runner.JUnitCore;
  * 
  */
 public class InstrumentationTest {
+    
+    private static boolean verbose = "true".equalsIgnoreCase(System.getProperty("verbose"));
 
-    @Test
     public void testNoInstrumentation() throws Exception {
-	TestRunner runner = new JunitTestRunner();
+	InstrumentationTestRunner runner = new JunitTestRunner();
 	List<Class<?>> tests = new LinkedList<Class<?>>();
 	tests.add(SampleTest.class);
-	TestsMetadata metadata = runner.run(null, tests, (TestsMetadata) null);
+	TestsMetadata metadata = runner.run(tests);
 	assertThat(metadata.getAllTestClasses().size(), is(0));
 	assertThat(metadata.getAllTestedClasses().size(), is(0));
     }
@@ -74,18 +80,19 @@ public class InstrumentationTest {
 	BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 	BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
-	String s = null;
-	System.out.println("Here is the standard output of the command:\n");
-	while ((s = stdInput.readLine()) != null) {
-	    System.out.println(s);
-	}
+	if (verbose) {
+	    String s = null;
+	    System.out.println("Here is the standard output of the command:\n");
+	    while ((s = stdInput.readLine()) != null) {
+		System.out.println(s);
+	    }
 
-	// read any errors from the attempted command
-	System.out.println("Here is the standard error of the command (if any):\n");
-	while ((s = stdError.readLine()) != null) {
-	    System.out.println(s);
+	    // read any errors from the attempted command
+	    System.out.println("Here is the standard error of the command (if any):\n");
+	    while ((s = stdError.readLine()) != null) {
+		System.out.println(s);
+	    }
 	}
-	// TODO!!! add assertions to check the result
     }
 
     /**
@@ -95,19 +102,39 @@ public class InstrumentationTest {
      */
     public static void main(String[] args) {
 	try {
-	    TestRunner runner = new JunitTestRunner();
+	    JunitTestRunner runner = new JunitTestRunner();
 	    List<Class<?>> tests = new LinkedList<Class<?>>();
 	    tests.add(SampleTest.class);
-	    TestsMetadata metadata = runner.run(null, tests, (TestsMetadata) null);
+	    TestsMetadata metadata = runner.run(tests);
 
-	    System.out.println("** Tests:");
-	    for (ClassLinkMetadata test : metadata.getAllTestClasses()) {
-		System.out.println(test.getClazz());
+	    if (verbose) {
+		System.out.println("** Tests:");
+		for (ClassLinkMetadata test : metadata.getAllTestClasses()) {
+		    System.out.println(test.getClazz());
+		}
+		System.out.println("** Tested classes:");
+		for (ClassLinkMetadata tested : metadata.getAllTestedClasses()) {
+		    System.out.println(tested.getClazz());
+		}
 	    }
-	    System.out.println("** Tested classes:");
-	    for (ClassLinkMetadata tested : metadata.getAllTestedClasses()) {
-		System.out.println(tested.getClazz());
-	    }
+	    
+	    StatusMetadata status = new StatusMetadata(true, true, false, true);
+	    status.setJustCreated(true);
+	    status.setPassedOnLastRun(true);
+	    
+	    assertThat(metadata.getAllTestedClasses().size(), is(1));
+	    assertThat(metadata.getAllTestClasses().size(), is(1));
+	    assertThat("Cannot find expected test link", metadata.getAllTestClasses(), hasItem(new ClassLinkMetadata(status, SampleTest.class.getName())));
+	    assertThat("Wrong expected test link status", metadata.getAllTestClasses().iterator().next().getStatus(), is(status));
+	    assertThat("Cannot find expected tested link", metadata.getAllTestedClasses(), hasItem(new ClassLinkMetadata(status, Foo.class.getName())));
+	    assertThat("Wrong expected tested link status", metadata.getAllTestedClasses().iterator().next().getStatus(), is(status));
+	    
+	    assertThat(metadata.getAllTestedClasses().size(), is(1));
+	    assertThat(metadata.getAllTestClasses().size(), is(1));
+	    assertThat("Cannot find expected test link (method)", metadata.getAllTestMethods(), hasItem(new MethodLinkMetadata(status, SampleTest.class.getName(), new ImmutableMethodMetadata("testFoo", null))));
+	    assertThat("Wrong expected test link status (method)", metadata.getAllTestMethods().iterator().next().getStatus(), is(status));
+	    assertThat("Cannot find expected tested link (method)", metadata.getAllTestedMethods(), hasItem(new MethodLinkMetadata(status, Foo.class.getName(), new ImmutableMethodMetadata("bar", null))));
+	    assertThat("Wrong expected tested link status (method)", metadata.getAllTestedMethods().iterator().next().getStatus(), is(status));
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    throw new RuntimeException(e);
