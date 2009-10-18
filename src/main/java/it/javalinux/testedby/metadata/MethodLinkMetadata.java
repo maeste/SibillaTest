@@ -106,9 +106,7 @@ public class MethodLinkMetadata extends LinkMetadata {
     public void merge(Mergeable right) {
 	if (right instanceof MethodLinkMetadata && this.equals((right))) {
 	    this.getStatus().merge(((MethodLinkMetadata) right).getStatus());
-
 	}
-
     }
 
 }

@@ -90,4 +90,20 @@ public class ImmutableMethodMetadata implements MethodMetadata {
 	}
 	return 31 * (name.hashCode() + Arrays.deepHashCode(parameterTypes));
     }
+    
+    @Override
+    public String toString() {
+	StringBuilder sb = new StringBuilder(name);
+	sb.append("(");
+	for (int i = 0; i < parameterTypes.length; i++) {
+	    sb.append(parameterTypes[i]);
+	    sb.append(" arg");
+	    sb.append(i);
+	    if (i < parameterTypes.length - 1) {
+		sb.append(",");
+	    }
+	}
+	sb.append(")");
+	return sb.toString();
+    }
 }
