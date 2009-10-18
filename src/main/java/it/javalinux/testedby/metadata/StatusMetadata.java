@@ -177,6 +177,39 @@ public class StatusMetadata implements Metadata, Mergeable {
 	status.valid = this.valid;
 	return status;
     }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (!(obj instanceof StatusMetadata)) {
+	    return false;
+	}
+	StatusMetadata o = (StatusMetadata) obj;
+	return (o.fromAnnotation == this.fromAnnotation && o.fromInstrumentation == this.fromInstrumentation &&
+		o.justCreated == this.justCreated && o.passedOnLastRun == this.passedOnLastRun && o.valid == this.valid);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + (fromAnnotation ? 1231 : 1237);
+	result = prime * result + (fromInstrumentation ? 1231 : 1237);
+	result = prime * result + (justCreated ? 1231 : 1237);
+	result = prime * result + (passedOnLastRun ? 1231 : 1237);
+	result = prime * result + (valid ? 1231 : 1237);
+	return result;
+    }
 
     /**
      * {@inheritDoc}
