@@ -20,7 +20,6 @@
  */
 package it.javalinux.testedby.metadata;
 
-
 /**
  * The status of a link
  * 
@@ -177,11 +176,11 @@ public class StatusMetadata implements Metadata, Mergeable {
 	status.valid = this.valid;
 	return status;
     }
-    
+
     /**
      * 
      * {@inheritDoc}
-     *
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -190,10 +189,9 @@ public class StatusMetadata implements Metadata, Mergeable {
 	    return false;
 	}
 	StatusMetadata o = (StatusMetadata) obj;
-	return (o.fromAnnotation == this.fromAnnotation && o.fromInstrumentation == this.fromInstrumentation &&
-		o.justCreated == this.justCreated && o.passedOnLastRun == this.passedOnLastRun && o.valid == this.valid);
+	return (o.fromAnnotation == this.fromAnnotation && o.fromInstrumentation == this.fromInstrumentation && o.justCreated == this.justCreated && o.passedOnLastRun == this.passedOnLastRun && o.valid == this.valid);
     }
-    
+
     /**
      * {@inheritDoc}
      * 
@@ -214,9 +212,9 @@ public class StatusMetadata implements Metadata, Mergeable {
     /**
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.metadata.Mergeable#merge(it.javalinux.testedby.metadata.Mergeable)
+     * @see it.javalinux.testedby.metadata.Mergeable#merge(Mergeable)
      */
-    public void merge(Mergeable right) {
+    public boolean merge(Mergeable right) {
 	if (right instanceof StatusMetadata) {
 	    StatusMetadata r = (StatusMetadata) right;
 	    this.fromAnnotation |= r.isFromAnnotation();
@@ -224,6 +222,9 @@ public class StatusMetadata implements Metadata, Mergeable {
 	    this.justCreated &= r.isJustCreated();
 	    this.passedOnLastRun &= r.isPassedOnLastRun();
 	    this.valid &= r.isValid();
+	    return true;
+	} else {
+	    return false;
 	}
     }
 }

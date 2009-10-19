@@ -355,6 +355,16 @@ public class MetadataRepository implements TestsMetadata {
 	public int hashCode() {
 	    return 31 * (classRef.hashCode() + methodRef.hashCode());
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+	    return "MethodInfo [classRef=" + classRef + ", methodRef=" + methodRef + "]";
+	}
     }
 
     /**
@@ -455,28 +465,45 @@ public class MetadataRepository implements TestsMetadata {
      * 
      * @see it.javalinux.testedby.metadata.Mergeable#merge(it.javalinux.testedby.metadata.Mergeable)
      */
-    public void merge(Mergeable right) {
+    public boolean merge(Mergeable right) {
 	if (right instanceof MetadataRepository) {
 	    MetadataRepository r = (MetadataRepository) right;
-	    for (Entry<MethodInfo, Set<LinkMetadata>> entry : this.testsLinks.entrySet()) {
-		if (r.testsLinks.containsKey(entry.getKey())) {
-		    for (LinkMetadata leftLink : entry.getValue()) {
-			for (LinkMetadata rightLink : r.testsLinks.get(entry.getKey())) {
-			    leftLink.merge(rightLink);
+	    Set<LinkMetadata> nonFoundRightsLink = new HashSet<LinkMetadata>();
+
+	    for (Entry<MethodInfo, Set<LinkMetadata>> entry : r.testsLinks.entrySet()) {
+		if (this.testsLinks.containsKey(entry.getKey())) {
+		    nonFoundRightsLink.clear();
+		    for (LinkMetadata leftLink : this.testsLinks.get(entry.getKey())) {
+			for (LinkMetadata rightLink : entry.getValue()) {
+			    if (!leftLink.merge(rightLink)) {
+				nonFoundRightsLink.add(rightLink);
+			    }
 			}
 		    }
+		    this.testsLinks.get(entry.getKey()).addAll(nonFoundRightsLink);
+		} else {
+		    this.testsLinks.put(entry.getKey(), entry.getValue());
 		}
 	    }
 
-	    for (Entry<MethodInfo, Set<LinkMetadata>> entry : this.isTestedByLinks.entrySet()) {
-		if (r.isTestedByLinks.containsKey(entry.getKey())) {
-		    for (LinkMetadata leftLink : entry.getValue()) {
-			for (LinkMetadata rightLink : r.isTestedByLinks.get(entry.getKey())) {
-			    leftLink.merge(rightLink);
+	    for (Entry<MethodInfo, Set<LinkMetadata>> entry : r.isTestedByLinks.entrySet()) {
+		if (this.isTestedByLinks.containsKey(entry.getKey())) {
+		    nonFoundRightsLink.clear();
+		    for (LinkMetadata leftLink : this.isTestedByLinks.get(entry.getKey())) {
+			for (LinkMetadata rightLink : entry.getValue()) {
+			    if (!leftLink.merge(rightLink)) {
+				nonFoundRightsLink.add(rightLink);
+			    }
 			}
 		    }
+		    this.isTestedByLinks.get(entry.getKey()).addAll(nonFoundRightsLink);
+		} else {
+		    this.isTestedByLinks.put(entry.getKey(), entry.getValue());
 		}
 	    }
+	    return true;
+	} else {
+	    return false;
 	}
     }
 

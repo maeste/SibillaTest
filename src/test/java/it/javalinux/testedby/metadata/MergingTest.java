@@ -20,10 +20,17 @@
  */
 package it.javalinux.testedby.metadata;
 
+import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+
+import static org.junit.Assert.assertThat;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
+import it.javalinux.testedby.metadata.impl.MetadataRepository;
 
 import org.junit.Test;
 
@@ -38,17 +45,18 @@ public class MergingTest {
 
     @Test
     public void shouldCorrectlyMergeStatusMetadata() {
-	//boolean valid, boolean justCreated, boolean fromAnnotation, boolean fromInstrumentation
-	StatusMetadata status1 = new StatusMetadata(false, false, false, false);
-	StatusMetadata status2 = new StatusMetadata(true, true, true, true);
+	// boolean valid, boolean justCreated, boolean fromAnnotation, boolean
+	// fromInstrumentation
+	StatusMetadata status1 = new StatusMetadata(false, false, true, false);
+	StatusMetadata status2 = new StatusMetadata(true, true, false, true);
 	status1.merge(status2);
-//	assertTrue(status1.isValid());
-//	assertTrue(status1.isJustCreated());
-	assertTrue(status1.isFromAnnotation());
-	assertTrue(status1.isFromInstrumentation());
-	//TODO!! provide further tests
+	assertThat(status1.isFromAnnotation(), is(true));
+	assertThat(status1.isFromInstrumentation(), is(true));
+	assertThat(status1.isValid(), is(false));
+	assertThat(status1.isJustCreated(), is(false));
+
     }
-    
+
     @Test
     public void shouldCorrectlyMergeClassLinkMetadata() {
 	StatusMetadata status1 = new StatusMetadata(false, false, false, false);
@@ -58,40 +66,81 @@ public class MergingTest {
 	ClassLinkMetadata link2 = new ClassLinkMetadata(status2, "it.javalinux.FooBar");
 	ClassLinkMetadata link3 = new ClassLinkMetadata(status2, "it.javalinux.Foo");
 	link1.merge(link2);
-	//no merge happened, different classes
-	assertFalse(status1.isValid());
-	assertFalse(status1.isJustCreated());
-	assertFalse(status1.isFromAnnotation());
-	assertFalse(status1.isFromInstrumentation());
-	
+	// no merge happened, different classes
+	assertThat(status1.isFromAnnotation(), is(false));
+	assertThat(status1.isFromInstrumentation(), is(false));
+	assertThat(status1.isValid(), is(false));
+	assertThat(status1.isJustCreated(), is(false));
+
 	link1.merge(link3);
-	//TODO!! provide status merge assertions
+	// merge happened
+	assertThat(status1.isFromAnnotation(), is(true));
+	assertThat(status1.isFromInstrumentation(), is(true));
+	assertThat(status1.isValid(), is(false));
+	assertThat(status1.isJustCreated(), is(false));
     }
-    
+
     @Test
     public void shouldCorrectlyMergeMethodLinkMetadata() {
 	StatusMetadata status1 = new StatusMetadata(false, false, false, false);
 	StatusMetadata status2 = new StatusMetadata(true, true, true, true);
 
-	MethodMetadata method1 = new ImmutableMethodMetadata("method1", new String[]{"boolean"});
-	MethodMetadata method2 = new ImmutableMethodMetadata("method2", new String[]{"boolean, int"});
-	
+	MethodMetadata method1 = new ImmutableMethodMetadata("method1", new String[] { "boolean" });
+	MethodMetadata method2 = new ImmutableMethodMetadata("method2", new String[] { "boolean, int" });
+
 	MethodLinkMetadata link1 = new MethodLinkMetadata(status1, "it.javalinux.Foo", method1);
 	MethodLinkMetadata link2 = new MethodLinkMetadata(status2, "it.javalinux.Foo", method2);
 	MethodLinkMetadata link3 = new MethodLinkMetadata(status2, "it.javalinux.Foo", method1);
 	link1.merge(link2);
-	//no merge happened, different classes
-	assertFalse(status1.isValid());
-	assertFalse(status1.isJustCreated());
-	assertFalse(status1.isFromAnnotation());
-	assertFalse(status1.isFromInstrumentation());
-	
+	// no merge happened, different classes
+	assertThat(status1.isFromAnnotation(), is(false));
+	assertThat(status1.isFromInstrumentation(), is(false));
+	assertThat(status1.isValid(), is(false));
+	assertThat(status1.isJustCreated(), is(false));
+
 	link1.merge(link3);
-	//TODO!! provide status merge assertions
+	// merge happened
+	assertThat(status1.isFromAnnotation(), is(true));
+	assertThat(status1.isFromInstrumentation(), is(true));
+	assertThat(status1.isValid(), is(false));
+	assertThat(status1.isJustCreated(), is(false));
     }
-    
+
     @Test
     public void shouldCorrectlyMergeTestMetadata() {
-	//TODO!!
+
+	MetadataRepository repository1 = new MetadataRepository();
+	MetadataRepository repository2 = new MetadataRepository();
+
+	StatusMetadata status1 = new StatusMetadata(false, false, false, false);
+	StatusMetadata status2 = new StatusMetadata(true, true, true, true);
+
+	MethodMetadata method1 = new ImmutableMethodMetadata("method1", new String[] { "boolean" });
+	MethodMetadata method2 = new ImmutableMethodMetadata("method2", new String[] { "boolean, int" });
+
+	MethodLinkMetadata mlink1 = new MethodLinkMetadata(status1, "it.javalinux.Foo", method1);
+	MethodLinkMetadata mlink2 = new MethodLinkMetadata(status2, "it.javalinux.Foo", method2);
+	MethodLinkMetadata mlink3 = new MethodLinkMetadata(status2, "it.javalinux.Foo", method1);
+	ClassLinkMetadata clink1 = new ClassLinkMetadata(status1, "it.javalinux.Foo");
+	ClassLinkMetadata clink2 = new ClassLinkMetadata(status2, "it.javalinux.FooBar");
+	ClassLinkMetadata clink3 = new ClassLinkMetadata(status2, "it.javalinux.Foo");
+
+	repository1.addConnection("it.javalinux.FooTest", "testMethodOne", new String[] {}, "it.javalinx.Foo", "methodUTOne", new String[] {}, status1);
+	repository1.addConnection("it.javalinux.FooTest", "testMethodTwo", new String[] {}, "it.javalinx.Foo", "methodUTOne", new String[] {}, status1);
+	repository1.addConnection("it.javalinux.FooBarTest", "testMethodOne", new String[] {}, "it.javalinx.FooBar", "methodUTOne", new String[] {}, status1);
+	repository2.addConnection("it.javalinux.FooTest", "testMethodOne", new String[] {}, "it.javalinx.Foo", "methodUTOne", new String[] {}, status2);
+	repository2.addConnection("it.javalinux.FooTest", "testMethodThree", new String[] {}, "it.javalinx.Foo", "methodUTOne", new String[] {}, status2);
+	repository2.addConnection("it.javalinux.FooBarTest", null, null, "it.javalinx.FooBar", "methodUTOne", new String[] {}, status2);
+
+	repository1.merge(repository2);
+
+	assertThat(repository1.getAllTestClasses().size(), is(2));
+	assertThat(repository1.getAllTestedClasses().size(), is(2));
+	System.out.println(repository2.getAllTestMethods());
+
+	System.out.println(repository1.getAllTestMethods());
+	assertThat(repository1.getAllTestMethods().size(), is(4));
+	assertThat(repository1.getAllTestedMethods().size(), is(2));
+	// TODO: provide better assertion controls
     }
 }

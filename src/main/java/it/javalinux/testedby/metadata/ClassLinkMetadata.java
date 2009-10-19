@@ -96,10 +96,11 @@ public class ClassLinkMetadata extends LinkMetadata {
      * 
      * @see it.javalinux.testedby.metadata.Mergeable#merge(it.javalinux.testedby.metadata.Mergeable)
      */
-    public void merge(Mergeable right) {
+    public boolean merge(Mergeable right) {
 	if (right instanceof ClassLinkMetadata && this.equals((right))) {
-	    this.getStatus().merge(((ClassLinkMetadata) right).getStatus());
-
+	    return this.getStatus().merge(((ClassLinkMetadata) right).getStatus());
+	} else {
+	    return false;
 	}
 
     }

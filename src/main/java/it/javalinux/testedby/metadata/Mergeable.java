@@ -32,7 +32,9 @@ public interface Mergeable {
      * instance of the object is untouched without any merge
      * 
      * @param right
+     * @return true if merge have been done. False if merge isn't possible or
+     *         failed.
      */
-    public void merge(Mergeable right);
+    public boolean merge(Mergeable right);
 
 }
