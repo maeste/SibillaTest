@@ -77,7 +77,8 @@ public class JunitTestRunner extends AbstractUnitRunner {
      * 
      * {@inheritDoc}
      * 
-     * @see it.javalinux.testedby.runner.AbstractUnitRunner#runTest(String, String, ClassLinkMetadata...)
+     * @see it.javalinux.testedby.runner.AbstractUnitRunner#runTest(String,
+     *      String, ClassLinkMetadata...)
      */
     @Override
     public boolean runTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws ClassNotFoundException {
@@ -96,7 +97,7 @@ public class JunitTestRunner extends AbstractUnitRunner {
 
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see it.javalinux.testedby.runner.AbstractUnitRunner#getTestMethods(java.lang.Class)
      */
     @Override
@@ -109,5 +110,4 @@ public class JunitTestRunner extends AbstractUnitRunner {
 	}
 	return list;
     }
-
 }

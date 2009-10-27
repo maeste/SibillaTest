@@ -18,16 +18,22 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.annotations;
+package it.javalinux.testedby.factories;
 
-import it.javalinux.testedby.factories.ClassUnderTestInstanceFactory;
-import it.javalinux.testedby.factories.DefaultClassUnderTestInstanceFactory;
+import it.javalinux.testedby.annotations.TestedByFactory;
 
 /**
- * @author oracle
+ * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public @interface TestedByFactory {
-    public Class<? extends ClassUnderTestInstanceFactory> value() default DefaultClassUnderTestInstanceFactory.class;
-
+public class ClassUnderTestFactory {
+    public static <T> T newInstance(Class<T> clazz) {
+	try {
+	    ClassUnderTestInstanceFactory instanceFactory = clazz.getAnnotation(TestedByFactory.class).value().newInstance();
+	    return instanceFactory.createInstance(clazz);
+	} catch (InstantiationException e) {
+	} catch (IllegalAccessException e) {
+	}
+	return null;
+    }
 }

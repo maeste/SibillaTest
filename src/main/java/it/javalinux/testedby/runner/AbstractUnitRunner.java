@@ -89,7 +89,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	}
 	metadata.merge(instrumentationBuilder.getMetadata());
 	instrumentationBuilder.reset();
-	
+
 	// Now collect the tests to run...
 
 	// we need to run all the new test methods collected by annotations and
@@ -142,24 +142,22 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	status.setPassedOnLastRun(result);
 	builder.performBuildStep(testClassName, methodName, null, status);
     }
-    
-    /**
-    *
-    * {@inheritDoc}
-    *
-    * @see it.javalinux.testedby.instrumentation.InstrumentationTestRunner#run(java.util.List)
-    */
-   public TestsMetadata run(List<Class<?>> tests) throws Exception
-   {
-       InstrumentationBasedMetadataBuilder builder = new InstrumentationBasedMetadataBuilder();
-       for (Class<?> test : tests) {
-           for (Method method : getTestMethods(test)) {
-               runSingleTestUsingInstrumentationBuilder(builder, test.getName(), method.getName());
-           }
-       }
-       return builder.getMetadata();
-   }
 
+    /**
+     * 
+     * {@inheritDoc}
+     * 
+     * @see it.javalinux.testedby.instrumentation.InstrumentationTestRunner#run(java.util.List)
+     */
+    public TestsMetadata run(List<Class<?>> tests) throws Exception {
+	InstrumentationBasedMetadataBuilder builder = new InstrumentationBasedMetadataBuilder();
+	for (Class<?> test : tests) {
+	    for (Method method : getTestMethods(test)) {
+		runSingleTestUsingInstrumentationBuilder(builder, test.getName(), method.getName());
+	    }
+	}
+	return builder.getMetadata();
+    }
 
     /**
      * @param testClass
