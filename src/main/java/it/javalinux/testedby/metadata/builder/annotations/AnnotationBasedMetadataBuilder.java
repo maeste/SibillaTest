@@ -248,23 +248,15 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	if ((testClazz = testClasses.get(testedByTestClassName)) != null) {
 	    if (testedByMethodName == null || testedByMethodName.trim().length() == 0) {
 		return true;
-	    } else {
-		try {
-		    Method testMethod = testClazz.getMethod(testedByMethodName);
-		    if (testMethod.getAnnotation(Test.class) != null) {
-			return true;
-		    } else {
-			return false;
-		    }
-
-		} catch (NoSuchMethodException e) {
-		    return false;
-		}
 	    }
-
-	} else {
-	    return false;
+	    try {
+		Method testMethod = testClazz.getMethod(testedByMethodName);
+		return (testMethod.getAnnotation(Test.class) != null);
+	    } catch (NoSuchMethodException e) {
+		return false;
+	    }
 	}
+	return false;
     }
 
     private String[] createTestMethodsNameList(Map<String, Class<?>> testClasses, String testedByTestClassName, String testedByMethodName) {
