@@ -49,9 +49,9 @@ public class InstrumentationBasedMetadataBuilderTest {
     private static final ClassLinkMetadata FOO_CLASS_MD = new ClassLinkMetadata(STATUS, Foo.class.getCanonicalName());
     private static final ClassLinkMetadata THIS_CLASS_MD = new ClassLinkMetadata(STATUS, InstrumentationBasedMetadataBuilderTest.class.getCanonicalName());
     private static final MethodLinkMetadata ECHO_METHOD_OF_FOO_CLASS_MD = new MethodLinkMetadata(STATUS, Foo.class.getCanonicalName(),
-	    new ImmutableMethodMetadata("echo", new String[]{"java.lang.String"}));
+	    new ImmutableMethodMetadata(Foo.class.getCanonicalName(), "echo", new String[]{"java.lang.String"}));
     private static final MethodLinkMetadata MYTESTING_METHOD_OF_THIS_CLASS_MD = new MethodLinkMetadata(STATUS, InstrumentationBasedMetadataBuilderTest.class.getCanonicalName(),
-	    new ImmutableMethodMetadata("myTestingMethod", new String[]{"java.lang.String"}));
+	    new ImmutableMethodMetadata(InstrumentationBasedMetadataBuilderTest.class.getCanonicalName(), "myTestingMethod", new String[]{"java.lang.String"}));
     
     @Test
     public void testEmptyResult()

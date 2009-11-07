@@ -43,13 +43,13 @@ public class AnnotationBasedMetadataBuilderTest {
 
     private final static ClassLinkMetadata TEST_CLASS_TWO_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.TestClassTwo");
 
-    private final static MethodLinkMetadata TEST_METHOD_ONE_IN_CLASS_ONE = new MethodLinkMetadata(status, TEST_CLASS_ONE_METADATA.getClazz(), new ImmutableMethodMetadata("testMethodOne", null));
+    private final static MethodLinkMetadata TEST_METHOD_ONE_IN_CLASS_ONE = new MethodLinkMetadata(status, TEST_CLASS_ONE_METADATA.getClazz(), new ImmutableMethodMetadata(TEST_CLASS_ONE_METADATA.getClazz(), "testMethodOne", null));
 
-    private final static MethodLinkMetadata TEST_METHOD_TWO_IN_CLASS_ONE = new MethodLinkMetadata(status, TEST_CLASS_ONE_METADATA.getClazz(), new ImmutableMethodMetadata("testMethodTwo", null));
+    private final static MethodLinkMetadata TEST_METHOD_TWO_IN_CLASS_ONE = new MethodLinkMetadata(status, TEST_CLASS_ONE_METADATA.getClazz(), new ImmutableMethodMetadata(TEST_CLASS_ONE_METADATA.getClazz(), "testMethodTwo", null));
 
-    private final static MethodLinkMetadata TEST_METHOD_ONE_IN_CLASS_TWO = new MethodLinkMetadata(status, TEST_CLASS_TWO_METADATA.getClazz(), new ImmutableMethodMetadata("testMethodOne", null));
+    private final static MethodLinkMetadata TEST_METHOD_ONE_IN_CLASS_TWO = new MethodLinkMetadata(status, TEST_CLASS_TWO_METADATA.getClazz(), new ImmutableMethodMetadata(TEST_CLASS_TWO_METADATA.getClazz(), "testMethodOne", null));
 
-    private final static MethodLinkMetadata TEST_METHOD_TWO_IN_CLASS_TWO = new MethodLinkMetadata(status, TEST_CLASS_TWO_METADATA.getClazz(), new ImmutableMethodMetadata("testMethodTwo", null));
+    private final static MethodLinkMetadata TEST_METHOD_TWO_IN_CLASS_TWO = new MethodLinkMetadata(status, TEST_CLASS_TWO_METADATA.getClazz(), new ImmutableMethodMetadata(TEST_CLASS_TWO_METADATA.getClazz(), "testMethodTwo", null));
 
     private final static ClassLinkMetadata TEST_CLASS_ONE_ON_INTERFACE_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceOne");
 

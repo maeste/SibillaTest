@@ -85,8 +85,8 @@ public class MergingTest {
 	StatusMetadata status1 = new StatusMetadata(false, false, false, false);
 	StatusMetadata status2 = new StatusMetadata(true, true, true, true);
 
-	MethodMetadata method1 = new ImmutableMethodMetadata("method1", new String[] { "boolean" });
-	MethodMetadata method2 = new ImmutableMethodMetadata("method2", new String[] { "boolean, int" });
+	MethodMetadata method1 = new ImmutableMethodMetadata("it.javalinux.Foo", "method1", new String[] { "boolean" });
+	MethodMetadata method2 = new ImmutableMethodMetadata("it.javalinux.Foo", "method2", new String[] { "boolean, int" });
 
 	MethodLinkMetadata link1 = new MethodLinkMetadata(status1, "it.javalinux.Foo", method1);
 	MethodLinkMetadata link2 = new MethodLinkMetadata(status2, "it.javalinux.Foo", method2);
@@ -115,8 +115,8 @@ public class MergingTest {
 	StatusMetadata status1 = new StatusMetadata(false, false, false, false);
 	StatusMetadata status2 = new StatusMetadata(true, true, true, true);
 
-	MethodMetadata method1 = new ImmutableMethodMetadata("method1", new String[] { "boolean" });
-	MethodMetadata method2 = new ImmutableMethodMetadata("method2", new String[] { "boolean, int" });
+	MethodMetadata method1 = new ImmutableMethodMetadata("it.javalinux.Foo", "method1", new String[] { "boolean" });
+	MethodMetadata method2 = new ImmutableMethodMetadata("it.javalinux.Foo", "method2", new String[] { "boolean, int" });
 
 	MethodLinkMetadata mlink1 = new MethodLinkMetadata(status1, "it.javalinux.Foo", method1);
 	MethodLinkMetadata mlink2 = new MethodLinkMetadata(status2, "it.javalinux.Foo", method2);

@@ -20,6 +20,7 @@
  */
 package it.javalinux.testedby.metadata.impl;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +46,15 @@ public class Helper {
     {
 	List<String> l = new LinkedList<String>();
 	for (Class<?> c : method.getParameterTypes()) {
+	    l.add(c.getCanonicalName());
+	}
+	return listToString(l);
+    }
+    
+    public static String[] getParameterTypesAsStringArray(Constructor<?> constructor)
+    {
+	List<String> l = new LinkedList<String>();
+	for (Class<?> c : constructor.getParameterTypes()) {
 	    l.add(c.getCanonicalName());
 	}
 	return listToString(l);

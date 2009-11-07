@@ -42,4 +42,12 @@ public interface MethodMetadata extends Metadata {
      * @return An array containing the ordered class names of the method parameters
      */
     public String[] getParameterTypes();
+    
+    /**
+     * Returns true if the this belongs to a constructor method.
+     * 
+     * @return true if the this belongs to a constructor method.
+     */
+    public boolean isConstructor();
+    
 }

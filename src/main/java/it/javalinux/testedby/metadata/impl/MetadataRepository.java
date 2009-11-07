@@ -77,9 +77,9 @@ public class MetadataRepository implements TestsMetadata {
      */
     public void addConnection(String testClass, String testMethod, String[] testMethodParameters, String testedClass, String testedMethod, String[] testedMethodParameters, StatusMetadata status) {
 	// TODO!! Clone status
-	MethodMetadata invokedMethodMetadata = new ImmutableMethodMetadata(testedMethod, testedMethodParameters);
+	MethodMetadata invokedMethodMetadata = new ImmutableMethodMetadata(testedClass, testedMethod, testedMethodParameters);
 	MethodInfo invoked = new MethodInfo(testedClass, invokedMethodMetadata);
-	MethodMetadata testMethodMetadata = new ImmutableMethodMetadata(testMethod, testMethodParameters);
+	MethodMetadata testMethodMetadata = new ImmutableMethodMetadata(testClass, testMethod, testMethodParameters);
 	MethodInfo test = new MethodInfo(testClass, testMethodMetadata);
 
 	// create links
@@ -127,7 +127,7 @@ public class MetadataRepository implements TestsMetadata {
      *      boolean)
      */
     public List<ClassLinkMetadata> getClassesTestedBy(Class<?> clazz, boolean includeMethods) {
-	MethodInfo test = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
+	MethodInfo test = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata());
 	Set<LinkMetadata> set = testsLinks.get(test);
 	if (includeMethods) {
 	    set = enrichUsingClassMethods(set, clazz, testsLinks);
@@ -153,7 +153,7 @@ public class MetadataRepository implements TestsMetadata {
      *      boolean)
      */
     public List<MethodLinkMetadata> getMethodsTestedBy(Class<?> clazz, boolean includeMethods) {
-	MethodInfo test = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
+	MethodInfo test = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata());
 	Set<LinkMetadata> set = testsLinks.get(test);
 	if (includeMethods) {
 	    set = enrichUsingClassMethods(set, clazz, testsLinks);
@@ -193,7 +193,7 @@ public class MetadataRepository implements TestsMetadata {
     }
 
     protected List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods, boolean recursive) {
-	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
+	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata());
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);
 	if (includeMethods) {
 	    set = enrichUsingClassMethods(set, clazz, isTestedByLinks);
@@ -244,7 +244,7 @@ public class MetadataRepository implements TestsMetadata {
     }
 
     protected List<MethodLinkMetadata> getTestMethodsFor(Class<?> clazz, boolean includeMethods, boolean recursive) {
-	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata(null, null));
+	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata());
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);
 	if (includeMethods) {
 	    set = enrichUsingClassMethods(set, clazz, isTestedByLinks);

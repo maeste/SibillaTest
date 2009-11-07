@@ -184,6 +184,7 @@ public class Agent implements ClassFileTransformer {
 	    if (!cl.isInterface()) {
 		CtBehavior[] methods = cl.getDeclaredBehaviors();
 		for (CtBehavior m : methods) {
+//		    System.out.println("** Instrumento: " + className + " -> " + m.getLongName());
 		    //InvocationTracker.getInstance().addInvokedMethod(className, m.getLongName());
 		    StringBuilder code = new StringBuilder();
 		    code.append(InvocationTracker.class.getName());

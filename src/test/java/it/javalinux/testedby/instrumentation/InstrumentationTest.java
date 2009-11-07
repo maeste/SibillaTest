@@ -60,6 +60,7 @@ public class InstrumentationTest {
     
     private static boolean verbose = "true".equalsIgnoreCase(System.getProperty("verbose"));
 
+    @Test
     public void testNoInstrumentation() throws Exception {
 	InstrumentationTestRunner runner = new JunitTestRunner();
 	List<Class<?>> tests = new LinkedList<Class<?>>();
@@ -102,7 +103,7 @@ public class InstrumentationTest {
      */
     public static void main(String[] args) {
 	try {
-	    JunitTestRunner runner = new JunitTestRunner();
+	    InstrumentationTestRunner runner = new JunitTestRunner();
 	    List<Class<?>> tests = new LinkedList<Class<?>>();
 	    tests.add(SampleTest.class);
 	    TestsMetadata metadata = runner.run(tests);
@@ -115,6 +116,14 @@ public class InstrumentationTest {
 		System.out.println("** Tested classes:");
 		for (ClassLinkMetadata tested : metadata.getAllTestedClasses()) {
 		    System.out.println(tested.getClazz());
+		}
+		System.out.println("** Tests (method):");
+		for (MethodLinkMetadata test : metadata.getAllTestMethods()) {
+		    System.out.println(test.getMethod() + " constructor = " + test.getMethod().isConstructor());
+		}
+		System.out.println("** Tested methods:");
+		for (MethodLinkMetadata tested : metadata.getAllTestedMethods()) {
+		    System.out.println(tested.getMethod() + " constructor = " + tested.getMethod().isConstructor());
 		}
 	    }
 	    
@@ -131,10 +140,15 @@ public class InstrumentationTest {
 	    
 	    assertThat(metadata.getAllTestedClasses().size(), is(1));
 	    assertThat(metadata.getAllTestClasses().size(), is(1));
-	    assertThat("Cannot find expected test link (method)", metadata.getAllTestMethods(), hasItem(new MethodLinkMetadata(status, SampleTest.class.getName(), new ImmutableMethodMetadata("testFoo", null))));
+	    assertThat(metadata.getAllTestedMethods().size(), is(2));
+	    assertThat(metadata.getAllTestMethods().size(), is(1));
+	    assertThat("Cannot find expected test link (method)", metadata.getAllTestMethods(), hasItem(new MethodLinkMetadata(status, SampleTest.class.getName(), new ImmutableMethodMetadata(SampleTest.class.getName(), "testFoo", null))));
 	    assertThat("Wrong expected test link status (method)", metadata.getAllTestMethods().iterator().next().getStatus(), is(status));
-	    assertThat("Cannot find expected tested link (method)", metadata.getAllTestedMethods(), hasItem(new MethodLinkMetadata(status, Foo.class.getName(), new ImmutableMethodMetadata("bar", null))));
-	    assertThat("Wrong expected tested link status (method)", metadata.getAllTestedMethods().iterator().next().getStatus(), is(status));
+	    assertThat("Cannot find expected tested link (method)", metadata.getAllTestedMethods(), hasItem(new MethodLinkMetadata(status, Foo.class.getName(), new ImmutableMethodMetadata(Foo.class.getName(), "bar", null))));
+	    assertThat("Cannot find expected tested link (constructor)", metadata.getAllTestedMethods(), hasItem(new MethodLinkMetadata(status, Foo.class.getName(), new ImmutableMethodMetadata(Foo.class.getName(), "Foo", null))));
+	    assertThat("Wrong expected tested link status (method)", metadata.getAllTestedMethods().get(0).getStatus(), is(status));
+	    assertThat("Wrong expected tested link status (method)", metadata.getAllTestedMethods().get(1).getStatus(), is(status));
+	    
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    throw new RuntimeException(e);

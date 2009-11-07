@@ -22,6 +22,8 @@ package it.javalinux.testedby.metadata.impl;
 
 import it.javalinux.testedby.metadata.MethodMetadata;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -38,11 +40,29 @@ public class ImmutableMethodMetadata implements MethodMetadata {
     private static final long serialVersionUID = 1L;
 
     private final String name;
-
+    
+    private final boolean isConstructor;
+    
     private final String[] parameterTypes;
+    
+    /**
+     * Constructor for empty ImmutableMethodMetadata
+     * 
+     */
+    public ImmutableMethodMetadata() {
+	this(null, null, null);
+    }
 
-    public ImmutableMethodMetadata(String name, String[] parameterTypes) {
+    /**
+     * Standard constructor
+     * 
+     * @param className		The full name of the class the specified method belongs to
+     * @param name		The method name
+     * @param parameterTypes	The parameter types
+     */
+    public ImmutableMethodMetadata(String className, String name, String[] parameterTypes) {
 	this.name = name;
+	this.isConstructor = (className != null && (className.equals(name) || className.endsWith("." + name)));
 	if (parameterTypes == null) {
 	    this.parameterTypes = new String[0];
 	} else {
@@ -50,11 +70,46 @@ public class ImmutableMethodMetadata implements MethodMetadata {
 	}
     }
 
+    /**
+     * A convenience constructor using informations coming from either a java.lang.reflect.Method or a java.lang.reflect.Constructor
+     * 
+     * @param member	The member instance
+     */
+    ImmutableMethodMetadata(Member member) {
+	this.name = member.getName();
+	if (member instanceof Constructor<?>) {
+	    this.isConstructor = true;
+	    this.parameterTypes = Helper.getParameterTypesAsStringArray((Constructor<?>)member);
+	} else if (member instanceof Method) {
+	    this.isConstructor = false;
+	    this.parameterTypes = Helper.getParameterTypesAsStringArray((Method)member);
+	} else {
+	    throw new IllegalArgumentException("Fields not supported");
+	}
+    }
+    
+    /**
+     * A constructor using informations coming from a java.lang.reflect.Constructor
+     * 
+     * @param constructor	The constructor instance
+     */
+    public ImmutableMethodMetadata(Constructor<?> constructor) {
+	this.name = constructor.getName();
+	this.isConstructor = true;
+	this.parameterTypes = Helper.getParameterTypesAsStringArray(constructor);
+    }
+    
+    /**
+     * A constructor using informations coming from a java.lang.reflect.Method
+     * 
+     * @param method	The method instance
+     */
     public ImmutableMethodMetadata(Method method) {
 	this.name = method.getName();
+	this.isConstructor = false;
 	this.parameterTypes = Helper.getParameterTypesAsStringArray(method);
     }
-
+    
     public String getName() {
 	return name;
     }
@@ -105,5 +160,14 @@ public class ImmutableMethodMetadata implements MethodMetadata {
 	}
 	sb.append(")");
 	return sb.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see it.javalinux.testedby.metadata.MethodMetadata#isConstructor()
+     */
+    public boolean isConstructor() {
+	return isConstructor;
     }
 }
