@@ -46,6 +46,9 @@ public class InvocationTracker {
 
     private String testClass;
     private String testMethod;
+    
+    private String currentClassUnderTest;
+    
     // a map className->methodNames of the invoked classes-methods
     private Map<String, Set<String>> invoked = new HashMap<String, Set<String>>();
     private boolean skipTestClass;
@@ -117,5 +120,19 @@ public class InvocationTracker {
 	    map.put(s, set);
 	}
 	return map;
+    }
+
+    /**
+     * @return currentClassUnderTest
+     */
+    public String getCurrentClassUnderTest() {
+        return currentClassUnderTest;
+    }
+
+    /**
+     * @param currentClassUnderTest Sets currentClassUnderTest to the specified value.
+     */
+    public void setCurrentClassUnderTest(String currentClassUnderTest) {
+        this.currentClassUnderTest = currentClassUnderTest;
     }
 }

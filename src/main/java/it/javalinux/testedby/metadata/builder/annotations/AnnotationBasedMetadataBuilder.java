@@ -124,9 +124,9 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	List<TestedBy> listOfTestedByOnMethod = createListOfTestedBy(methodUnderTest);
 	for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
 	    if (originalClassUnderTest == null) {
-		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod, methodUnderTest, repository, null);
+		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod, methodUnderTest, repository, null, clazzUnderTest.isInterface());
 	    } else {
-		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedByOnMethod, methodUnderTest, repository, clazzUnderTest);
+		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedByOnMethod, methodUnderTest, repository, clazzUnderTest, originalClassUnderTest.isInterface());
 	    }
 
 	}
@@ -162,16 +162,16 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	List<TestedBy> listOfTestedBy = createListOfTestedBy(clazzUnderTest);
 	for (TestedBy testedBy : listOfTestedBy) {
 	    if (originalClassUnderTest == null) {
-		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedBy, null, repository, null);
+		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedBy, null, repository, null, clazzUnderTest.isInterface());
 	    } else {
-		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedBy, null, repository, clazzUnderTest);
+		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedBy, null, repository, clazzUnderTest, originalClassUnderTest.isInterface());
 	    }
 	}
 	for (Class<?> interfaceUnderTest : clazzUnderTest.getInterfaces()) {
-	    repository = createTestClassMetadatas(testClasses, interfaceUnderTest, repository, originalClassUnderTest!= null ? originalClassUnderTest : clazzUnderTest);
+	    repository = createTestClassMetadatas(testClasses, interfaceUnderTest, repository, originalClassUnderTest != null ? originalClassUnderTest : clazzUnderTest);
 	}
 	if (clazzUnderTest.getSuperclass() != null && !Helper.isInJVMPackage(clazzUnderTest.getSuperclass())) {
-	    repository = createTestClassMetadatas(testClasses, clazzUnderTest.getSuperclass(), repository, originalClassUnderTest!= null ? originalClassUnderTest : clazzUnderTest);
+	    repository = createTestClassMetadatas(testClasses, clazzUnderTest.getSuperclass(), repository, originalClassUnderTest != null ? originalClassUnderTest : clazzUnderTest);
 	}
 
 	return repository;
@@ -184,9 +184,10 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param methodUnderTest
      * @param repository
      * @param upperMostClassInHierarchyDefiningThisMetadata
+     * @param onAbstract
      * @return generated testClassMetadata
      */
-    private MetadataRepository createTestClassMetadata(Map<String, Class<?>> testClasses, Class<?> clazz, TestedBy testedBy, Method methodUnderTest, MetadataRepository repository, Class<?> upperMostClassInHierarchyDefiningThisMetadata) {
+    private MetadataRepository createTestClassMetadata(Map<String, Class<?>> testClasses, Class<?> clazz, TestedBy testedBy, Method methodUnderTest, MetadataRepository repository, Class<?> upperMostClassInHierarchyDefiningThisMetadata, boolean onAbstract) {
 	String methodUTName;
 	String[] methodUTParameters;
 
@@ -210,6 +211,7 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	status.setValid(validateTestedByAnnotation(testClasses, testClassName, testedBy.testMethod()));
 	status.setFromAnnotation(true);
 	status.setUpperMostClassInHierarchyDefiningThisMetadata(upperMostClassInHierarchyDefiningThisMetadata);
+	status.setOnAbstract(onAbstract);
 	String[] testMethodsNames = createTestMethodsNameList(testClasses, testClassName, testedBy.testMethod());
 	if (testMethodsNames.length == 0 && !isOnlyValidLinkConsidered()) {
 	    repository.addConnection(testClassName, null, null, clazz.getCanonicalName(), methodUTName, methodUTParameters, status);

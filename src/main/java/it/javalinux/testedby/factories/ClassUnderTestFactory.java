@@ -21,19 +21,27 @@
 package it.javalinux.testedby.factories;
 
 import it.javalinux.testedby.annotations.TestedByFactory;
+import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 
 /**
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
 public class ClassUnderTestFactory {
-    public static <T> T newInstance(Class<T> clazz) {
-	try {
-	    ClassUnderTestInstanceFactory instanceFactory = clazz.getAnnotation(TestedByFactory.class).value().newInstance();
-	    return instanceFactory.createInstance(clazz);
-	} catch (InstantiationException e) {
-	} catch (IllegalAccessException e) {
-	}
-	return null;
+    @SuppressWarnings("unchecked")
+    public static <T> T instanceClassUnderTest(Class<T> clazz) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	
+	    InvocationTracker tracker = InvocationTracker.getInstance();
+	    Class<?> cls = Thread.currentThread().getContextClassLoader().loadClass(tracker.getCurrentClassUnderTest());
+	    if (clazz.isAssignableFrom(cls)) {
+		if (cls.getAnnotation(TestedByFactory.class)!= null) {
+		    return cls.getAnnotation(TestedByFactory.class).value().newInstance().createInstance((Class<T>) cls);
+		} else {
+		    return DefaultClassUnderTestInstanceFactory.class.newInstance().createInstance((Class<T>) cls);
+		}
+	    } else {
+		throw new IllegalAccessException("This test try to instantiate a generic type not assignable from current class under test");
+	    }
+	
     }
 }

@@ -21,6 +21,7 @@
 package it.javalinux.testedby.runner.impl;
 
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
+import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 import it.javalinux.testedby.runner.AbstractUnitRunner;
 
 import java.lang.reflect.Method;
@@ -87,12 +88,24 @@ public class JunitTestRunner extends AbstractUnitRunner {
 	} catch (Exception e) {
 	}
 	Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);
-	Result result = core.run(request);
-	try {
-	    listener.testRunFinished(result);
-	} catch (Exception e) {
+	boolean status = false;
+	for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
+	    if (! classLinkMetadata.getStatus().isOnAbstract()) {
+		InvocationTracker tracker = InvocationTracker.getInstance();
+		tracker.setCurrentClassUnderTest(classLinkMetadata.getClazz());
+		Result result = core.run(request);
+		try {
+		    listener.testRunFinished(result);
+		} catch (Exception e) {
+		} finally {
+		    tracker.setCurrentClassUnderTest(null);
+		}
+		status &= result.wasSuccessful();
+	    }
 	}
-	return result.wasSuccessful();
+	
+	
+	return status;
     }
 
     /**

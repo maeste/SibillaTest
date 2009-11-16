@@ -27,7 +27,6 @@ import it.javalinux.testedby.testsupport.interfaces.AbstractClassClassExtendingI
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-@TestedBy(testClass = "TestClassOne.java")
 public class ClassExtendingAbstractClass extends AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations {
 
 }

@@ -42,6 +42,8 @@ public class StatusMetadata implements Metadata, Mergeable {
     private boolean passedOnLastRun = false;
     
     private Class<?> upperMostClassInHierarchyDefiningThisMetadata;
+    
+    private boolean onAbstract;
 
     public StatusMetadata() {
 	super();
@@ -242,5 +244,19 @@ public class StatusMetadata implements Metadata, Mergeable {
      */
     public void setUpperMostClassInHierarchyDefiningThisMetadata(Class<?> upperMostClassInHierarchyDefiningThisMetadata) {
         this.upperMostClassInHierarchyDefiningThisMetadata = upperMostClassInHierarchyDefiningThisMetadata;
+    }
+
+    /**
+     * @return onAbstract
+     */
+    public boolean isOnAbstract() {
+        return onAbstract;
+    }
+
+    /**
+     * @param onAbstract Sets onAbstract to the specified value.
+     */
+    public void setOnAbstract(boolean onAbstract) {
+        this.onAbstract = onAbstract;
     }
 }

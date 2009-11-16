@@ -23,6 +23,8 @@ import it.javalinux.testedby.testsupport.ClassUnderTestWithAllAnnotations;
 import it.javalinux.testedby.testsupport.ClassUnderTestWithAllAnnotationsAndWrongTestClassesAndMethods;
 import it.javalinux.testedby.testsupport.TestClassOne;
 import it.javalinux.testedby.testsupport.TestClassTwo;
+import it.javalinux.testedby.testsupport.interfaces.AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations;
+import it.javalinux.testedby.testsupport.interfaces.InterfaceUnderTestOne;
 import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceOne;
 import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceTwo;
 
@@ -213,10 +215,13 @@ public class AnnotationBasedMetadataBuilderTest {
 	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
 	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
 	classesUnderTest.add(ClassExtendingAbstractClass.class);
+	classesUnderTest.add(AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations.class);
+	classesUnderTest.add(InterfaceUnderTestOne.class);	
 	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses, true);
-	//assertThat(metadatas.getTestClassesFor(ClassExtendingAbstractClass.class, true).size(), is(2));
+	assertThat(metadatas.getTestClassesFor(ClassExtendingAbstractClass.class, true).size(), is(2));
 	assertThat(metadatas.getTestClassesFor(ClassExtendingAbstractClass.class, true), hasItems(equalTo(TEST_CLASS_ONE_ON_INTERFACE_METADATA), equalTo(TEST_CLASS_TWO_ON_INTERFACE_METADATA)));
 	assertThat(metadatas.getTestMethodsFor(ClassExtendingAbstractClass.class, true).size(), is(4));
-
+	assertThat(metadatas.getTestClassesFor(AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations.class, true).size(), is(2));
+	assertThat(metadatas.getTestClassesFor(InterfaceUnderTestOne.class, true).size(), is(1));
     }
 }
