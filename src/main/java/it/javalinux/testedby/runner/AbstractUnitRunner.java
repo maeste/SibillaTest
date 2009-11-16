@@ -81,10 +81,12 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	}
 	Set<MethodLinkMetadata> methodLinkToRun = new HashSet<MethodLinkMetadata>();
 
-	// run all new tests
+	// run all new tests except ones collected by annotation
 	for (Class<?> testClass : changedTestClasses) {
 	    for (Method m : getTestMethods(testClass)) {
-		runSingleTestUsingInstrumentationBuilder(instrumentationBuilder, testClass.getCanonicalName(), m.getName());
+		if (metadata.getClassesTestedBy(testClass, m) != null && metadata.getClassesTestedBy(testClass, m).size() == 0) {
+		    runSingleTestUsingInstrumentationBuilder(instrumentationBuilder, testClass.getCanonicalName(), m.getName());
+		}
 	    }
 	}
 	metadata.merge(instrumentationBuilder.getMetadata());
