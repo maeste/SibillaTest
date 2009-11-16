@@ -40,6 +40,8 @@ public class StatusMetadata implements Metadata, Mergeable {
     private boolean fromInstrumentation;
 
     private boolean passedOnLastRun = false;
+    
+    private Class<?> upperMostClassInHierarchyDefiningThisMetadata;
 
     public StatusMetadata() {
 	super();
@@ -226,5 +228,19 @@ public class StatusMetadata implements Metadata, Mergeable {
 	} else {
 	    return false;
 	}
+    }
+
+    /**
+     * @return upperMostClassInHierarchyDefiningThisMetadata
+     */
+    public Class<?> getUpperMostClassInHierarchyDefiningThisMetadata() {
+        return upperMostClassInHierarchyDefiningThisMetadata;
+    }
+
+    /**
+     * @param upperMostClassInHierarchyDefiningThisMetadata Sets upperMostClassInHierarchyDefiningThisMetadata to the specified value.
+     */
+    public void setUpperMostClassInHierarchyDefiningThisMetadata(Class<?> upperMostClassInHierarchyDefiningThisMetadata) {
+        this.upperMostClassInHierarchyDefiningThisMetadata = upperMostClassInHierarchyDefiningThisMetadata;
     }
 }

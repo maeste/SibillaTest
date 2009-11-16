@@ -182,16 +182,7 @@ public class MetadataRepository implements TestsMetadata {
 	return this.getTestClassesFor(clazz, includeMethods, false);
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see it.javalinux.testedby.metadata.TestsMetadata#getTestClassesForRecursive(java.lang.Class,
-     *      boolean)
-     */
-    public List<ClassLinkMetadata> getTestClassesForRecursive(Class<?> clazz, boolean includeMethods) {
-	return this.getTestClassesFor(clazz, includeMethods, true);
-    }
-
+    
     protected List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods, boolean recursive) {
 	MethodInfo tested = new MethodInfo(clazz.getCanonicalName(), new ImmutableMethodMetadata());
 	Set<LinkMetadata> set = isTestedByLinks.get(tested);

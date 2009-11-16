@@ -107,18 +107,7 @@ public interface TestsMetadata extends Metadata, Mergeable {
      */
     public List<ClassLinkMetadata> getTestClassesFor(Class<?> clazz, boolean includeMethods);
 
-    /**
-     * Returns the test classes that test the provided class, recursing over
-     * superclasses / interfaces of the provided class.
-     * 
-     * @param clazz
-     * @param includeMethods
-     *            True to return test classes testing even a single method of
-     *            the specified class
-     * @return a set with the full qualified name of classes
-     */
-    public List<ClassLinkMetadata> getTestClassesForRecursive(Class<?> clazz, boolean includeMethods);
-
+    
     /**
      * Returns the test methods that test the provided class and method
      * 

@@ -27,6 +27,7 @@ import it.javalinux.testedby.metadata.Metadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
 import it.javalinux.testedby.metadata.builder.MetaDataBuilder;
+import it.javalinux.testedby.metadata.impl.Helper;
 import it.javalinux.testedby.metadata.impl.MetadataRepository;
 
 import java.lang.annotation.Annotation;
@@ -99,10 +100,10 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 
 	if (classesUnderTest != null) {
 	    for (Class<?> clazzUnderTest : classesUnderTest) {
-		repository = createTestClassMetadatas(testClasses, clazzUnderTest, repository);
+		repository = createTestClassMetadatas(testClasses, clazzUnderTest, repository, null);
 
 		for (Method methodUnderTest : clazzUnderTest.getMethods()) {
-		    repository = createTestClassMetadatasForMethod(testClasses, clazzUnderTest, methodUnderTest, repository);
+		    repository = createTestClassMetadatasForMethod(testClasses, clazzUnderTest, methodUnderTest, repository, null);
 		}
 	    }
 	}
@@ -115,26 +116,32 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param clazzUnderTest
      * @param methodUnderTest
      * @param repository
+     * @param originalClassUnderTest
      * @return {@link Metadata} for this method defined in this class or in its
      *         super classes and interfaces
      */
-    private MetadataRepository createTestClassMetadatasForMethod(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, Method methodUnderTest, MetadataRepository repository) {
+    private MetadataRepository createTestClassMetadatasForMethod(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, Method methodUnderTest, MetadataRepository repository, Class<?> originalClassUnderTest) {
 	List<TestedBy> listOfTestedByOnMethod = createListOfTestedBy(methodUnderTest);
 	for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
-	    repository = createTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod, methodUnderTest, repository);
+	    if (originalClassUnderTest == null) {
+		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod, methodUnderTest, repository, null);
+	    } else {
+		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedByOnMethod, methodUnderTest, repository, clazzUnderTest);
+	    }
+
 	}
 	for (Class<?> interfaceUnderTest : clazzUnderTest.getInterfaces()) {
 	    try {
 		Method methodOnInterfcace = interfaceUnderTest.getMethod(methodUnderTest.getName(), methodUnderTest.getParameterTypes());
-		repository = createTestClassMetadatasForMethod(testClasses, interfaceUnderTest, methodOnInterfcace, repository);
+		repository = createTestClassMetadatasForMethod(testClasses, interfaceUnderTest, methodOnInterfcace, repository, clazzUnderTest);
 	    } catch (NoSuchMethodException e) {
 
 	    }
 	}
-	if (clazzUnderTest.getSuperclass() != null && clazzUnderTest.getSuperclass().getPackage() != null && !clazzUnderTest.getSuperclass().getPackage().toString().startsWith("java")) {
+	if (clazzUnderTest.getSuperclass() != null && !Helper.isInJVMPackage(clazzUnderTest.getSuperclass())) {
 	    try {
 		Method methodOnSuperClass = clazzUnderTest.getSuperclass().getMethod(methodUnderTest.getName(), methodUnderTest.getParameterTypes());
-		repository = createTestClassMetadatasForMethod(testClasses, clazzUnderTest.getSuperclass(), methodOnSuperClass, repository);
+		repository = createTestClassMetadatasForMethod(testClasses, clazzUnderTest.getSuperclass(), methodOnSuperClass, repository, clazzUnderTest);
 	    } catch (NoSuchMethodException e) {
 
 	    }
@@ -147,19 +154,24 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param testClasses
      * @param clazzUnderTest
      * @param repository
+     * @param originalClassUnderTest
      * @return {@link Metadata} for this class and its super classes and
      *         interfaces
      */
-    private MetadataRepository createTestClassMetadatas(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, MetadataRepository repository) {
+    private MetadataRepository createTestClassMetadatas(Map<String, Class<?>> testClasses, Class<?> clazzUnderTest, MetadataRepository repository, Class<?> originalClassUnderTest) {
 	List<TestedBy> listOfTestedBy = createListOfTestedBy(clazzUnderTest);
 	for (TestedBy testedBy : listOfTestedBy) {
-	    repository = createTestClassMetadata(testClasses, clazzUnderTest, testedBy, null, repository);
+	    if (originalClassUnderTest == null) {
+		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedBy, null, repository, null);
+	    } else {
+		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedBy, null, repository, clazzUnderTest);
+	    }
 	}
 	for (Class<?> interfaceUnderTest : clazzUnderTest.getInterfaces()) {
-	    repository = createTestClassMetadatas(testClasses, interfaceUnderTest, repository);
+	    repository = createTestClassMetadatas(testClasses, interfaceUnderTest, repository, originalClassUnderTest!= null ? originalClassUnderTest : clazzUnderTest);
 	}
-	if (clazzUnderTest.getSuperclass() != null && clazzUnderTest.getSuperclass().getPackage() != null && !clazzUnderTest.getSuperclass().getPackage().toString().startsWith("java")) {
-	    repository = createTestClassMetadatas(testClasses, clazzUnderTest.getSuperclass(), repository);
+	if (clazzUnderTest.getSuperclass() != null && !Helper.isInJVMPackage(clazzUnderTest.getSuperclass())) {
+	    repository = createTestClassMetadatas(testClasses, clazzUnderTest.getSuperclass(), repository, originalClassUnderTest!= null ? originalClassUnderTest : clazzUnderTest);
 	}
 
 	return repository;
@@ -171,9 +183,10 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
      * @param testedBy
      * @param methodUnderTest
      * @param repository
+     * @param upperMostClassInHierarchyDefiningThisMetadata
      * @return generated testClassMetadata
      */
-    private MetadataRepository createTestClassMetadata(Map<String, Class<?>> testClasses, Class<?> clazz, TestedBy testedBy, Method methodUnderTest, MetadataRepository repository) {
+    private MetadataRepository createTestClassMetadata(Map<String, Class<?>> testClasses, Class<?> clazz, TestedBy testedBy, Method methodUnderTest, MetadataRepository repository, Class<?> upperMostClassInHierarchyDefiningThisMetadata) {
 	String methodUTName;
 	String[] methodUTParameters;
 
@@ -192,10 +205,11 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 		methodUTParameters = l.toArray(new String[l.size()]);
 	    }
 	}
-	String testClassName = fixPackageTestClass(testedBy.testClass(), clazz.getPackage());
+	String testClassName = fixPackageTestClass(testedBy.testClass(), upperMostClassInHierarchyDefiningThisMetadata != null ? upperMostClassInHierarchyDefiningThisMetadata.getPackage() : clazz.getPackage());
 	StatusMetadata status = new StatusMetadata();
 	status.setValid(validateTestedByAnnotation(testClasses, testClassName, testedBy.testMethod()));
 	status.setFromAnnotation(true);
+	status.setUpperMostClassInHierarchyDefiningThisMetadata(upperMostClassInHierarchyDefiningThisMetadata);
 	String[] testMethodsNames = createTestMethodsNameList(testClasses, testClassName, testedBy.testMethod());
 	if (testMethodsNames.length == 0 && !isOnlyValidLinkConsidered()) {
 	    repository.addConnection(testClassName, null, null, clazz.getCanonicalName(), methodUTName, methodUTParameters, status);
