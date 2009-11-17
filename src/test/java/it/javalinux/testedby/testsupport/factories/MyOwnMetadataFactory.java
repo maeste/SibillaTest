@@ -2,7 +2,9 @@
  * Unilan S.r.l. 
  * Copyright 2008
  */
-package it.javalinux.testedby.factories;
+package it.javalinux.testedby.testsupport.factories;
+
+import it.javalinux.testedby.factories.ClassUnderTestInstanceFactory;
 
 public class MyOwnMetadataFactory implements ClassUnderTestInstanceFactory{
     @SuppressWarnings("unused")

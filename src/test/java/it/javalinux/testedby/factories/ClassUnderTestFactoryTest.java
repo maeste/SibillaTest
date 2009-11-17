@@ -5,6 +5,8 @@ import static org.hamcrest.core.Is.is;
 import it.javalinux.testedby.metadata.Metadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
+import it.javalinux.testedby.testsupport.factories.MyOwnMetadata;
+import it.javalinux.testedby.testsupport.factories.SampleClass;
 import static org.junit.Assert.*;
 import static it.javalinux.testedby.factories.ClassUnderTestFactory.instanceClassUnderTest;
 
@@ -30,7 +32,7 @@ public class ClassUnderTestFactoryTest {
     @Test (expected = InstantiationException.class)
     public void shouldThrowExceptionIfCurrentClassUTInjectFactoryIsntInstantiable() throws Exception {
 	InvocationTracker tracker = InvocationTracker.getInstance();
-	tracker.setCurrentClassUnderTest(TestSupportClass.class.getCanonicalName());
+	tracker.setCurrentClassUnderTest(SampleClass.class.getCanonicalName());
 	Metadata metadata = instanceClassUnderTest(Metadata.class);
     }
     
