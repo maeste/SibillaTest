@@ -20,6 +20,12 @@
  */
 package it.javalinux.testedby.annotations;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import it.javalinux.testedby.factories.ClassUnderTestInstanceFactory;
 import it.javalinux.testedby.factories.DefaultClassUnderTestInstanceFactory;
 
@@ -27,6 +33,10 @@ import it.javalinux.testedby.factories.DefaultClassUnderTestInstanceFactory;
  * @author oracle
  * 
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.TYPE})
+@Documented
+
 public @interface TestedByFactory {
     public Class<? extends ClassUnderTestInstanceFactory> value() default DefaultClassUnderTestInstanceFactory.class;
 
