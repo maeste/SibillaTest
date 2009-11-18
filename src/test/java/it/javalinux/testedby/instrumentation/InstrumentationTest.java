@@ -40,6 +40,7 @@ import java.io.FilenameFilter;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javassist.ClassPool;
 
@@ -59,6 +60,7 @@ import org.junit.runner.JUnitCore;
 public class InstrumentationTest {
     
     private static boolean verbose = "true".equalsIgnoreCase(System.getProperty("verbose"));
+    private static Logger log = Logger.getLogger(InstrumentationTest.class.getName());
 
     @Test
     public void testNoInstrumentation() throws Exception {
@@ -76,24 +78,28 @@ public class InstrumentationTest {
 	String command = "java -Xbootclasspath/a:" + getOwnJarPath() + ":" + getJUnitJarPath() + ":" + getJavassistJarPath() + " -javaagent:" + getOwnJarPath() + " -cp " + getTestClassesDir().getPath() + " " + InstrumentationTest.class.getCanonicalName();
 
 	Process p = Runtime.getRuntime().exec(command);
-	assertThat(p.waitFor(), is(0));
-
-	BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-	BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	int res = p.waitFor();
 
 	if (verbose) {
+	    BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 	    String s = null;
-	    System.out.println("Here is the standard output of the command:\n");
+	    log.info("Here is the standard output of the command:\n");
 	    while ((s = stdInput.readLine()) != null) {
 		System.out.println(s);
 	    }
-
-	    // read any errors from the attempted command
-	    System.out.println("Here is the standard error of the command (if any):\n");
-	    while ((s = stdError.readLine()) != null) {
-		System.out.println(s);
-	    }
 	}
+	
+	BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	// read any errors from the attempted command
+	String t = null;
+	StringBuilder sb = new StringBuilder();
+	while ((t = stdError.readLine()) != null) {
+	    sb.append(t);
+	    sb.append("\n");
+	}
+	log.severe(sb.toString());
+	
+	assertThat("The application run by this test did not exit as expected", res, is(0));
     }
 
     /**
@@ -108,23 +114,21 @@ public class InstrumentationTest {
 	    tests.add(SampleTest.class);
 	    TestsMetadata metadata = runner.run(tests);
 
-	    if (verbose) {
-		System.out.println("** Tests:");
-		for (ClassLinkMetadata test : metadata.getAllTestClasses()) {
-		    System.out.println(test.getClazz());
-		}
-		System.out.println("** Tested classes:");
-		for (ClassLinkMetadata tested : metadata.getAllTestedClasses()) {
-		    System.out.println(tested.getClazz());
-		}
-		System.out.println("** Tests (method):");
-		for (MethodLinkMetadata test : metadata.getAllTestMethods()) {
-		    System.out.println(test.getMethod() + " constructor = " + test.getMethod().isConstructor());
-		}
-		System.out.println("** Tested methods:");
-		for (MethodLinkMetadata tested : metadata.getAllTestedMethods()) {
-		    System.out.println(tested.getMethod() + " constructor = " + tested.getMethod().isConstructor());
-		}
+	    System.out.println("** Tests:");
+	    for (ClassLinkMetadata test : metadata.getAllTestClasses()) {
+		System.out.println(test.getClazz());
+	    }
+	    System.out.println("** Tested classes:");
+	    for (ClassLinkMetadata tested : metadata.getAllTestedClasses()) {
+		System.out.println(tested.getClazz());
+	    }
+	    System.out.println("** Tests (method):");
+	    for (MethodLinkMetadata test : metadata.getAllTestMethods()) {
+		System.out.println(test.getMethod() + " constructor = " + test.getMethod().isConstructor());
+	    }
+	    System.out.println("** Tested methods:");
+	    for (MethodLinkMetadata tested : metadata.getAllTestedMethods()) {
+		System.out.println(tested.getMethod() + " constructor = " + tested.getMethod().isConstructor());
 	    }
 	    
 	    StatusMetadata status = new StatusMetadata(true, true, false, true);
