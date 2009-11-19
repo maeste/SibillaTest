@@ -143,9 +143,8 @@ public class TestRunnerTest {
 	    assertThat("Wrong expected test link status (method)", metadata.getAllTestMethods().iterator().next().getStatus(), is(status));
 	    assertThat("Cannot find expected tested link (method)", metadata.getAllTestedMethods(), hasItem(new MethodLinkMetadata(status, Foo.class.getName(), new ImmutableMethodMetadata(Foo.class.getName(), "bar", null))));
 	    assertThat("Wrong expected tested link status (method)", metadata.getAllTestedMethods().iterator().next().getStatus(), is(status));
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    throw new RuntimeException(e);
+	} catch (Throwable t) {
+	    throw new RuntimeException(t);
 	}
     }
 

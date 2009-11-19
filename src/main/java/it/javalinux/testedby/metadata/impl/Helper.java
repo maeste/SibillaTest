@@ -40,6 +40,7 @@ public class Helper {
 							       "it.javalinux.testedby.annotation.",
 							       "it.javalinux.testedby.runner.",
     							       "junit.",
+    							       "org.hamcrest.",
     							       "org.junit." };
     
     public static String[] getParameterTypesAsStringArray(Method method)

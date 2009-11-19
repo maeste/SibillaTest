@@ -89,22 +89,29 @@ public class JunitTestRunner extends AbstractUnitRunner {
 	}
 	Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);
 	boolean status = false;
-	for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
-	    if (! classLinkMetadata.getStatus().isOnAbstract()) {
-		InvocationTracker tracker = InvocationTracker.getInstance();
-		tracker.setCurrentClassUnderTest(classLinkMetadata.getClazz());
-		Result result = core.run(request);
-		try {
-		    listener.testRunFinished(result);
-		} catch (Exception e) {
-		} finally {
-		    tracker.setCurrentClassUnderTest(null);
+	if (classesUnderTest.length > 0) {
+	    for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
+		if (!classLinkMetadata.getStatus().isOnAbstract()) {
+		    InvocationTracker tracker = InvocationTracker.getInstance();
+		    tracker.setCurrentClassUnderTest(classLinkMetadata.getClazz());
+		    Result result = core.run(request);
+		    try {
+			listener.testRunFinished(result);
+		    } catch (Exception e) {
+		    } finally {
+			tracker.setCurrentClassUnderTest(null);
+		    }
+		    status &= result.wasSuccessful();
 		}
-		status &= result.wasSuccessful();
 	    }
+	} else {
+	    Result result = core.run(request);
+	    try {
+		listener.testRunFinished(result);
+	    } catch (Exception e) {
+	    }
+	    status = result.wasSuccessful();
 	}
-	
-	
 	return status;
     }
 

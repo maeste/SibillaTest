@@ -135,8 +135,8 @@ public class InstrumentationTest {
 	    status.setJustCreated(true);
 	    status.setPassedOnLastRun(true);
 	    
-	    assertThat(metadata.getAllTestedClasses().size(), is(1));
-	    assertThat(metadata.getAllTestClasses().size(), is(1));
+	    assertThat("Wrong number of tested classes", metadata.getAllTestedClasses().size(), is(1));
+	    assertThat("Wrong number of test classes", metadata.getAllTestClasses().size(), is(1));
 	    assertThat("Cannot find expected test link", metadata.getAllTestClasses(), hasItem(new ClassLinkMetadata(status, SampleTest.class.getName())));
 	    assertThat("Wrong expected test link status", metadata.getAllTestClasses().iterator().next().getStatus(), is(status));
 	    assertThat("Cannot find expected tested link", metadata.getAllTestedClasses(), hasItem(new ClassLinkMetadata(status, Foo.class.getName())));
@@ -152,10 +152,8 @@ public class InstrumentationTest {
 	    assertThat("Cannot find expected tested link (constructor)", metadata.getAllTestedMethods(), hasItem(new MethodLinkMetadata(status, Foo.class.getName(), new ImmutableMethodMetadata(Foo.class.getName(), "Foo", null))));
 	    assertThat("Wrong expected tested link status (method)", metadata.getAllTestedMethods().get(0).getStatus(), is(status));
 	    assertThat("Wrong expected tested link status (method)", metadata.getAllTestedMethods().get(1).getStatus(), is(status));
-	    
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    throw new RuntimeException(e);
+	} catch (Throwable t) {
+	    throw new RuntimeException(t);
 	}
     }
 
