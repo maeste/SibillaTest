@@ -224,4 +224,28 @@ public class AnnotationBasedMetadataBuilderTest {
 	assertThat(metadatas.getTestClassesFor(AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations.class, true).size(), is(2));
 	assertThat(metadatas.getTestClassesFor(InterfaceUnderTestOne.class, true).size(), is(1));
     }
+    
+    @Test
+    public void buildShouldRunOnClassExtendingAbstractClassSettingCorrectStatuses() {
+	List<Class<?>> testClasses = Arrays.asList(TestClassOne.class, TestClassTwo.class, TestClassOnInterfaceOne.class, TestClassOnInterfaceTwo.class);
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = new LinkedList<Class<?>>();
+	classesUnderTest.add(ClassExtendingAbstractClass.class);
+	classesUnderTest.add(AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations.class);
+	classesUnderTest.add(InterfaceUnderTestOne.class);	
+	TestsMetadata metadatas = builder.build(classesUnderTest, testClasses, true);
+	assertThat(metadatas.getTestMethodsFor(ClassExtendingAbstractClass.class, true).size(), is(4));
+	for (ClassLinkMetadata classLink : metadatas.getTestClassesFor(ClassExtendingAbstractClass.class, true)) {
+	    assertThat(classLink.getStatus().isOnAbstract(), is(false));
+	}
+	assertThat(metadatas.getTestClassesFor(AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations.class, true).size(), is(2));
+	for (ClassLinkMetadata classLink : metadatas.getTestClassesFor(AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations.class, true)) {
+	    assertThat(classLink.getStatus().isOnAbstract(), is(true));
+	}
+	assertThat(metadatas.getTestClassesFor(InterfaceUnderTestOne.class, true).size(), is(1));
+	for (ClassLinkMetadata classLink : metadatas.getTestClassesFor(InterfaceUnderTestOne.class, true)) {
+	    assertThat(classLink.getStatus().isOnAbstract(), is(true));
+	}
+	
+    }
 }

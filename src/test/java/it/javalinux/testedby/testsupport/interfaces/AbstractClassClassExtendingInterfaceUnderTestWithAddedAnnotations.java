@@ -26,7 +26,7 @@ import it.javalinux.testedby.annotations.TestedBy;
  * @author Stefano Maestri stefano.maestri@javalinux.it
  * 
  */
-public class AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations implements InterfaceUnderTestOne, InterfaceUnderTestTwo {
+public abstract class AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations implements InterfaceUnderTestOne, InterfaceUnderTestTwo {
 
     /**
      * {@inheritDoc}

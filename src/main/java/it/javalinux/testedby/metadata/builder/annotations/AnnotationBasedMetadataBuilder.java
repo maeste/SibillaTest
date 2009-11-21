@@ -33,6 +33,7 @@ import it.javalinux.testedby.metadata.impl.MetadataRepository;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -124,9 +125,9 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	List<TestedBy> listOfTestedByOnMethod = createListOfTestedBy(methodUnderTest);
 	for (TestedBy testedByOnMethod : listOfTestedByOnMethod) {
 	    if (originalClassUnderTest == null) {
-		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod, methodUnderTest, repository, null, clazzUnderTest.isInterface());
+		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedByOnMethod, methodUnderTest, repository, null, clazzUnderTest.isInterface() || Modifier.isAbstract(clazzUnderTest.getModifiers()));
 	    } else {
-		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedByOnMethod, methodUnderTest, repository, clazzUnderTest, originalClassUnderTest.isInterface());
+		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedByOnMethod, methodUnderTest, repository, clazzUnderTest, originalClassUnderTest.isInterface() || Modifier.isAbstract(originalClassUnderTest.getModifiers()));
 	    }
 
 	}
@@ -162,9 +163,9 @@ public class AnnotationBasedMetadataBuilder implements MetaDataBuilder {
 	List<TestedBy> listOfTestedBy = createListOfTestedBy(clazzUnderTest);
 	for (TestedBy testedBy : listOfTestedBy) {
 	    if (originalClassUnderTest == null) {
-		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedBy, null, repository, null, clazzUnderTest.isInterface());
+		repository = createTestClassMetadata(testClasses, clazzUnderTest, testedBy, null, repository, null, clazzUnderTest.isInterface() || Modifier.isAbstract(clazzUnderTest.getModifiers()) );
 	    } else {
-		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedBy, null, repository, clazzUnderTest, originalClassUnderTest.isInterface());
+		repository = createTestClassMetadata(testClasses, originalClassUnderTest, testedBy, null, repository, clazzUnderTest, originalClassUnderTest.isInterface() || Modifier.isAbstract(originalClassUnderTest.getModifiers()));
 	    }
 	}
 	for (Class<?> interfaceUnderTest : clazzUnderTest.getInterfaces()) {
