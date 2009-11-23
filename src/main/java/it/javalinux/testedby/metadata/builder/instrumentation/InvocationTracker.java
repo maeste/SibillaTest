@@ -77,6 +77,13 @@ public class InvocationTracker {
 	return metadataCollector.get();
     }
     
+    /*
+     * only for tests
+     */
+    public synchronized static void setInstance(InvocationTracker tracker) {
+	metadataCollector.set(tracker);
+    }
+    
     public synchronized static void cleanUp() {
 	metadataCollector.remove();
     }

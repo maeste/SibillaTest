@@ -82,37 +82,39 @@ public class JunitTestRunner extends AbstractUnitRunner {
      *      String, ClassLinkMetadata...)
      */
     @Override
-    public boolean runTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) throws ClassNotFoundException {
+    public boolean runTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) {
 	try {
-	    listener.testRunStarted(Description.createSuiteDescription("Test:" + testClass + "." + methodName + " is running stressing " + classesUnderTest));
-	} catch (Exception e) {
-	}
-	Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);
-	boolean status = false;
-	if (classesUnderTest.length > 0) {
-	    for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
-		if (!classLinkMetadata.getStatus().isOnAbstract()) {
-		    InvocationTracker tracker = InvocationTracker.getInstance();
-		    tracker.setCurrentClassUnderTest(classLinkMetadata.getClazz());
-		    Result result = core.run(request);
-		    try {
-			listener.testRunFinished(result);
-		    } catch (Exception e) {
-		    } finally {
-			tracker.setCurrentClassUnderTest(null);
+	    listener.testRunStarted(Description.createSuiteDescription("Test:" + testClass + "." + methodName + " is running stressing " + classesUnderTest.toString()));
+
+	    Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);
+	    boolean status = false;
+	    if (classesUnderTest.length > 0) {
+		for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
+		    if (!classLinkMetadata.getStatus().isOnAbstract()) {
+			InvocationTracker tracker = InvocationTracker.getInstance();
+			tracker.setCurrentClassUnderTest(classLinkMetadata.getClazz());
+			Result result = core.run(request);
+			try {
+			    listener.testRunFinished(result);
+			} catch (Exception e) {
+			} finally {
+			    tracker.setCurrentClassUnderTest(null);
+			}
+			status &= result.wasSuccessful();
 		    }
-		    status &= result.wasSuccessful();
 		}
+	    } else {
+		Result result = core.run(request);
+		try {
+		    listener.testRunFinished(result);
+		} catch (Exception e) {
+		}
+		status = result.wasSuccessful();
 	    }
-	} else {
-	    Result result = core.run(request);
-	    try {
-		listener.testRunFinished(result);
-	    } catch (Exception e) {
-	    }
-	    status = result.wasSuccessful();
+	    return status;
+	} catch (Exception e) {
+	    return false;
 	}
-	return status;
     }
 
     /**

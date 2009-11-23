@@ -20,6 +20,30 @@
  */
 package it.javalinux.testedby.runner;
 
+import static org.mockito.Matchers.eq;
+
+import static org.mockito.Mockito.mock;
+
+import static org.junit.Assert.fail;
+
+import static org.mockito.Mockito.times;
+
+import static org.mockito.Mockito.verify;
+
+import static org.mockito.Matchers.anyObject;
+
+import static org.hamcrest.core.IsAnything.any;
+
+import static org.hamcrest.core.IsAnything.anything;
+
+import static org.mockito.Matchers.anyCollection;
+
+import static org.mockito.Matchers.anyString;
+
+import static org.mockito.Mockito.when;
+
+import static org.mockito.Mockito.spy;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItem;
@@ -28,21 +52,34 @@ import it.javalinux.testedby.instrumentation.InstrumentationTest;
 import it.javalinux.testedby.instrumentation.InstrumentationTestRunner;
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
+import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
+import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadataBuilder;
+import it.javalinux.testedby.metadata.builder.instrumentation.InstrumentationBasedMetadataBuilder;
 import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
 import it.javalinux.testedby.metadata.impl.MetadataRepository;
 import it.javalinux.testedby.runner.impl.JunitTestRunner;
+import it.javalinux.testedby.testsupport.ClassExtendingAbstractClass;
+import it.javalinux.testedby.testsupport.TestClassOne;
+import it.javalinux.testedby.testsupport.TestClassTwo;
 import it.javalinux.testedby.testsupport.instrumentation.Foo;
 import it.javalinux.testedby.testsupport.instrumentation.SampleTest;
+import it.javalinux.testedby.testsupport.interfaces.AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations;
+import it.javalinux.testedby.testsupport.interfaces.InterfaceUnderTestOne;
+import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceOne;
+import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceTwo;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javassist.ClassPool;
@@ -60,10 +97,20 @@ import org.junit.runner.JUnitCore;
  * 
  */
 public class TestRunnerTest {
-    
+
     private static Logger log = Logger.getLogger(TestRunnerTest.class.getName());
+
     private static boolean verbose = "true".equalsIgnoreCase(System.getProperty("verbose"));
 
+    private final static StatusMetadata status = new StatusMetadata().setFromAnnotation(true).setValid(true).setJustCreated(true);
+
+    private final static ClassLinkMetadata ClassExtendingAbstractClass_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.ClassExtendingAbstractClass");
+
+    private final static ClassLinkMetadata AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations");
+
+    private final static ClassLinkMetadata InterfaceUnderTestOne_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.InterfaceUnderTestOne");
+
+    @Test
     public void runningWithoutInstrumentationAndWithoutAnnotationShouldResultInNoMetadata() throws Exception {
 	InstrumentationTestRunner runner = new JunitTestRunner();
 	List<Class<?>> tests = new LinkedList<Class<?>>();
@@ -71,6 +118,32 @@ public class TestRunnerTest {
 	TestsMetadata metadata = runner.run(tests);
 	assertThat(metadata.getAllTestClasses().size(), is(0));
 	assertThat(metadata.getAllTestedClasses().size(), is(0));
+    }
+
+    @Test
+    public void shouldRunMethodLinkMetadatas() throws Exception {
+	JunitTestRunner nonSpy = new JunitTestRunner();
+	JunitTestRunner runner = spy(nonSpy);
+	Set<MethodLinkMetadata> methodLinkToRun = new HashSet<MethodLinkMetadata>();
+	MethodLinkMetadata link = mock(MethodLinkMetadata.class);
+	MethodLinkMetadata link2 = mock(MethodLinkMetadata.class);
+	MethodMetadata methodMetadata = mock(MethodMetadata.class);
+	when(methodMetadata.getName()).thenReturn("method1");
+	when(link.getClazz()).thenReturn("class1");
+	when(link.getMethod()).thenReturn(methodMetadata);
+	when(link2.getClazz()).thenReturn("class2");
+	when(link2.getMethod()).thenReturn(methodMetadata);
+
+	methodLinkToRun.add(link);
+	methodLinkToRun.add(link2);
+	TestsMetadata metadata = mock(TestsMetadata.class);
+	InstrumentationBasedMetadataBuilder builder = mock(InstrumentationBasedMetadataBuilder.class);
+
+	when(runner.runSingleTestUsingInstrumentationBuilder(eq(builder), anyString(), anyString())).thenReturn(true);
+	runner.runMethodLinkMetadatas(metadata, builder, methodLinkToRun);
+
+	verify(runner, times(1)).runSingleTestUsingInstrumentationBuilder(builder, "class1", "method1");
+	verify(runner, times(1)).runSingleTestUsingInstrumentationBuilder(builder, "class2", "method1");
     }
 
     @Test
@@ -89,7 +162,7 @@ public class TestRunnerTest {
 		System.out.println(s);
 	    }
 	}
-	
+
 	BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 	// read any errors from the attempted command
 	String t = null;
@@ -99,7 +172,7 @@ public class TestRunnerTest {
 	    sb.append("\n");
 	}
 	log.severe(sb.toString());
-	
+
 	assertThat("The application run by this test did not exit as expected", res, is(0));
     }
 

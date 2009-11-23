@@ -255,8 +255,10 @@ public class StatusMetadata implements Metadata, Mergeable {
 
     /**
      * @param onAbstract Sets onAbstract to the specified value.
+     * @return the modified object itself
      */
-    public void setOnAbstract(boolean onAbstract) {
+    public StatusMetadata setOnAbstract(boolean onAbstract) {
         this.onAbstract = onAbstract;
+        return this;
     }
 }
