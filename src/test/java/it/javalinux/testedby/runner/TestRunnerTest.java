@@ -121,32 +121,6 @@ public class TestRunnerTest {
     }
 
     @Test
-    public void shouldRunMethodLinkMetadatas() throws Exception {
-	JunitTestRunner nonSpy = new JunitTestRunner();
-	JunitTestRunner runner = spy(nonSpy);
-	Set<MethodLinkMetadata> methodLinkToRun = new HashSet<MethodLinkMetadata>();
-	MethodLinkMetadata link = mock(MethodLinkMetadata.class);
-	MethodLinkMetadata link2 = mock(MethodLinkMetadata.class);
-	MethodMetadata methodMetadata = mock(MethodMetadata.class);
-	when(methodMetadata.getName()).thenReturn("method1");
-	when(link.getClazz()).thenReturn("class1");
-	when(link.getMethod()).thenReturn(methodMetadata);
-	when(link2.getClazz()).thenReturn("class2");
-	when(link2.getMethod()).thenReturn(methodMetadata);
-
-	methodLinkToRun.add(link);
-	methodLinkToRun.add(link2);
-	TestsMetadata metadata = mock(TestsMetadata.class);
-	InstrumentationBasedMetadataBuilder builder = mock(InstrumentationBasedMetadataBuilder.class);
-
-	when(runner.runSingleTestUsingInstrumentationBuilder(eq(builder), anyString(), anyString())).thenReturn(true);
-	runner.runMethodLinkMetadatas(metadata, builder, methodLinkToRun);
-
-	verify(runner, times(1)).runSingleTestUsingInstrumentationBuilder(builder, "class1", "method1");
-	verify(runner, times(1)).runSingleTestUsingInstrumentationBuilder(builder, "class2", "method1");
-    }
-
-    @Test
     public void shouldInstrumentClassesAndMethods() throws Exception {
 
 	String command = "java -Xbootclasspath/a:" + getOwnJarPath() + ":" + getJUnitJarPath() + ":" + getJavassistJarPath() + " -javaagent:" + getOwnJarPath() + " -cp " + getTestClassesDir().getPath() + " " + InstrumentationTest.class.getCanonicalName();
