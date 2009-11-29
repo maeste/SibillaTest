@@ -20,6 +20,8 @@
  */
 package it.javalinux.testedby.runner;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+
 import static org.mockito.Matchers.eq;
 
 import static org.mockito.Mockito.mock;
@@ -100,7 +102,9 @@ public class TestRunnerTest {
 
     private static Logger log = Logger.getLogger(TestRunnerTest.class.getName());
 
-    private static boolean verbose = "true".equalsIgnoreCase(System.getProperty("verbose"));
+    private static boolean verbose = true;
+
+    // "true".equalsIgnoreCase(System.getProperty("verbose"));
 
     private final static StatusMetadata status = new StatusMetadata().setFromAnnotation(true).setValid(true).setJustCreated(true);
 
@@ -123,8 +127,7 @@ public class TestRunnerTest {
     @Test
     public void shouldInstrumentClassesAndMethods() throws Exception {
 
-	String command = "java -Xbootclasspath/a:" + getOwnJarPath() + ":" + getJUnitJarPath() + ":" + getJavassistJarPath() + " -javaagent:" + getOwnJarPath() + " -cp " + getTestClassesDir().getPath() + " " + InstrumentationTest.class.getCanonicalName();
-
+	String command = "java -Xbootclasspath/a:" + getOwnJarPath() + ":" + getJUnitJarPath() + ":" + getJavassistJarPath() + " -javaagent:" + getOwnJarPath() + " -cp " + getTestClassesDir().getPath() + " " + this.getClass().getCanonicalName();
 	Process p = Runtime.getRuntime().exec(command);
 	int res = p.waitFor();
 
@@ -155,6 +158,7 @@ public class TestRunnerTest {
      * 
      * @param args
      */
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
 	try {
 	    JunitTestRunner runner = new JunitTestRunner();
@@ -162,7 +166,7 @@ public class TestRunnerTest {
 	    tests.add(SampleTest.class);
 	    TestsMetadata metadata = new MetadataRepository();
 
-	    runner.run(Collections.EMPTY_LIST, tests);
+	    metadata = runner.run(Collections.EMPTY_LIST, tests, metadata);
 
 	    System.out.println("** Tests:");
 	    for (ClassLinkMetadata test : metadata.getAllTestClasses()) {
@@ -180,16 +184,12 @@ public class TestRunnerTest {
 	    assertThat(metadata.getAllTestedClasses().size(), is(1));
 	    assertThat(metadata.getAllTestClasses().size(), is(1));
 	    assertThat("Cannot find expected test link", metadata.getAllTestClasses(), hasItem(new ClassLinkMetadata(status, SampleTest.class.getName())));
-	    assertThat("Wrong expected test link status", metadata.getAllTestClasses().iterator().next().getStatus(), is(status));
 	    assertThat("Cannot find expected tested link", metadata.getAllTestedClasses(), hasItem(new ClassLinkMetadata(status, Foo.class.getName())));
-	    assertThat("Wrong expected tested link status", metadata.getAllTestedClasses().iterator().next().getStatus(), is(status));
 
 	    assertThat(metadata.getAllTestedClasses().size(), is(1));
 	    assertThat(metadata.getAllTestClasses().size(), is(1));
 	    assertThat("Cannot find expected test link (method)", metadata.getAllTestMethods(), hasItem(new MethodLinkMetadata(status, SampleTest.class.getName(), new ImmutableMethodMetadata(SampleTest.class.getName(), "testFoo", null))));
-	    assertThat("Wrong expected test link status (method)", metadata.getAllTestMethods().iterator().next().getStatus(), is(status));
 	    assertThat("Cannot find expected tested link (method)", metadata.getAllTestedMethods(), hasItem(new MethodLinkMetadata(status, Foo.class.getName(), new ImmutableMethodMetadata(Foo.class.getName(), "bar", null))));
-	    assertThat("Wrong expected tested link status (method)", metadata.getAllTestedMethods().iterator().next().getStatus(), is(status));
 	} catch (Throwable t) {
 	    throw new RuntimeException(t);
 	}
