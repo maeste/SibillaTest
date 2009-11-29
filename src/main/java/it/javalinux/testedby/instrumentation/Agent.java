@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import javassist.ClassPool;
 import javassist.CtBehavior;
 import javassist.CtClass;
+import javassist.Modifier;
 
 /**
  * The agent class that modifies the bytecode of
@@ -184,16 +185,18 @@ public class Agent implements ClassFileTransformer {
 	    if (!cl.isInterface()) {
 		CtBehavior[] methods = cl.getDeclaredBehaviors();
 		for (CtBehavior m : methods) {
-//		    System.out.println("** Instrumento: " + className + " -> " + m.getLongName());
-		    //InvocationTracker.getInstance().addInvokedMethod(className, m.getLongName());
-		    StringBuilder code = new StringBuilder();
-		    code.append(InvocationTracker.class.getName());
-		    code.append(".getInstance().addInvokedMethod(\"");
-		    code.append(Helper.getCanonicalNameFromJavaAssistName(className));
-		    code.append("\", \"");
-		    code.append(m.getLongName());
-		    code.append("\");");
-		    m.insertBefore(code.toString());
+		    if (!Modifier.isAbstract(m.getModifiers())) {
+//			  System.out.println("** Instrumenting: " + className + " -> " + m.getLongName());
+		        //InvocationTracker.getInstance().addInvokedMethod(className, m.getLongName());
+			StringBuilder code = new StringBuilder();
+			code.append(InvocationTracker.class.getName());
+			code.append(".getInstance().addInvokedMethod(\"");
+			code.append(Helper.getCanonicalNameFromJavaAssistName(className));
+			code.append("\", \"");
+			code.append(m.getLongName());
+			code.append("\");");
+			m.insertBefore(code.toString());
+		    }
 		}
 	    }
 	    bytes = cl.toBytecode();
