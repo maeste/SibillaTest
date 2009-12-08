@@ -30,7 +30,7 @@ import it.javalinux.testedby.factories.ClassUnderTestInstanceFactory;
 import it.javalinux.testedby.factories.DefaultClassUnderTestInstanceFactory;
 
 /**
- * @author oracle
+ * @author stefano.maestri@javalinux.it
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
