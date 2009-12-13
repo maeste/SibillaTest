@@ -148,7 +148,4 @@
 		</plugins>
 	</reporting>
 
-<!--	<modules>-->
-<!--		<module>testedBy-maven-plugin</module>-->
-<!--	</modules>-->
 </project>
