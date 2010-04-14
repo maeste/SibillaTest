@@ -1,5 +1,7 @@
 package it.javalinux.testedby.metadata.builder.annotations;
 
+import static org.mockito.Matchers.isNull;
+
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
@@ -30,6 +32,7 @@ import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceTwo;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -248,4 +251,16 @@ public class AnnotationBasedMetadataBuilderTest {
 	}
 	
     }
+    
+    @Test
+    public void buildShouldNotChangePassedListsIfTheyAreNull() {
+	List<Class<?>> testClasses = null;
+	AnnotationBasedMetadataBuilder builder = new AnnotationBasedMetadataBuilder();
+	List<Class<?>> classesUnderTest = null;
+	builder.build(classesUnderTest, (Collection<ClassLinkMetadata>) null, testClasses);
+	assertThat(testClasses, is(isNull()));
+	assertThat(classesUnderTest, is(isNull()));
+    }
+    
+    
 }
