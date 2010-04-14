@@ -223,9 +223,9 @@ public class StatusMetadata implements Metadata, Mergeable {
 	    StatusMetadata r = (StatusMetadata) right;
 	    this.fromAnnotation |= r.isFromAnnotation();
 	    this.fromInstrumentation |= r.isFromInstrumentation();
-	    this.justCreated &= r.isJustCreated();
-	    this.passedOnLastRun &= r.isPassedOnLastRun();
-	    this.valid &= r.isValid();
+	    this.justCreated = this.justCreated && r.isJustCreated();
+	    this.passedOnLastRun |= r.isPassedOnLastRun();
+	    this.valid = this.valid && r.isValid();
 	    return true;
 	} else {
 	    return false;
@@ -260,5 +260,15 @@ public class StatusMetadata implements Metadata, Mergeable {
     public StatusMetadata setOnAbstract(boolean onAbstract) {
         this.onAbstract = onAbstract;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "StatusMetadata [fromAnnotation=" + fromAnnotation + ", fromInstrumentation=" + fromInstrumentation + ", justCreated=" + justCreated + ", onAbstract=" + onAbstract + ", passedOnLastRun=" + passedOnLastRun + ", upperMostClassInHierarchyDefiningThisMetadata=" + upperMostClassInHierarchyDefiningThisMetadata + ", valid=" + valid + "]";
     }
 }
