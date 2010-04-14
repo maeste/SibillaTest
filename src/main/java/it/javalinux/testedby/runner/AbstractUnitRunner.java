@@ -76,15 +76,17 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 
 	if (metadata != null) {
 	    metadata.merge(annotationBuilder.build(changedClassesUnderTest, metadata.getAllTestClasses(), changedTestClasses));
+		
 	} else {
 	    metadata = annotationBuilder.build(changedClassesUnderTest, null, changedTestClasses);
+		
 	}
 	Set<MethodLinkMetadata> methodLinkToRun = new HashSet<MethodLinkMetadata>();
 
 	// run all new tests changed except ones collected by annotation
 	metadata = runNonNewTestsNotPointedByAnnotations(changedTestClasses, metadata, instrumentationBuilder);
 	instrumentationBuilder.reset();
-
+	
 	// Now collect the tests to run...
 
 	// we need to run all the new test methods collected by annotations and
@@ -129,7 +131,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	for (Class<?> testClass : changedTestClasses) {
 	    for (Method m : getTestMethods(testClass)) {
 		if (metadata.getClassesTestedBy(testClass, m) != null && metadata.getClassesTestedBy(testClass, m).size() == 0) {
-		    runSingleTestUsingInstrumentationBuilder(instrumentationBuilder, testClass.getCanonicalName(), m.getName());
+		    runSingleTestUsingInstrumentationBuilder(instrumentationBuilder, testClass.getCanonicalName(), m.getName(),false);
 		}
 	    }
 	}
@@ -148,11 +150,11 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	    String clazz = methodLinkMetadata.getClazz();
 	    MethodMetadata method = methodLinkMetadata.getMethod();
 	    List<ClassLinkMetadata> list = metadata.getClassesTestedBy(clazz, method);
-	    runSingleTestUsingInstrumentationBuilder(instrumentationBuilder, clazz, method.getName(), list.toArray(new ClassLinkMetadata[list.size()]));
+	    runSingleTestUsingInstrumentationBuilder(instrumentationBuilder, clazz, method.getName(),false, list.toArray(new ClassLinkMetadata[list.size()]));
 	}
     }
 
-    protected boolean runSingleTestUsingInstrumentationBuilder(InstrumentationBasedMetadataBuilder builder, String testClassName, String methodName, ClassLinkMetadata... classesUnderTest) throws Exception {
+    protected boolean runSingleTestUsingInstrumentationBuilder(InstrumentationBasedMetadataBuilder builder, String testClassName, String methodName, boolean justCreated, ClassLinkMetadata... classesUnderTest) throws Exception {
 	InvocationTracker.cleanUp();
 	InvocationTracker tracker = InvocationTracker.getInstance();
 	tracker.setTestClass(testClassName);
@@ -162,7 +164,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	StatusMetadata status = new StatusMetadata();
 	status.setFromInstrumentation(true);
 	status.setValid(true);
-	status.setJustCreated(true);
+	status.setJustCreated(justCreated);
 	status.setPassedOnLastRun(result);
 	builder.performBuildStep(testClassName, methodName, null, status);
 	return result;
@@ -178,7 +180,7 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	InstrumentationBasedMetadataBuilder builder = new InstrumentationBasedMetadataBuilder();
 	for (Class<?> test : tests) {
 	    for (Method method : getTestMethods(test)) {
-		runSingleTestUsingInstrumentationBuilder(builder, test.getName(), method.getName());
+		runSingleTestUsingInstrumentationBuilder(builder, test.getName(), method.getName(), true);
 	    }
 	}
 	return builder.getMetadata();
