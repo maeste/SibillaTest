@@ -20,6 +20,10 @@
  */
 package it.javalinux.testedby.runner;
 
+import static org.hamcrest.core.Is.is;
+
+import static org.junit.Assert.assertThat;
+
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -98,6 +102,38 @@ public class JunitTestRunnerTest {
 	verify(tracker, times(1)).setCurrentClassUnderTest(CLASS_UNDERTEST_ONE_METADATA.getClazz());
 	verify(tracker, times(1)).setCurrentClassUnderTest(CLASS_UNDERTEST_TWO_METADATA.getClazz());
 
+    }
+    
+    @Test
+    public void shouldReturnTrueIfAllTestPasses() {
+	JunitTestRunner runner = new JunitTestRunner();
+	
+	boolean result = runner.runTest(TestClassOne.class.getCanonicalName(), "testMethodTwo", CLASS_UNDERTEST_ONE_METADATA, CLASS_UNDERTEST_TWO_METADATA);
+	assertThat(result, is(true));
+    }
+    
+    @Test
+    public void shouldReturnTrueIfAtLeasetOneTestDoesntPass() {
+	JunitTestRunner runner = new JunitTestRunner();
+	
+	boolean result = runner.runTest(TestClassOne.class.getCanonicalName(), "testMethodOne", CLASS_UNDERTEST_ONE_METADATA, CLASS_UNDERTEST_TWO_METADATA);
+	assertThat(result, is(false));    
+    }
+    
+    @Test
+    public void shouldReturnTrueIfSingleTestMethodPasses() {
+	JunitTestRunner runner = new JunitTestRunner();
+	
+	boolean result = runner.runTest(TestClassOne.class.getCanonicalName(), "testMethodTwo");
+	assertThat(result, is(true));
+    }
+    
+    @Test
+    public void shouldReturnTrueIfSingleTestMethodDoesntPass() {
+	JunitTestRunner runner = new JunitTestRunner();
+	
+	boolean result = runner.runTest(TestClassOne.class.getCanonicalName(), "testMethodOne");
+	assertThat(result, is(false));    
     }
 
 }

@@ -84,10 +84,9 @@ public class JunitTestRunner extends AbstractUnitRunner {
     @Override
     public boolean runTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) {
 	try {
-	    listener.testRunStarted(Description.createSuiteDescription("Test:" + testClass + "." + methodName + " is running stressing " + classesUnderTest.toString()));
-
+	   
 	    Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);
-	    boolean status = false;
+	    boolean status = true;
 	    if (classesUnderTest.length > 0) {
 		for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
 		    if (!classLinkMetadata.getStatus().isOnAbstract()) {
