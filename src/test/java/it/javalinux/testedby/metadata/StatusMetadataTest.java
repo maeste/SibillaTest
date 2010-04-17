@@ -32,16 +32,39 @@ import org.junit.Test;
  */
 public class StatusMetadataTest {
 
-    /**
-     * Test method for {@link it.javalinux.testedby.metadata.StatusMetadata#merge(it.javalinux.testedby.metadata.Mergeable)}.
-     */
+    
     @Test
-    public void mergeShouldSetPassedOnLastRunIfRightMergedPassedOnLastRun() {
+    public void mergeShouldSetPassedOnLastRunIfLastCreatedPassedOnLastRun() throws Exception {
 	StatusMetadata left = new StatusMetadata(true, true, true, true);
+	Thread.currentThread().sleep(1);
 	StatusMetadata right = new StatusMetadata(true, true, true, true);
+	left.failedOnLastRun();
 	right.passedOnLastRun();
 	assertThat(left.merge(right), is(true));
 	assertThat(left.isFailedOnLastRun(), is(false));
     }
+    
+    @Test
+    public void mergeShouldSetFailedOnLastRunIfLastCreatedFailedOnLastRun() throws Exception {
+	StatusMetadata left = new StatusMetadata(true, true, true, true);
+	Thread.currentThread().sleep(1);
+	StatusMetadata right = new StatusMetadata(true, true, true, true);
+	left.passedOnLastRun();
+	right.failedOnLastRun();
+	assertThat(left.merge(right), is(true));
+	assertThat(left.isFailedOnLastRun(), is(true));
+    }
+    
+    @Test
+    public void mergeShouldNotSetPassedOnLastRunIfRightIsNotLastCreated() throws Exception {
+	StatusMetadata right = new StatusMetadata(true, true, true, true);
+	Thread.currentThread().sleep(1);
+	StatusMetadata left = new StatusMetadata(true, true, true, true);
+	left.failedOnLastRun();
+	right.passedOnLastRun();
+	assertThat(left.merge(right), is(true));
+	assertThat(left.isFailedOnLastRun(), is(true));
+    }
+    
 
 }

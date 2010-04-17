@@ -20,6 +20,8 @@
  */
 package it.javalinux.testedby.metadata;
 
+import java.util.Date;
+
 /**
  * The status of a link
  * 
@@ -43,10 +45,13 @@ public class StatusMetadata implements Metadata, Mergeable {
     
     private Class<?> upperMostClassInHierarchyDefiningThisMetadata;
     
+    private final Long creationDateInMillis;
+    
     private boolean onAbstract;
 
     public StatusMetadata() {
 	super();
+	creationDateInMillis = (new Date()).getTime();
     }
 
     /**
@@ -62,6 +67,7 @@ public class StatusMetadata implements Metadata, Mergeable {
 	this.fromAnnotation = fromAnnotation;
 	this.fromInstrumentation = fromInstrumentation;
 	this.passedOnLastRun = false;
+	creationDateInMillis = (new Date()).getTime();
     }
 
     /**
@@ -224,7 +230,11 @@ public class StatusMetadata implements Metadata, Mergeable {
 	    this.fromAnnotation |= r.isFromAnnotation();
 	    this.fromInstrumentation |= r.isFromInstrumentation();
 	    this.justCreated = this.justCreated && r.isJustCreated();
-	    this.passedOnLastRun |= r.isPassedOnLastRun();
+	    if (creationDateInMillis > r.getCreationDateInMillis()) {
+		//do nothing this.passedOnLastRun is the one to be kept
+	    } else {
+		this.passedOnLastRun = r.isPassedOnLastRun();
+	    }
 	    this.valid = this.valid && r.isValid();
 	    return true;
 	} else {
@@ -270,5 +280,12 @@ public class StatusMetadata implements Metadata, Mergeable {
     @Override
     public String toString() {
 	return "StatusMetadata [fromAnnotation=" + fromAnnotation + ", fromInstrumentation=" + fromInstrumentation + ", justCreated=" + justCreated + ", onAbstract=" + onAbstract + ", passedOnLastRun=" + passedOnLastRun + ", upperMostClassInHierarchyDefiningThisMetadata=" + upperMostClassInHierarchyDefiningThisMetadata + ", valid=" + valid + "]";
+    }
+
+    /**
+     * @return creationDateInMillis
+     */
+    public Long getCreationDateInMillis() {
+        return creationDateInMillis;
     }
 }
