@@ -30,19 +30,20 @@ import it.javalinux.testedby.metadata.builder.instrumentation.InvocationTracker;
 public class ClassUnderTestFactory {
     @SuppressWarnings("unchecked")
     public static <T> T instanceClassUnderTest(Class<T> clazz) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-	
-	    InvocationTracker tracker = InvocationTracker.getInstance();
-	    Class<?> cls = Thread.currentThread().getContextClassLoader().loadClass(tracker.getCurrentClassUnderTest());
-	    if (clazz.isAssignableFrom(cls)) {
-		if (cls.getAnnotation(TestedByFactory.class)!= null) {
-		    return cls.getAnnotation(TestedByFactory.class).value().newInstance().createInstance((Class<T>) cls);
-		} else {
-		    return DefaultClassUnderTestInstanceFactory.class.newInstance().createInstance((Class<T>) cls);
-		}
+
+	InvocationTracker tracker = InvocationTracker.getInstance();
+	Class<?> cls = Thread.currentThread().getContextClassLoader().loadClass(tracker.getCurrentClassUnderTest());
+	if (clazz.isAssignableFrom(cls)) {
+	    if (cls.getAnnotation(TestedByFactory.class) != null) {
+		return cls.getAnnotation(TestedByFactory.class).value().newInstance().createInstance((Class<T>) cls);
 	    } else {
-		throw new IllegalAccessException("This test try to instantiate a generic type not assignable from current class under test");
+		return DefaultClassUnderTestInstanceFactory.class.newInstance().createInstance((Class<T>) cls);
 	    }
-	
+	} else {
+	    throw new IllegalAccessException("This test try to instantiate a generic type (" + clazz + 
+		    ") not assignable from current class under test ( " + cls + ")");
+	}
+
     }
-    
+
 }
