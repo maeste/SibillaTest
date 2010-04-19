@@ -29,7 +29,7 @@ public class ClassLinkMetadata extends LinkMetadata {
     private static final long serialVersionUID = 1L;
 
     private String clazz;
-
+    
     /**
      * @param status
      * @param clazz
@@ -46,40 +46,8 @@ public class ClassLinkMetadata extends LinkMetadata {
 	return clazz;
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
-	return result;
-    }
+    
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj)
-	    return true;
-	if (obj == null)
-	    return false;
-	if (getClass() != obj.getClass())
-	    return false;
-	ClassLinkMetadata other = (ClassLinkMetadata) obj;
-	if (clazz == null) {
-	    if (other.clazz != null)
-		return false;
-	} else if (!clazz.equals(other.clazz))
-	    return false;
-	return true;
-    }
 
     /**
      * {@inheritDoc}
@@ -103,6 +71,47 @@ public class ClassLinkMetadata extends LinkMetadata {
 	    return false;
 	}
 
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+	result = prime * result + ((status == null) ? 0 : status.hashCode());
+	return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	ClassLinkMetadata other = (ClassLinkMetadata) obj;
+	if (clazz == null) {
+	    if (other.clazz != null)
+		return false;
+	} else if (!clazz.equals(other.clazz))
+	    return false;
+	if (status == null) {
+	    if (other.status != null)
+		return false;
+	} else if (!status.equals(other.status))
+	    return false;
+	return true;
     }
 
 }

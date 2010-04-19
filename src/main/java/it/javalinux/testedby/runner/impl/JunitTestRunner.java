@@ -82,12 +82,12 @@ public class JunitTestRunner extends AbstractUnitRunner {
      *      String, ClassLinkMetadata...)
      */
     @Override
-    public boolean runTest(String testClass, String methodName, ClassLinkMetadata... classesUnderTest) {
+    public boolean runTest(String testClass, String methodName, ClassLinkMetadata... unfilteredClassesUnderTest) {
 	try {
-	   
+	    List<ClassLinkMetadata> classesUnderTest = filterOnlyFromAnnotation(unfilteredClassesUnderTest);
 	    Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);
 	    boolean status = true;
-	    if (classesUnderTest.length > 0) {
+	    if (classesUnderTest.size() > 0) {
 		for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
 		    if (!classLinkMetadata.getStatus().isOnAbstract()) {
 			InvocationTracker tracker = InvocationTracker.getInstance();
@@ -131,4 +131,15 @@ public class JunitTestRunner extends AbstractUnitRunner {
 	}
 	return list;
     }
+    
+    List<ClassLinkMetadata> filterOnlyFromAnnotation(ClassLinkMetadata... classLinks) {
+	LinkedList<ClassLinkMetadata> filteredCollection = new LinkedList<ClassLinkMetadata>();
+	for (ClassLinkMetadata classLinkMetadata : classLinks) {
+	    if (classLinkMetadata.getStatus().isFromAnnotation()) {
+		filteredCollection.add(classLinkMetadata);
+	    }   
+	}
+	return filteredCollection;
+    }
+    
 }

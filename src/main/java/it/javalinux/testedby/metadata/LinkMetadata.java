@@ -28,7 +28,7 @@ public abstract class LinkMetadata implements Metadata, Mergeable {
 
     private static final long serialVersionUID = 1L;
 
-    private StatusMetadata status;
+    protected StatusMetadata status;
 
     public LinkMetadata(StatusMetadata status) {
 	this.status = status;

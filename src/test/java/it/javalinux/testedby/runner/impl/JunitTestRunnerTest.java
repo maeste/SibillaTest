@@ -18,7 +18,13 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package it.javalinux.testedby.runner;
+package it.javalinux.testedby.runner.impl;
+
+import static org.junit.matchers.JUnitMatchers.hasItem;
+
+import static org.hamcrest.core.IsNot.not;
+
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 import static org.hamcrest.core.Is.is;
 
@@ -59,9 +65,13 @@ public class JunitTestRunnerTest {
 
     private final static StatusMetadata status = new StatusMetadata().setFromAnnotation(true).setValid(true).setJustCreated(true).setOnAbstract(false);
 
+    private final static StatusMetadata statusInstrumentation = new StatusMetadata().setFromAnnotation(false).setValid(true).setJustCreated(true).setOnAbstract(false);
+    
     private final static ClassLinkMetadata CLASS_UNDERTEST_ONE_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnMethod");
 
     private final static ClassLinkMetadata CLASS_UNDERTEST_TWO_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnClass");
+
+    private final static ClassLinkMetadata CLASS_UNDERTEST_INSTRUMENTATION_METADATA = new ClassLinkMetadata(statusInstrumentation, "it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnClass");
 
     private static InvocationTracker tracker;
     
@@ -134,6 +144,14 @@ public class JunitTestRunnerTest {
 	
 	boolean result = runner.runTest(TestClassOne.class.getCanonicalName(), "testMethodOne");
 	assertThat(result, is(false));    
+    }
+    
+    @Test
+    public void fileterClassLinkShouldReturnOnlyFromAnnotation() throws Exception {
+	JunitTestRunner runner = new JunitTestRunner();
+	assertThat(runner.filterOnlyFromAnnotation(CLASS_UNDERTEST_INSTRUMENTATION_METADATA, CLASS_UNDERTEST_TWO_METADATA, CLASS_UNDERTEST_ONE_METADATA), hasItems(CLASS_UNDERTEST_ONE_METADATA, CLASS_UNDERTEST_TWO_METADATA));
+	assertThat(runner.filterOnlyFromAnnotation(CLASS_UNDERTEST_INSTRUMENTATION_METADATA, CLASS_UNDERTEST_TWO_METADATA, CLASS_UNDERTEST_ONE_METADATA), not((hasItem(CLASS_UNDERTEST_INSTRUMENTATION_METADATA))));
+	
     }
 
 }
