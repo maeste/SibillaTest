@@ -44,6 +44,7 @@ import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
 import it.javalinux.testedby.runner.impl.JunitTestRunner;
 import it.javalinux.testedby.testsupport.ClassExtendingAbstractClass;
 import it.javalinux.testedby.testsupport.TestClassOne;
+import it.javalinux.testedby.testsupport.TestClassThree;
 import it.javalinux.testedby.testsupport.TestClassTwo;
 import it.javalinux.testedby.testsupport.interfaces.AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations;
 import it.javalinux.testedby.testsupport.interfaces.InterfaceUnderTestOne;
@@ -67,11 +68,11 @@ public class JunitTestRunnerTest {
 
     private final static StatusMetadata statusInstrumentation = new StatusMetadata().setFromAnnotation(false).setValid(true).setJustCreated(true).setOnAbstract(false);
     
-    private final static ClassLinkMetadata CLASS_UNDERTEST_ONE_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnMethod");
+    private final static ClassLinkMetadata CLASS_UNDERTEST_ONE_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.ClassUnderTestThreeAnnotationOnMethod");
 
-    private final static ClassLinkMetadata CLASS_UNDERTEST_TWO_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnClass");
+    private final static ClassLinkMetadata CLASS_UNDERTEST_TWO_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.ClassUnderTestThreeAnnotationOnClass");
 
-    private final static ClassLinkMetadata CLASS_UNDERTEST_INSTRUMENTATION_METADATA = new ClassLinkMetadata(statusInstrumentation, "it.javalinux.testedby.testsupport.ClassUnderTestOneAnnotationOnClass");
+    private final static ClassLinkMetadata CLASS_UNDERTEST_INSTRUMENTATION_METADATA = new ClassLinkMetadata(statusInstrumentation, "it.javalinux.testedby.testsupport.ClassUnderTestTwoAnnotationOnClass");
 
     private static InvocationTracker tracker;
     
@@ -123,10 +124,10 @@ public class JunitTestRunnerTest {
     }
     
     @Test
-    public void shouldReturnTrueIfAtLeasetOneTestDoesntPass() {
+    public void shouldReturnFalseIfAtLeasetOneTestDoesntPass() {
 	JunitTestRunner runner = new JunitTestRunner();
 	
-	boolean result = runner.runTest(TestClassOne.class.getCanonicalName(), "testMethodOne", CLASS_UNDERTEST_ONE_METADATA, CLASS_UNDERTEST_TWO_METADATA);
+	boolean result = runner.runTest(TestClassThree.class.getCanonicalName(), "testMethodOne", CLASS_UNDERTEST_ONE_METADATA, CLASS_UNDERTEST_TWO_METADATA);
 	assertThat(result, is(false));    
     }
     
@@ -139,10 +140,10 @@ public class JunitTestRunnerTest {
     }
     
     @Test
-    public void shouldReturnTrueIfSingleTestMethodDoesntPass() {
+    public void shouldReturnFalseIfSingleTestMethodDoesntPass() {
 	JunitTestRunner runner = new JunitTestRunner();
 	
-	boolean result = runner.runTest(TestClassOne.class.getCanonicalName(), "testMethodOne");
+	boolean result = runner.runTest(TestClassThree.class.getCanonicalName(), "testMethodOne");
 	assertThat(result, is(false));    
     }
     

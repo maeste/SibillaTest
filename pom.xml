@@ -66,6 +66,9 @@
                         </goals>
                         <configuration>
                             <skip>false</skip>
+                        	<excludes>
+                        		<exclude>**/testsupport/**</exclude>
+                        	</excludes>
                         </configuration>
                     </execution>
                 </executions>

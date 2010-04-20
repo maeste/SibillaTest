@@ -20,68 +20,28 @@
  */
 package it.javalinux.testedby.runner;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-
-import static org.mockito.Matchers.eq;
-
-import static org.mockito.Mockito.mock;
-
-import static org.junit.Assert.fail;
-
-import static org.mockito.Mockito.times;
-
-import static org.mockito.Mockito.verify;
-
-import static org.mockito.Matchers.anyObject;
-
-import static org.hamcrest.core.IsAnything.any;
-
-import static org.hamcrest.core.IsAnything.anything;
-
-import static org.mockito.Matchers.anyCollection;
-
-import static org.mockito.Matchers.anyString;
-
-import static org.mockito.Mockito.when;
-
-import static org.mockito.Mockito.spy;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 
-import it.javalinux.testedby.instrumentation.InstrumentationTest;
 import it.javalinux.testedby.instrumentation.InstrumentationTestRunner;
 import it.javalinux.testedby.metadata.ClassLinkMetadata;
 import it.javalinux.testedby.metadata.MethodLinkMetadata;
-import it.javalinux.testedby.metadata.MethodMetadata;
 import it.javalinux.testedby.metadata.StatusMetadata;
 import it.javalinux.testedby.metadata.TestsMetadata;
-import it.javalinux.testedby.metadata.builder.annotations.AnnotationBasedMetadataBuilder;
-import it.javalinux.testedby.metadata.builder.instrumentation.InstrumentationBasedMetadataBuilder;
 import it.javalinux.testedby.metadata.impl.ImmutableMethodMetadata;
 import it.javalinux.testedby.metadata.impl.MetadataRepository;
 import it.javalinux.testedby.runner.impl.JunitTestRunner;
-import it.javalinux.testedby.testsupport.ClassExtendingAbstractClass;
-import it.javalinux.testedby.testsupport.TestClassOne;
-import it.javalinux.testedby.testsupport.TestClassTwo;
 import it.javalinux.testedby.testsupport.instrumentation.Foo;
 import it.javalinux.testedby.testsupport.instrumentation.SampleTest;
-import it.javalinux.testedby.testsupport.interfaces.AbstractClassClassExtendingInterfaceUnderTestWithAddedAnnotations;
-import it.javalinux.testedby.testsupport.interfaces.InterfaceUnderTestOne;
-import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceOne;
-import it.javalinux.testedby.testsupport.interfaces.TestClassOnInterfaceTwo;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import javassist.ClassPool;
@@ -114,6 +74,9 @@ public class TestRunnerTest {
 
     private final static ClassLinkMetadata InterfaceUnderTestOne_METADATA = new ClassLinkMetadata(status, "it.javalinux.testedby.testsupport.InterfaceUnderTestOne");
 
+    public TestRunnerTest() {
+	
+    }
     @Test
     public void runningWithoutInstrumentationAndWithoutAnnotationShouldResultInNoMetadata() throws Exception {
 	InstrumentationTestRunner runner = new JunitTestRunner();
@@ -127,7 +90,7 @@ public class TestRunnerTest {
     @Test
     public void shouldInstrumentClassesAndMethods() throws Exception {
 
-	String command = "java -Xbootclasspath/a:" + getOwnJarPath() + ":" + getJUnitJarPath() + ":" + getJavassistJarPath() + " -javaagent:" + getOwnJarPath() + " -cp " + getTestClassesDir().getPath() + " " + this.getClass().getCanonicalName();
+	String command = "java -Xbootclasspath/a:" + getOwnJarPath() + ":" + getJUnitJarPath() + ":" + getJavassistJarPath() + " -javaagent:" + getOwnJarPath() + " -cp " + getTestClassesDir().getPath() + " " + TestRunnerTest.class.getCanonicalName();
 	Process p = Runtime.getRuntime().exec(command);
 	int res = p.waitFor();
 

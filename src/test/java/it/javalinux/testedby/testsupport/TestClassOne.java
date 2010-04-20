@@ -33,7 +33,7 @@ public class TestClassOne {
 
     @Test
     public void testMethodOne() {
-	fail();
+	
     }
 
     @Test

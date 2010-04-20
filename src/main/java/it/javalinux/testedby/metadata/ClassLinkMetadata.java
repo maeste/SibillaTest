@@ -83,7 +83,6 @@ public class ClassLinkMetadata extends LinkMetadata {
 	final int prime = 31;
 	int result = 1;
 	result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
-	result = prime * result + ((status == null) ? 0 : status.hashCode());
 	return result;
     }
 
@@ -105,11 +104,6 @@ public class ClassLinkMetadata extends LinkMetadata {
 	    if (other.clazz != null)
 		return false;
 	} else if (!clazz.equals(other.clazz))
-	    return false;
-	if (status == null) {
-	    if (other.status != null)
-		return false;
-	} else if (!status.equals(other.status))
 	    return false;
 	return true;
     }
