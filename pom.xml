@@ -9,18 +9,29 @@
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<javassistVersion>3.10.0.GA</javassistVersion>
+		<javassistVersion>3.13.0-GA</javassistVersion>
 	</properties>
-
-
-	<repositories>
-	
-	</repositories>
+<repositories>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>javassist</groupId>
+				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
 				<version>${javassistVersion}</version>
 			</dependency>
@@ -116,7 +127,7 @@
 			<version>2.0</version>
 		</dependency>
 		<dependency>
-			<groupId>javassist</groupId>
+			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>${javassistVersion}</version>
 		</dependency>
