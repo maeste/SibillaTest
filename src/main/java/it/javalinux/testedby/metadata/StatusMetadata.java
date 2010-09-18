@@ -272,15 +272,17 @@ public class StatusMetadata implements Metadata, Mergeable {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see java.lang.Object#toString()
-     */
     @Override
-    public String toString() {
-	return "StatusMetadata [fromAnnotation=" + fromAnnotation + ", fromInstrumentation=" + fromInstrumentation + ", justCreated=" + justCreated + ", onAbstract=" + onAbstract + ", passedOnLastRun=" + passedOnLastRun + ", upperMostClassInHierarchyDefiningThisMetadata=" + upperMostClassInHierarchyDefiningThisMetadata + ", valid=" + valid + "]";
-    }
+	public String toString() {
+		return "StatusMetadata [valid=" + valid + ", justCreated="
+				+ justCreated + ", fromAnnotation=" + fromAnnotation
+				+ ", fromInstrumentation=" + fromInstrumentation
+				+ ", passedOnLastRun=" + passedOnLastRun
+				+ ", upperMostClassInHierarchyDefiningThisMetadata="
+				+ upperMostClassInHierarchyDefiningThisMetadata
+				+ ", creationDateInMillis=" + creationDateInMillis
+				+ ", onAbstract=" + onAbstract + "]";
+	}
 
     /**
      * @return creationDateInMillis

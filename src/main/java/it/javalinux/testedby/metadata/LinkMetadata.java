@@ -41,4 +41,9 @@ public abstract class LinkMetadata implements Metadata, Mergeable {
 	return status;
     }
 
+	@Override
+	public String toString() {
+		return "LinkMetadata [status=" + status + "]";
+	}
+
 }

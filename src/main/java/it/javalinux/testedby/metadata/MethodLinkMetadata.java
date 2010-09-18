@@ -111,14 +111,10 @@ public class MethodLinkMetadata extends LinkMetadata {
 	}
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
-    public String toString() {
-	return "MethodLinkMetadata [clazz=" + clazz + ", method=" + method + "]";
-    }
+	public String toString() {
+		return "MethodLinkMetadata [clazz=" + clazz + ", method=" + method
+				+ ", status=" + status + "]";
+	}
 
 }

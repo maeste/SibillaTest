@@ -147,20 +147,11 @@ public class ImmutableMethodMetadata implements MethodMetadata {
     }
     
     @Override
-    public String toString() {
-	StringBuilder sb = new StringBuilder(name);
-	sb.append("(");
-	for (int i = 0; i < parameterTypes.length; i++) {
-	    sb.append(parameterTypes[i]);
-	    sb.append(" arg");
-	    sb.append(i);
-	    if (i < parameterTypes.length - 1) {
-		sb.append(",");
-	    }
+	public String toString() {
+		return "ImmutableMethodMetadata [name=" + name + ", isConstructor="
+				+ isConstructor + ", parameterTypes="
+				+ parameterTypes == null ? "" : Arrays.toString(parameterTypes) + "]";
 	}
-	sb.append(")");
-	return sb.toString();
-    }
 
     /**
      * {@inheritDoc}

@@ -32,7 +32,6 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
-import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Request;
 import org.junit.runner.Result;
@@ -44,102 +43,101 @@ import org.junit.runner.notification.RunListener;
  */
 public class JunitTestRunner extends AbstractUnitRunner {
 
-    private final JUnitCore core;
+	private final JUnitCore core;
 
-    private final RunListener listener;
+	private final RunListener listener;
 
-    /**
-     * @param _core
-     * @param _listener
-     */
-    public JunitTestRunner(JUnitCore _core, RunListener _listener) {
-	super();
-	this.core = _core;
-	this.listener = _listener;
-	core.addListener(listener);
-    }
+	/**
+	 * @param _core
+	 * @param _listener
+	 */
+	public JunitTestRunner(JUnitCore _core, RunListener _listener) {
+		super();
+		this.core = _core;
+		this.listener = _listener;
+		core.addListener(listener);
+	}
 
-    /**
-     * @param _listener
-     */
-    public JunitTestRunner(RunListener _listener) {
-	this(new JUnitCore(), _listener);
-    }
+	/**
+	 * @param _listener
+	 */
+	public JunitTestRunner(RunListener _listener) {
+		this(new JUnitCore(), _listener);
+	}
 
-    public JunitTestRunner(JUnitCore _core) {
-	this(_core, new TextListener(new RealSystem()));
-    }
+	public JunitTestRunner(JUnitCore _core) {
+		this(_core, new TextListener(new RealSystem()));
+	}
 
-    public JunitTestRunner() {
-	this(new JUnitCore());
-    }
+	public JunitTestRunner() {
+		this(new JUnitCore());
+	}
 
-    /**
-     * 
-     * {@inheritDoc}
-     * 
-     * @see it.javalinux.testedby.runner.AbstractUnitRunner#runTest(String,
-     *      String, ClassLinkMetadata...)
-     */
-    @Override
-    public boolean runTest(String testClass, String methodName, ClassLinkMetadata... unfilteredClassesUnderTest) {
-	try {
-	    List<ClassLinkMetadata> classesUnderTest = filterOnlyFromAnnotation(unfilteredClassesUnderTest);
-	    Request request = Request.method(Thread.currentThread().getContextClassLoader().loadClass(testClass), methodName);
-	    boolean status = true;
-	    if (classesUnderTest.size() > 0) {
-		for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
-		    if (!classLinkMetadata.getStatus().isOnAbstract()) {
-			InvocationTracker tracker = InvocationTracker.getInstance();
-			tracker.setCurrentClassUnderTest(classLinkMetadata.getClazz());
-			Result result = core.run(request);
-			try {
-			    listener.testRunFinished(result);
-			} catch (Exception e) {
-			} finally {
-			    tracker.setCurrentClassUnderTest(null);
-			}
-			status &= result.wasSuccessful();
-		    }
-		}
-	    } else {
-		Result result = core.run(request);
+	/**
+	 * 
+	 * {@inheritDoc}
+	 * 
+	 * @see it.javalinux.testedby.runner.AbstractUnitRunner#runTest(String,
+	 *      String, ClassLinkMetadata...)
+	 */
+	@Override
+	public boolean runTest(String testClass, String methodName,
+			ClassLinkMetadata... unfilteredClassesUnderTest) {
 		try {
-		    listener.testRunFinished(result);
-		} catch (Exception e) {
-		}
-		status = result.wasSuccessful();
-	    }
-	    return status;
-	} catch (Exception e) {
-	    return false;
-	}
-    }
+			List<ClassLinkMetadata> classesUnderTest = filterOnlyFromAnnotation(unfilteredClassesUnderTest);
+			Class<?> testClazz = Thread.currentThread().getContextClassLoader()
+					.loadClass(testClass);
+			Request request = Request.method(testClazz, methodName);
+			boolean status = true;
+			if (classesUnderTest.size() > 0) {
+				for (ClassLinkMetadata classLinkMetadata : classesUnderTest) {
+					if (!classLinkMetadata.getStatus().isOnAbstract()) {
+						InvocationTracker tracker = InvocationTracker
+								.getInstance();
+						tracker.setCurrentClassUnderTest(classLinkMetadata
+								.getClazz());
+						Result result = core.run(request);
+						tracker.setCurrentClassUnderTest(null);
+						status &= result.wasSuccessful();
+					}
+				}
+			} else {
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see it.javalinux.testedby.runner.AbstractUnitRunner#getTestMethods(java.lang.Class)
-     */
-    @Override
-    protected Collection<Method> getTestMethods(Class<?> testClass) {
-	List<Method> list = new LinkedList<Method>();
-	for (Method method : testClass.getMethods()) {
-	    if (method.getAnnotation(Test.class) != null) {
-		list.add(method);
-	    }
+				Result result = core.run(request);
+
+				status = result.wasSuccessful();
+			}
+			return status;
+		} catch (Exception e) {
+			return false;
+		}
 	}
-	return list;
-    }
-    
-    List<ClassLinkMetadata> filterOnlyFromAnnotation(ClassLinkMetadata... classLinks) {
-	LinkedList<ClassLinkMetadata> filteredCollection = new LinkedList<ClassLinkMetadata>();
-	for (ClassLinkMetadata classLinkMetadata : classLinks) {
-	    if (classLinkMetadata.getStatus().isFromAnnotation()) {
-		filteredCollection.add(classLinkMetadata);
-	    }   
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see it.javalinux.testedby.runner.AbstractUnitRunner#getTestMethods(java.lang.Class)
+	 */
+	@Override
+	protected Collection<Method> getTestMethods(Class<?> testClass) {
+		List<Method> list = new LinkedList<Method>();
+		for (Method method : testClass.getMethods()) {
+			if (method.getAnnotation(Test.class) != null) {
+				list.add(method);
+			}
+		}
+		return list;
 	}
-	return filteredCollection;
-    }
-    
+
+	List<ClassLinkMetadata> filterOnlyFromAnnotation(
+			ClassLinkMetadata... classLinks) {
+		LinkedList<ClassLinkMetadata> filteredCollection = new LinkedList<ClassLinkMetadata>();
+		for (ClassLinkMetadata classLinkMetadata : classLinks) {
+			if (classLinkMetadata.getStatus().isFromAnnotation()) {
+				filteredCollection.add(classLinkMetadata);
+			}
+		}
+		return filteredCollection;
+	}
+
 }

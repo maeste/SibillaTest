@@ -50,6 +50,7 @@
 						<target>1.5</target>
 						<maxmem>256M</maxmem>
 						<fork>${compiler.fork}</fork>
+						<debug>true</debug>
 					</configuration>
 				</plugin>
 
@@ -130,6 +131,11 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>${javassistVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.2.2</version>
 		</dependency>
 	</dependencies>
 

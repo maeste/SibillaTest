@@ -49,15 +49,10 @@ public class ClassLinkMetadata extends LinkMetadata {
     
 
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
-    public String toString() {
-	return "ClassLinkMetadata [clazz=" + clazz + "]";
-    }
+	public String toString() {
+		return "ClassLinkMetadata [clazz=" + clazz + ", status=" + status + "]";
+	}
 
     /**
      * {@inheritDoc}

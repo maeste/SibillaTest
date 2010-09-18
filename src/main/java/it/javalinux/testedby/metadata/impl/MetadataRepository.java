@@ -498,4 +498,10 @@ public class MetadataRepository implements TestsMetadata {
 	}
     }
 
+	@Override
+	public String toString() {
+		return "MetadataRepository [testsLinks=" + testsLinks
+				+ ", isTestedByLinks=" + isTestedByLinks + "]";
+	}
+
 }
