@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-    <name>TestedBy</name>
-	<groupId>it.javalinux.testedby</groupId>
-	<artifactId>TestedBy</artifactId>
+    <name>Sibilla</name>
+	<groupId>it.javalinux.sibilla</groupId>
+	<artifactId>Sibilla</artifactId>
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
@@ -91,7 +91,7 @@
               <configuration>
                 <archive>
                   <manifestEntries>
-                    <Premain-Class>it.javalinux.testedby.instrumentation.Agent</Premain-Class>
+                    <Premain-Class>it.javalinux.sibilla.instrumentation.Agent</Premain-Class>
                     <Can-Redefine-Classes>true</Can-Redefine-Classes>
                   </manifestEntries>
                 </archive>
