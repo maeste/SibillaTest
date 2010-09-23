@@ -92,8 +92,8 @@ public abstract class AbstractUnitRunner implements TestRunner, InstrumentationT
 	// we need to run all the new test methods collected by annotations and
 	// those that failed previously
 	for (MethodLinkMetadata methodMetadata : metadata.getAllTestMethods()) {
-	    if (methodMetadata.getStatus().isJustCreated() || (methodMetadata.getStatus().isFailedOnLastRun() && ! methodMetadata.getStatus().isOnAbstract())) {
-		methodLinkToRun.add(methodMetadata);
+	    if (methodMetadata.getStatus().isJustCreated() || (methodMetadata.getStatus().isFailedOnLastRun() )) {
+	    methodLinkToRun.add(methodMetadata);
 	    }
 	}
 

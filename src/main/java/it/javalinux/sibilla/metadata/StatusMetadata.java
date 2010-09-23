@@ -41,7 +41,7 @@ public class StatusMetadata implements Metadata, Mergeable {
 
     private boolean fromInstrumentation;
 
-    private boolean passedOnLastRun = false;
+    private Boolean passedOnLastRun = null;
     
     private Class<?> upperMostClassInHierarchyDefiningThisMetadata;
     
@@ -66,7 +66,7 @@ public class StatusMetadata implements Metadata, Mergeable {
 	this.justCreated = justCreated;
 	this.fromAnnotation = fromAnnotation;
 	this.fromInstrumentation = fromInstrumentation;
-	this.passedOnLastRun = false;
+	this.passedOnLastRun = null;
 	creationDateInMillis = (new Date()).getTime();
     }
 
@@ -141,7 +141,7 @@ public class StatusMetadata implements Metadata, Mergeable {
     /**
      * @return passedOnLastRun
      */
-    public synchronized boolean isPassedOnLastRun() {
+    public synchronized Boolean isPassedOnLastRun() {
 	return passedOnLastRun;
     }
 
@@ -149,7 +149,7 @@ public class StatusMetadata implements Metadata, Mergeable {
      * @return passedOnLastRun
      */
     public synchronized boolean isFailedOnLastRun() {
-	return !passedOnLastRun;
+	return passedOnLastRun != null && !passedOnLastRun;
     }
 
     /**
@@ -230,7 +230,7 @@ public class StatusMetadata implements Metadata, Mergeable {
 	    this.fromAnnotation |= r.isFromAnnotation();
 	    this.fromInstrumentation |= r.isFromInstrumentation();
 	    this.justCreated = this.justCreated && r.isJustCreated();
-	    if (creationDateInMillis > r.getCreationDateInMillis()) {
+	    if (creationDateInMillis > r.getCreationDateInMillis() || (r.passedOnLastRun == null )) {
 		//do nothing this.passedOnLastRun is the one to be kept
 	    } else {
 		this.passedOnLastRun = r.isPassedOnLastRun();

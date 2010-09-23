@@ -98,6 +98,7 @@ public class JunitTestRunner extends AbstractUnitRunner {
 								.getClazz());
 						Result result = core.run(request);
 						tracker.setCurrentClassUnderTest(null);
+						System.err.println(result.wasSuccessful());
 						status &= result.wasSuccessful();
 					}
 				}

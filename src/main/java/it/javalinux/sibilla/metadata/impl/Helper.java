@@ -37,8 +37,9 @@ public class Helper {
     private static String[] restrictedPackages = new String[] { "it.javalinux.sibilla.instrumentation.",
 							       "it.javalinux.sibilla.metadata.",
 							       "it.javalinux.sibilla.builder.",
-							       "it.javalinux.sibilla.annotation.",
+							       "it.javalinux.sibilla.annotations.",
 							       "it.javalinux.sibilla.runner.",
+							       "it.javalinux.sibilla.factories.",
     							       "junit.",
     							       "org.hamcrest.",
     							       "org.junit." };

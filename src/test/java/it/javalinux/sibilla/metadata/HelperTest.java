@@ -96,8 +96,8 @@ public class HelperTest {
 
     @Test
     public void shouldDetectRestrictedPackages() {
-	assertThat(Helper.isInRestrictedPackage("it/javalinux/sibilla/annotation/Foo"), is(true));
-	assertThat(Helper.isInRestrictedPackage("it.javalinux.sibilla.annotation.Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it/javalinux/sibilla/annotations/Foo"), is(true));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.sibilla.annotations.Foo"), is(true));
 	assertThat(Helper.isInRestrictedPackage("it/javalinux/sibilla/builder/Foo"), is(true));
 	assertThat(Helper.isInRestrictedPackage("it.javalinux.sibilla.builder.Foo"), is(true));
 	assertThat(Helper.isInRestrictedPackage("it/javalinux/sibilla/metadata/Foo"), is(true));
@@ -108,7 +108,7 @@ public class HelperTest {
 	assertThat(Helper.isInRestrictedPackage("it.javalinux.sibilla.runner.Foo"), is(true));
 	assertThat(Helper.isInRestrictedPackage("it/javalinux/sibilla/legacy/Foo"), is(false));
 	assertThat(Helper.isInRestrictedPackage("it.javalinux.sibilla.legacy.Foo"), is(false));
-	assertThat(Helper.isInRestrictedPackage("it.javalinux.sibilla.annotation"), is(false));
+	assertThat(Helper.isInRestrictedPackage("it.javalinux.sibilla.annotations"), is(false));
 	assertThat(Helper.isInRestrictedPackage(InvocationTracker.class), is(true));
     }
 
