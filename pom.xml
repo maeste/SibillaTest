@@ -9,6 +9,7 @@
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
         <description>Sibilla Test</description>
+        <url>http://sibilla.javalinux.it/</url>
         <licenses>
           <license>
             <name>lgpl</name>
