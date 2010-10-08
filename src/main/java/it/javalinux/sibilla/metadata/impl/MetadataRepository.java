@@ -30,6 +30,7 @@ import it.javalinux.sibilla.metadata.TestsMetadata;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -253,14 +254,20 @@ public class MetadataRepository implements TestsMetadata {
     }
 
     private static List<ClassLinkMetadata> getClassLinks(Collection<LinkMetadata> links) {
-	Set<ClassLinkMetadata> result = new HashSet<ClassLinkMetadata>();
+	ArrayList<ClassLinkMetadata> result = new ArrayList<ClassLinkMetadata>();
 	if (links != null) {
 	    for (LinkMetadata l : links) {
+	    	ClassLinkMetadata newClMD = null;
 		if (l instanceof ClassLinkMetadata) {
-		    result.add((ClassLinkMetadata) l); // TODO!! Clone l
+		    newClMD = (ClassLinkMetadata) l; // TODO!! Clone l
 		}
 		if (l instanceof MethodLinkMetadata) {
-		    result.add(new ClassLinkMetadata(l.getStatus(), ((MethodLinkMetadata) l).getClazz()));
+			newClMD = (new ClassLinkMetadata(l.getStatus(), ((MethodLinkMetadata) l).getClazz()));
+		}
+		if (newClMD != null && result.contains(newClMD)) {
+			result.get(result.indexOf(newClMD)).merge(newClMD);
+		} else {
+			result.add(newClMD);
 		}
 	    }
 	}
