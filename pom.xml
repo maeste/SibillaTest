@@ -7,7 +7,7 @@
 	<groupId>it.javalinux.sibilla</groupId>
 	<artifactId>Sibilla</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0.Beta1</version>
         <description>Sibilla Test</description>
         <url>http://sibilla.javalinux.it/</url>
         <licenses>
