@@ -25,6 +25,17 @@
           <javassistVersion>3.13.0-GA</javassistVersion>
 	</properties>
 
+    <developers>
+      <developer>
+        <name>Stefano Maestri</name>
+        <email>stefano.maestri@javalinux.it</email>
+      </developer>
+      <developer>
+        <name>Alessio Soldano</name>
+        <email>alessio.soldano@javalinux.it</email>
+      </developer>
+    </developers>
+
         <distributionManagement>
           <repository>
             <id>sonatype-nexus-staging</id>
